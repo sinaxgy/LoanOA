@@ -218,6 +218,15 @@
                                     <action selector="settingAction:" destination="kCp-IW-gN7" eventType="touchUpInside" id="fsC-en-Y7a"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="欢迎使用本系统" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tmM-R8-c7l">
+                                <rect key="frame" x="258" y="399" width="84" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="X0P-bD-Zr5"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -225,6 +234,7 @@
                             <constraint firstItem="Sc2-qw-twU" firstAttribute="leading" secondItem="IUl-ep-wwr" secondAttribute="leading" id="FQ2-5N-WTS"/>
                             <constraint firstAttribute="trailingMargin" secondItem="oLR-Vr-VvC" secondAttribute="trailing" constant="-32" id="LCR-EQ-sVL"/>
                             <constraint firstItem="WYs-Ty-Ptf" firstAttribute="top" secondItem="Bwg-M9-CfY" secondAttribute="bottom" constant="5" id="NH8-6R-zIC"/>
+                            <constraint firstItem="tmM-R8-c7l" firstAttribute="top" secondItem="YRT-OL-wBu" secondAttribute="bottom" constant="17" id="SpE-sB-X40"/>
                             <constraint firstItem="Sc2-qw-twU" firstAttribute="top" secondItem="IUl-ep-wwr" secondAttribute="bottom" constant="14" id="TNI-Pr-Lze"/>
                             <constraint firstItem="BuV-Hn-mT2" firstAttribute="leading" secondItem="Bwg-M9-CfY" secondAttribute="leading" id="V8c-kH-SfX"/>
                             <constraint firstAttribute="bottomMargin" secondItem="oLR-Vr-VvC" secondAttribute="bottom" constant="-23" id="WpR-v4-hIo"/>
@@ -239,6 +249,7 @@
                             <constraint firstItem="smz-9H-Sch" firstAttribute="top" secondItem="MOy-EH-b2A" secondAttribute="bottom" constant="8" id="mUD-vU-D3u"/>
                             <constraint firstItem="WYs-Ty-Ptf" firstAttribute="leading" secondItem="BuV-Hn-mT2" secondAttribute="trailing" constant="2" id="nkh-BA-uza"/>
                             <constraint firstItem="YRT-OL-wBu" firstAttribute="top" secondItem="WYs-Ty-Ptf" secondAttribute="bottom" constant="17" id="t4H-sa-fbi"/>
+                            <constraint firstItem="tmM-R8-c7l" firstAttribute="centerX" secondItem="YRT-OL-wBu" secondAttribute="centerX" id="tvl-VF-Dad"/>
                             <constraint firstItem="IUl-ep-wwr" firstAttribute="top" secondItem="smz-9H-Sch" secondAttribute="bottom" constant="64" id="y5o-gT-Atu"/>
                             <constraint firstItem="MaJ-bA-AAp" firstAttribute="trailing" secondItem="wUs-MD-2v2" secondAttribute="trailingMargin" id="yUu-Yp-DVm"/>
                             <constraint firstItem="oLR-Vr-VvC" firstAttribute="top" secondItem="wUs-MD-2v2" secondAttribute="topMargin" constant="-30" id="yuw-F5-Oev"/>
