@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="tKV-pb-yNK">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--历史-->
+        <scene sceneID="KjT-yy-WKG">
+            <objects>
+                <tableViewController id="nxI-jV-5J8" customClass="HistoryTableViewController" customModule="车融资OA" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="D0v-9Z-hBX">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="historyCell" id="5B9-0Z-QGx">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5B9-0Z-QGx" id="hle-Zu-N2v">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="nxI-jV-5J8" id="4yX-eH-URm"/>
+                            <outlet property="delegate" destination="nxI-jV-5J8" id="oy5-bd-bGt"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="历史" id="RCx-lR-KON">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="ngQ-dj-wTv">
+                            <connections>
+                                <action selector="tableAddAction:" destination="nxI-jV-5J8" id="XIv-hx-cFK"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qjg-LV-g3Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1067" y="-199"/>
+        </scene>
+        <!--我-->
+        <scene sceneID="CB6-mI-A1C">
+            <objects>
+                <tableViewController id="YaW-BI-g2S" customClass="SelfTableViewController" customModule="车融资OA" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="nVF-Lm-kw6">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="selfCell" id="fCK-ty-LHL">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fCK-ty-LHL" id="yec-X6-Mu5">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="YaW-BI-g2S" id="J0r-w4-mC1"/>
+                            <outlet property="delegate" destination="YaW-BI-g2S" id="C6P-gt-jzO"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="我" id="MT3-Ga-6Xa"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="98u-AA-lW8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1075" y="625"/>
+        </scene>
+        <!--个人-->
+        <scene sceneID="0uA-Y1-RYr">
+            <objects>
+                <navigationController id="BxC-hn-15a" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="个人" image="person.png" id="WeY-Qh-Cws"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oqq-Iw-KXF">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="YaW-BI-g2S" kind="relationship" relationship="rootViewController" id="Gb8-uV-chg"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jDS-it-iel" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="301" y="625"/>
+        </scene>
+        <!--历史-->
+        <scene sceneID="vzL-eI-3nE">
+            <objects>
+                <navigationController id="daK-7b-yYX" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="历史" image="history.png" id="te7-DV-EV3"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="z6C-fU-e8P">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="nxI-jV-5J8" kind="relationship" relationship="rootViewController" id="rhL-0U-gkR"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="glG-O6-Hcy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="301" y="-205"/>
+        </scene>
+        <!--Login View Controller-->
+        <scene sceneID="5Ui-em-7Iw">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" id="sYy-Y8-rhl" customClass="LoginViewController" customModule="车融资OA" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kXX-fg-yTM"/>
+                        <viewControllerLayoutGuide type="bottom" id="BXF-6z-Qhn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ol2-5I-aLm">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="cA5-fr-K9h"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IVY-M9-Cqi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1358" y="206"/>
+        </scene>
+        <!--Logins View Controller-->
+        <scene sceneID="twm-kg-fIL">
+            <objects>
+                <viewController storyboardIdentifier="LoginsViewController" id="kCp-IW-gN7" customClass="LoginsViewController" customModule="车融资OA" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="MOy-EH-b2A"/>
+                        <viewControllerLayoutGuide type="bottom" id="QcK-zp-HIm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wUs-MD-2v2">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="oLR-Vr-VvC">
+                                <rect key="frame" x="-12" y="-30" width="628" height="653"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="smz-9H-Sch">
+                                <rect key="frame" x="244" y="28" width="117" height="134"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="134" id="288-Kd-KLN"/>
+                                    <constraint firstAttribute="width" constant="117" id="rs5-gP-kbm"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginrect" translatesAutoresizingMaskIntoConstraints="NO" id="Bwg-M9-CfY">
+                                <rect key="frame" x="182" y="177" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="4xU-Wr-cJg"/>
+                                    <constraint firstAttribute="height" constant="128" id="Kwa-qf-S5k"/>
+                                </constraints>
+                            </imageView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="用户名" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IUl-ep-wwr">
+                                <rect key="frame" x="222" y="226" width="200" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="0cX-iY-icw"/>
+                                    <constraint firstAttribute="width" constant="200" id="3Tw-3P-Rfh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Sc2-qw-twU">
+                                <rect key="frame" x="222" y="270" width="200" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="GbJ-wE-3iA"/>
+                                    <constraint firstAttribute="width" constant="200" id="VPO-dd-x42"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BuV-Hn-mT2">
+                                <rect key="frame" x="182" y="313" width="15" height="15"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="15" id="04v-Np-PBa"/>
+                                    <constraint firstAttribute="height" constant="15" id="c6S-N1-1bL"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="savepwno">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="savePasswordAction:" destination="kCp-IW-gN7" eventType="touchUpInside" id="djy-9S-Dsx"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="记住密码" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WYs-Ty-Ptf">
+                                <rect key="frame" x="199" y="310" width="52" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="52" id="JFc-do-zbI"/>
+                                    <constraint firstAttribute="height" constant="21" id="obi-GO-qCc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YRT-OL-wBu">
+                                <rect key="frame" x="28" y="348" width="544" height="34"/>
+                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="登录">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginToServiceAction:" destination="kCp-IW-gN7" eventType="touchUpInside" id="RoP-Q2-XDp"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MaJ-bA-AAp">
+                                <rect key="frame" x="537" y="28" width="47" height="24"/>
+                                <color key="backgroundColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="47" id="5aA-Zz-gNa"/>
+                                    <constraint firstAttribute="height" constant="24" id="NOl-cy-Ydv"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="配置IP">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="settingAction:" destination="kCp-IW-gN7" eventType="touchUpInside" id="fsC-en-Y7a"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="BuV-Hn-mT2" firstAttribute="top" secondItem="Bwg-M9-CfY" secondAttribute="bottom" constant="8" id="5x2-lL-juK"/>
+                            <constraint firstItem="Sc2-qw-twU" firstAttribute="leading" secondItem="IUl-ep-wwr" secondAttribute="leading" id="FQ2-5N-WTS"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="oLR-Vr-VvC" secondAttribute="trailing" constant="-32" id="LCR-EQ-sVL"/>
+                            <constraint firstItem="WYs-Ty-Ptf" firstAttribute="top" secondItem="Bwg-M9-CfY" secondAttribute="bottom" constant="5" id="NH8-6R-zIC"/>
+                            <constraint firstItem="Sc2-qw-twU" firstAttribute="top" secondItem="IUl-ep-wwr" secondAttribute="bottom" constant="14" id="TNI-Pr-Lze"/>
+                            <constraint firstItem="BuV-Hn-mT2" firstAttribute="leading" secondItem="Bwg-M9-CfY" secondAttribute="leading" id="V8c-kH-SfX"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="oLR-Vr-VvC" secondAttribute="bottom" constant="-23" id="WpR-v4-hIo"/>
+                            <constraint firstItem="Bwg-M9-CfY" firstAttribute="top" secondItem="smz-9H-Sch" secondAttribute="bottom" constant="15" id="as6-Vu-cb4"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="YRT-OL-wBu" secondAttribute="trailing" constant="12" id="cMb-4t-wcA"/>
+                            <constraint firstItem="smz-9H-Sch" firstAttribute="centerX" secondItem="oLR-Vr-VvC" secondAttribute="centerX" id="f5c-0v-njF"/>
+                            <constraint firstItem="MaJ-bA-AAp" firstAttribute="top" secondItem="MOy-EH-b2A" secondAttribute="bottom" constant="8" id="fUD-Pw-ct9"/>
+                            <constraint firstItem="YRT-OL-wBu" firstAttribute="leading" secondItem="wUs-MD-2v2" secondAttribute="leadingMargin" constant="12" id="g0L-44-gUi"/>
+                            <constraint firstItem="Bwg-M9-CfY" firstAttribute="centerX" secondItem="smz-9H-Sch" secondAttribute="centerX" id="gHp-cC-ICg"/>
+                            <constraint firstItem="IUl-ep-wwr" firstAttribute="trailing" secondItem="Bwg-M9-CfY" secondAttribute="trailing" id="gWa-uL-On5"/>
+                            <constraint firstItem="oLR-Vr-VvC" firstAttribute="leading" secondItem="wUs-MD-2v2" secondAttribute="leadingMargin" constant="-28" id="iKB-NQ-GUz"/>
+                            <constraint firstItem="smz-9H-Sch" firstAttribute="top" secondItem="MOy-EH-b2A" secondAttribute="bottom" constant="8" id="mUD-vU-D3u"/>
+                            <constraint firstItem="WYs-Ty-Ptf" firstAttribute="leading" secondItem="BuV-Hn-mT2" secondAttribute="trailing" constant="2" id="nkh-BA-uza"/>
+                            <constraint firstItem="YRT-OL-wBu" firstAttribute="top" secondItem="WYs-Ty-Ptf" secondAttribute="bottom" constant="17" id="t4H-sa-fbi"/>
+                            <constraint firstItem="IUl-ep-wwr" firstAttribute="top" secondItem="smz-9H-Sch" secondAttribute="bottom" constant="64" id="y5o-gT-Atu"/>
+                            <constraint firstItem="MaJ-bA-AAp" firstAttribute="trailing" secondItem="wUs-MD-2v2" secondAttribute="trailingMargin" id="yUu-Yp-DVm"/>
+                            <constraint firstItem="oLR-Vr-VvC" firstAttribute="top" secondItem="wUs-MD-2v2" secondAttribute="topMargin" constant="-30" id="yuw-F5-Oev"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="loginBtn" destination="YRT-OL-wBu" id="hXi-ho-J51"/>
+                        <outlet property="passwordText" destination="Sc2-qw-twU" id="cvX-RP-tLq"/>
+                        <outlet property="savePasswordBtn" destination="BuV-Hn-mT2" id="tbV-tL-85i"/>
+                        <outlet property="settingBtn" destination="MaJ-bA-AAp" id="8pQ-uL-bg6"/>
+                        <outlet property="user_idText" destination="IUl-ep-wwr" id="fRr-Qx-ov5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FfR-md-C7x" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1358" y="939"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="UGq-mv-ytt">
+            <objects>
+                <tabBarController storyboardIdentifier="tab" id="tKV-pb-yNK" sceneMemberID="viewController">
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="9aF-jV-RAI">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="daK-7b-yYX" kind="relationship" relationship="viewControllers" id="Lb3-Mq-rLz"/>
+                        <segue destination="BxC-hn-15a" kind="relationship" relationship="viewControllers" id="hwx-6T-u2c"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ONv-Ez-1rj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-585" y="206"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="background" width="640" height="1136"/>
+        <image name="history.png" width="24" height="24"/>
+        <image name="loginrect" width="453" height="212"/>
+        <image name="logo" width="118" height="135"/>
+        <image name="person.png" width="20" height="20"/>
+        <image name="savepwno" width="25" height="25"/>
+    </resources>
+</document>
