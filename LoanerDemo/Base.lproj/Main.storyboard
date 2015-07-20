@@ -68,11 +68,11 @@
             </objects>
             <point key="canvasLocation" x="1075" y="625"/>
         </scene>
-        <!--个人-->
+        <!--个人信息-->
         <scene sceneID="0uA-Y1-RYr">
             <objects>
                 <navigationController id="BxC-hn-15a" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="个人" image="person.png" id="WeY-Qh-Cws"/>
+                    <tabBarItem key="tabBarItem" title="个人信息" image="person.png" id="WeY-Qh-Cws"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="oqq-Iw-KXF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -85,11 +85,11 @@
             </objects>
             <point key="canvasLocation" x="301" y="625"/>
         </scene>
-        <!--历史-->
+        <!--速评表-->
         <scene sceneID="vzL-eI-3nE">
             <objects>
                 <navigationController id="daK-7b-yYX" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="历史" image="history.png" id="te7-DV-EV3"/>
+                    <tabBarItem key="tabBarItem" title="速评表" image="history.png" id="te7-DV-EV3"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="z6C-fU-e8P">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
