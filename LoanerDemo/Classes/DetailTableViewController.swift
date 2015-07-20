@@ -96,7 +96,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
         self.postDic.setObject(AppDelegate.app().getoffline_id(), forKey: "offline_id")
         
         let pjs = JSON(self.postDic)
-        println(self.postDic)
+        //println(self.postDic)
         let ip = "http://\(AppDelegate.app().IP)/"
         request = Alamofire.request(.POST, ip + config + "assess/app-add",
             parameters: ["service_type":"\(self.typeTitle.type)","data":"\(pjs)","db_table":"\(self.dbjson)",

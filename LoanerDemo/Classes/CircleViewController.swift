@@ -168,7 +168,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate{
         request = Alamofire.request(.POST, ip + config + "app/" + footerURL,
             parameters: ["data":"\(js)"])
         request?.responseString() { (_, _, data, error) in
-            println(data)
+            //println(data)
             if data == "success" {
                 progressHud.labelText = "提交成功"
                 progressHud.mode = MBProgressHUDMode.CustomView

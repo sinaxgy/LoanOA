@@ -100,7 +100,7 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
                 alert.show()
                 return
             }
-            println(json)
+            //println(json)
             if (json?.count < 7) {
                 self.request = nil
                 progressHud.hide(true)

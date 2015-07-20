@@ -136,7 +136,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
                 self.request = nil
                 return
             }
-            println(json)
+            //println(json)
             self.json = JSON(json!)
             if self.json.count != 0 {           //项目编号排序
                 var keys:NSArray = (self.json.object as! NSDictionary).allKeys

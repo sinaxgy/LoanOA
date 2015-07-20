@@ -133,7 +133,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
         self.postDic.setObject(AppDelegate.app().getoffline_id(), forKey: "offline_id")
         
         let pjs = JSON(self.postDic)
-        println(self.postDic)
+        //println(self.postDic)
         let ip = "http://\(AppDelegate.app().IP)/"
         request = Alamofire.request(.POST, ip + config + "app/save-info",
             parameters: ["pro_id":"\(self.pro_id)",
@@ -193,17 +193,28 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
         if !self.tag_Message.editable {
             return
         }
+        //假如有编辑修改权限，遍历所有数据，若存在value值，则默认非编辑状态
         if self.tag_Message.tableJson.type == .Dictionary {
+            var isEditable = false
             let dic:NSDictionary = (self.tag_Message.tableJson.dictionary?[self.tag_Message.arraysort.firstObject as! String]?.object as? NSDictionary)!
-            for (key,value) in dic {
-                if key as! String == "value" {
-                    if value as! String != "" {
-                        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "编辑", style: UIBarButtonItemStyle.Plain, target: self, action: "textFieldEditenable:")
-                    }else {
-                        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "完成", style: UIBarButtonItemStyle.Plain, target: self, action: "postJson:")
+            for key in self.tag_Message.arraysort {
+                let dic:NSDictionary = (self.tag_Message.tableJson.dictionary?[key as! String]?.object as? NSDictionary)!
+                for (k,v) in dic {
+                    if k as! String == "value" {
+                        if v as? String == "" {
+                            isEditable = true
+                        }else {
+                            isEditable = false
+                        }
+                        break
                     }
                 }
-                break
+                if isEditable {
+                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "完成", style: UIBarButtonItemStyle.Plain, target: self, action: "postJson:")
+                    break
+                }else {
+                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "编辑", style: UIBarButtonItemStyle.Plain, target: self, action: "textFieldEditenable:")
+                }
             }
         }
     }

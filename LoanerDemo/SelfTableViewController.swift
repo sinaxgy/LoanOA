@@ -48,7 +48,7 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
             }
             let loginView = UIStoryboard(name: "Main", bundle: nil)
             self.navigationController?.presentViewController(
-                (loginView.instantiateViewControllerWithIdentifier("LoginViewController") as? UIViewController)!, animated: true, completion: nil)
+                (loginView.instantiateViewControllerWithIdentifier("LoginsViewController") as? UIViewController)!, animated: true, completion: nil)
         }else {
             let alert:UIAlertView = UIAlertView(title: "提示", message: "临时登录用户，无需注销", delegate: nil, cancelButtonTitle: "确定")
             alert.show()

@@ -78,7 +78,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
             var jsonArray:NSMutableArray = NSMutableArray()
             var msgArray:NSMutableArray = []
             var jsArray:NSMutableArray = []
-            println(js)
+            //println(js)
             for key in js.dictionary!.keys.array {
                 if key == "view" {
                     let viewJson:JSON = js[key]
@@ -123,7 +123,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
             self.reSortArrayAndJson(msgArray, jsAr: jsArray)
             
             //self.proMessage.subjson = JSON(jsonArray)
-            println(self.proMessage.subjson)
+            //println(self.proMessage.subjson)
             self.tableView.reloadData()
             self.navigationItem.titleView = nil
             self.navigationItem.prompt = nil
@@ -169,7 +169,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println(self.proMessage.subjson[indexPath.row])
+        //println(self.proMessage.subjson[indexPath.row])
         switch self.proMessage.subjson[indexPath.row].count {
         case 0:
             if self.proMessage.promptArray[indexPath.row] as! String == "图片上传" {
@@ -227,12 +227,12 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
                 self.proMessage.promptArray.addObject(msg)
                 ar.removeObject(msg)
                 self.proMessage.promptArray.addObjectsFromArray(ar as [AnyObject])
-                println(self.proMessage.promptArray)
+                //println(self.proMessage.promptArray)
                 
                 jsonArray.addObject(jsAr.objectAtIndex(index))
                 jsa.removeObjectAtIndex(index)
                 jsonArray.addObjectsFromArray(jsa as [AnyObject])
-                println(jsonArray)
+                //println(jsonArray)
                 self.proMessage.subjson = JSON(jsonArray)
                 break
             }

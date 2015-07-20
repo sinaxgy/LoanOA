@@ -187,7 +187,6 @@
 		C5F218EE1B4AA9250072D445 /* NetworkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkRequest.swift; path = Classes/NetworkRequest.swift; sourceTree = "<group>"; };
 		C5F218F01B4AC8ED0072D445 /* history@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "history@2x.png"; path = "Resources/history@2x.png"; sourceTree = "<group>"; };
 		C5F218F21B4AC97A0072D445 /* person@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "person@2x.png"; path = "Resources/person@2x.png"; sourceTree = "<group>"; };
-		C5F9DF071B562B81007D9399 /* LoanerDemo copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "LoanerDemo copy-Info.plist"; path = "/Users/xucheng/Documents/IOS/LoanerDemo/LoanerDemo copy-Info.plist"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -318,7 +317,6 @@
 				C5D7B9251B3909BE00823343 /* LoanerDemoTests */,
 				C5D7B90E1B3909BE00823343 /* Products */,
 				C55D29771B4BB620003F714A /* Alamofire.xcodeproj */,
-				C5F9DF071B562B81007D9399 /* LoanerDemo copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
