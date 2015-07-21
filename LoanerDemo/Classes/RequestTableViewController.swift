@@ -195,7 +195,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
         }
         //假如有编辑修改权限，遍历所有数据，若存在value值，则默认非编辑状态
         if self.tag_Message.tableJson.type == .Dictionary {
-            var isEditable = false
+            var isEditable = true
             let dic:NSDictionary = (self.tag_Message.tableJson.dictionary?[self.tag_Message.arraysort.firstObject as! String]?.object as? NSDictionary)!
             for key in self.tag_Message.arraysort {
                 let dic:NSDictionary = (self.tag_Message.tableJson.dictionary?[key as! String]?.object as? NSDictionary)!
@@ -211,9 +211,9 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
                 }
                 if isEditable {
                     self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "完成", style: UIBarButtonItemStyle.Plain, target: self, action: "postJson:")
-                    break
                 }else {
                     self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "编辑", style: UIBarButtonItemStyle.Plain, target: self, action: "textFieldEditenable:")
+                    break
                 }
             }
         }
