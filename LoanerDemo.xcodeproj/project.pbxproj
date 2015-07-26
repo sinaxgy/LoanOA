@@ -21,7 +21,6 @@
 		C503A9A51B4B7ACC0081200D /* Icon-29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C503A9A41B4B7ACC0081200D /* Icon-29@2x.png */; };
 		C51346CC1B54B03F00316894 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55D297D1B4BB620003F714A /* Alamofire.framework */; };
 		C51346CF1B54B28E00316894 /* Alamofire.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C55D297D1B4BB620003F714A /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C51346DF1B54F7BA00316894 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = C51346DE1B54F7BA00316894 /* background.png */; };
 		C526CD3A1B3BF6CD00A695BE /* DatepickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C526CD391B3BF6CD00A695BE /* DatepickerView.swift */; };
 		C52BD9D51B4CC54F000316A8 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C52BD9D41B4CC54F000316A8 /* MBProgressHUD.m */; };
 		C52BD9DA1B4CCE8E000316A8 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = C52BD9D81B4CCE8E000316A8 /* 37x-Checkmark.png */; };
@@ -34,6 +33,7 @@
 		C58A00EA1B589B7200C90FE6 /* ParticularsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C58A00E81B589B7200C90FE6 /* ParticularsTableViewCell.xib */; };
 		C592A98B1B53BB090038F2A4 /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C592A98A1B53BB090038F2A4 /* KeyChain.swift */; };
 		C5A0B2021B5A81F4000C00AD /* LoginsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A0B2011B5A81F4000C00AD /* LoginsViewController.swift */; };
+		C5A2EF981B65025E00361B08 /* MasterImageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A2EF971B65025E00361B08 /* MasterImageTableViewController.swift */; };
 		C5B9DA0D1B50C64300468BFE /* LewPopupViewAnimationDrop.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B9DA0A1B50C64300468BFE /* LewPopupViewAnimationDrop.m */; };
 		C5B9DA0E1B50C64300468BFE /* PopupAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B9DA0C1B50C64300468BFE /* PopupAnimationView.m */; };
 		C5B9DA131B50C66600468BFE /* UIViewController+DropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B9DA121B50C66600468BFE /* UIViewController+DropViewController.m */; };
@@ -132,7 +132,6 @@
 		C503A99E1B4B75D90081200D /* Icon-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-40@2x.png"; path = "Resources/Icon/Icon-40@2x.png"; sourceTree = "<group>"; };
 		C503A9A11B4B75F30081200D /* Icon-40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-40@3x.png"; path = "Resources/Icon/Icon-40@3x.png"; sourceTree = "<group>"; };
 		C503A9A41B4B7ACC0081200D /* Icon-29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-29@2x.png"; path = "Resources/Icon/Icon-29@2x.png"; sourceTree = "<group>"; };
-		C51346DE1B54F7BA00316894 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = Resources/Image/background.png; sourceTree = "<group>"; };
 		C526CD391B3BF6CD00A695BE /* DatepickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatepickerView.swift; path = Classes/DatepickerView.swift; sourceTree = "<group>"; };
 		C52BD9D31B4CC54F000316A8 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = Classes/OCFile/MBProgressHUD.h; sourceTree = "<group>"; };
 		C52BD9D41B4CC54F000316A8 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = Classes/OCFile/MBProgressHUD.m; sourceTree = "<group>"; };
@@ -147,6 +146,7 @@
 		C58A00E81B589B7200C90FE6 /* ParticularsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ParticularsTableViewCell.xib; path = Classes/ParticularsTableViewCell.xib; sourceTree = "<group>"; };
 		C592A98A1B53BB090038F2A4 /* KeyChain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeyChain.swift; path = Classes/KeyChain.swift; sourceTree = "<group>"; };
 		C5A0B2011B5A81F4000C00AD /* LoginsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginsViewController.swift; path = Classes/LoginsViewController.swift; sourceTree = "<group>"; };
+		C5A2EF971B65025E00361B08 /* MasterImageTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MasterImageTableViewController.swift; path = Classes/MasterImageTableViewController.swift; sourceTree = "<group>"; };
 		C5B9DA091B50C64300468BFE /* LewPopupViewAnimationDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LewPopupViewAnimationDrop.h; path = Classes/OCFile/LewPopupViewAnimationDrop.h; sourceTree = "<group>"; };
 		C5B9DA0A1B50C64300468BFE /* LewPopupViewAnimationDrop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LewPopupViewAnimationDrop.m; path = Classes/OCFile/LewPopupViewAnimationDrop.m; sourceTree = "<group>"; };
 		C5B9DA0B1B50C64300468BFE /* PopupAnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PopupAnimationView.h; path = Classes/OCFile/PopupAnimationView.h; sourceTree = "<group>"; };
@@ -218,6 +218,7 @@
 				C5D7B9BB1B3A7E0F00823343 /* BranchTableViewController.swift */,
 				C5D7B9B41B3A5AA000823343 /* DetailTableViewController.swift */,
 				C58A00E41B58961200C90FE6 /* RequestTableViewController.swift */,
+				C5A2EF971B65025E00361B08 /* MasterImageTableViewController.swift */,
 				C5E2422C1B4A7586006CD3D2 /* CircleViewController.swift */,
 				C5E2422D1B4A7586006CD3D2 /* CircleViewController.xib */,
 			);
@@ -268,7 +269,6 @@
 		C51346D01B54C70300316894 /* Image */ = {
 			isa = PBXGroup;
 			children = (
-				C51346DE1B54F7BA00316894 /* background.png */,
 			);
 			name = Image;
 			sourceTree = "<group>";
@@ -517,7 +517,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C55D298B1B4BC5BF003F714A /* login_input_rect.png in Resources */,
-				C51346DF1B54F7BA00316894 /* background.png in Resources */,
 				C5D7B97B1B390C4800823343 /* Info-iOS.plist in Resources */,
 				C503A9981B4B72C90081200D /* Icon-72@2x.png in Resources */,
 				C5D7B9181B3909BE00823343 /* Main.storyboard in Resources */,
@@ -567,6 +566,7 @@
 			files = (
 				C5E2422E1B4A7586006CD3D2 /* CircleViewController.swift in Sources */,
 				C5D7B97D1B390C4800823343 /* SwiftyJSON.swift in Sources */,
+				C5A2EF981B65025E00361B08 /* MasterImageTableViewController.swift in Sources */,
 				C5D7B9B31B3A4DDF00823343 /* tableItemInfo.swift in Sources */,
 				C592A98B1B53BB090038F2A4 /* KeyChain.swift in Sources */,
 				C5D7B9B51B3A5AA100823343 /* DetailTableViewController.swift in Sources */,
