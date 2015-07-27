@@ -7,66 +7,36 @@
 //
 
 import UIKit
-import Alamofire
+
+struct requestURL {
+    var footer:String {
+        didSet{
+            self.URL = ipurl + config + self.footer
+            println(self.URL)
+        }
+    }
+    var URL:String
+    var pro_id:String
+}
+
+let ipurl = "http://\(AppDelegate.app().IP)/"
 
 class MasterImageTableViewController: UITableViewController {
 
-    
-    var request: Alamofire.Request? {
-        didSet {
-            oldValue?.cancel()
-        }
-    }
+    var picURL:requestURL = requestURL(footer: "", URL: "", pro_id: "");
+    var masterJson:JSON = JSON.nullJSON
+    var masterSubURL:NSMutableArray = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NetworkRequest.AlamofireGetJSON("", closure: {
+        NetworkRequest.AlamofireGetJSON(self.picURL.URL, closure: {
             (data) in
+            println(">>>>>>>>>>>>>")
             println(data)
-        })
-    }
-    
-    
-    func reload(sender:AnyObject) {
-        if self.request == nil {
-            let ip = "http://\(AppDelegate.app().IP)/"
-            self.request = Alamofire.request(.GET, ip + config + readHisURL + "\(AppDelegate.app().getuser_idFromPlist())")
-        }
-        
-        self.request?.responseJSON(){ (_, _, json, error) in
-            if self.request == nil {
-                return
-            }
-            if error != nil {
-                switch UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) {
-                case .OrderedSame, .OrderedDescending:
-                    var alert:UIAlertController = UIAlertController(title: "错误", message: "装载失败", preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "确定", style: UIAlertActionStyle.Cancel, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
-                case .OrderedAscending:
-                    
-                    let alert:UIAlertView = UIAlertView(title: "错误", message: "加载数据失败", delegate: nil, cancelButtonTitle: "确定")
-                    alert.show()
-                }
-                self.request = nil
-                return
-            }
-            println(json)
+            self.masterJson = JSON(data)
             self.tableView.reloadData()
-            self.request = nil
-        }
-        
-        let gcdTimer:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(15 * NSEC_PER_SEC))
-        dispatch_after(gcdTimer, dispatch_get_main_queue(), {
-            if self.request != nil {
-                self.request?.cancel()
-                self.request = nil
-                let alert:UIAlertView = UIAlertView(title: "错误", message: "请求超时，请检查网络配置", delegate: nil, cancelButtonTitle: "确定")
-                alert.show()
-            }
         })
     }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -77,24 +47,32 @@ class MasterImageTableViewController: UITableViewController {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 0
+        return self.masterJson.count
     }
 
-    /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
-
-        // Configure the cell...
-
+        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "masterCell")
+        cell.imageView?.image = UIImage(named: "history")
+        let js = self.masterJson[indexPath.row];
+        if js.type == .Dictionary {
+            let dic:NSDictionary = js.object as! NSDictionary
+            for (key,value) in dic {
+                cell.textLabel?.text = key.description
+                for (k,value) in value as! NSDictionary {
+                    if k.description == "iamge" {
+                    }
+                }
+            }
+        }
+        
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.

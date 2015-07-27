@@ -96,7 +96,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
                         let tabJson:JSON = viewJson.dictionary![tab as! String]!
                         if let tag_name = tabJson.dictionary!["tag_name"]?.description {
                             msgArray.addObject(tag_name)
-                            println(tag_name)
+                            //println(tag_name)
                         }
                         
                         if let keyarray = tabJson.dictionary?["arraysort"] {
@@ -110,7 +110,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
                         
                         if let value = tabJson.dictionary?["data"] {
                             jsArray.addObject(value.object)
-                            println(value.description)
+                            //println(value.description)
                         }
                         if let editable = tabJson.dictionary?["editable"] {
                             self.proMessage.editableArray.addObject(editable.description)
@@ -136,8 +136,8 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
                 self.request = nil
                 self.navigationItem.titleView = nil
                 self.navigationItem.prompt = nil
-//                let alert:UIAlertView = UIAlertView(title: "错误", message: "请求超时，请检查网络配置", delegate: nil, cancelButtonTitle: "确定")
-//                alert.show()
+                let alert:UIAlertView = UIAlertView(title: "错误", message: "请求超时，请检查网络配置", delegate: nil, cancelButtonTitle: "确定")
+                alert.show()
             }
         })
     }
@@ -174,6 +174,10 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
         case 0:
             if self.proMessage.promptArray[indexPath.row] as! String == "图片上传" {
                 println("图片上传")
+                var imageVC:MasterImageTableViewController = MasterImageTableViewController()
+                imageVC.picURL.footer = self.proMessage.subjson[indexPath.row].description
+                imageVC.title = "图片上传"
+                self.navigationController?.pushViewController(imageVC, animated: true)
                 return
             }
             var requestVC:RequestTableViewController = RequestTableViewController()

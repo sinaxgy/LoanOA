@@ -221,6 +221,7 @@
 				C5A2EF971B65025E00361B08 /* MasterImageTableViewController.swift */,
 				C5E2422C1B4A7586006CD3D2 /* CircleViewController.swift */,
 				C5E2422D1B4A7586006CD3D2 /* CircleViewController.xib */,
+				C51346DD1B54F59B00316894 /* MainFile */,
 			);
 			name = VC;
 			sourceTree = "<group>";
@@ -339,7 +340,6 @@
 				C5D7B9AC1B39556600823343 /* OCFile */,
 				C5D7B9B61B3A772D00823343 /* tableViewCell */,
 				C58681F61B43C48C0021FEA9 /* Resources */,
-				C51346DD1B54F59B00316894 /* MainFile */,
 				C5D7B9761B390C2F00823343 /* SwiftJSON */,
 				C5D7B9101B3909BE00823343 /* Supporting Files */,
 			);

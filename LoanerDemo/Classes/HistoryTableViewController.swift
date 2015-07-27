@@ -119,6 +119,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
                 return
             }
             if error != nil {
+                println(error)
                 switch UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) {
                 case .OrderedSame, .OrderedDescending:
                     var alert:UIAlertController = UIAlertController(title: "错误", message: "装载失败", preferredStyle: UIAlertControllerStyle.Alert)
