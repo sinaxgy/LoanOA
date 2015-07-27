@@ -11,16 +11,29 @@ import UIKit
 class SubPicTableViewController: UITableViewController {
     
     var subURL:String = ""
+    var tableArray:NSMutableArray = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.reload()
+//        var picItem:PicJsonItemInfo = PicJsonItemInfo(tbName: "", json: JSON.nullJSON)
+//        var ar:NSMutableArray = []
+//        ar.addObject(picItem)
     }
     
     func reload(){
         NetworkRequest.AlamofireGetJSON(self.subURL, closure: {
             (data) in
             println(data)
+            let js:JSON = JSON(data)
+            if js.type == .Array {
+                for dic in js {
+                    for (key,value) in dic {
+                        let item:PicJsonItemInfo = PicJsonItemInfo(tbName: key as String, json: value)
+                        
+                    }
+                }
+            }
         })
     }
 
