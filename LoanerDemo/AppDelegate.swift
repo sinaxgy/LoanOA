@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var user_id:NSString = "a"
     var offline_id:NSString = ""
     var IP = "112.126.64.235:8843"//10.104.4.1521111"             //112.126.64.23:8843/"var IP = "h1ttp://10.104.4.153/"
+    var ipUrl = "http://10.104.4.177/"
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         let filepath = NSHomeDirectory().stringByAppendingPathComponent("Documents").stringByAppendingPathComponent("selfInfo.plist")

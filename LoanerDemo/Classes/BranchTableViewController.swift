@@ -41,8 +41,6 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
         self.showActivityIndicatorViewInNavigationItem()
         self.loadJSONOfView()
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "返回", style: UIBarButtonItemStyle.Plain, target: self, action:"cancel:")
-        
-        //self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "添加", style: UIBarButtonItemStyle.Plain, target: self, action: "addTableAction:")
     }
     
     func cancel(sender:UIBarButtonItem) {
@@ -79,7 +77,6 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
             var jsonArray:NSMutableArray = NSMutableArray()
             var msgArray:NSMutableArray = []
             var jsArray:NSMutableArray = []
-            //println(js)
             for key in js.dictionary!.keys.array {
                 if key == "view" {
                     let viewJson:JSON = js[key]
@@ -97,7 +94,6 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
                         let tabJson:JSON = viewJson.dictionary![tab as! String]!
                         if let tag_name = tabJson.dictionary!["tag_name"]?.description {
                             msgArray.addObject(tag_name)
-                            //println(tag_name)
                         }
                         
                         if let keyarray = tabJson.dictionary?["arraysort"] {
@@ -111,7 +107,6 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
                         
                         if let value = tabJson.dictionary?["data"] {
                             jsArray.addObject(value.object)
-                            //println(value.description)
                         }
                         if let editable = tabJson.dictionary?["editable"] {
                             self.proMessage.editableArray.addObject(editable.description)

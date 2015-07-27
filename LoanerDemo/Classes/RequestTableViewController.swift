@@ -71,7 +71,6 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
                 self.hideActivityIndicatorViewInNavigationItem()
                 return
             }
-            println(data)
             let mainJSON = JSON(data!)
             if mainJSON == nil {
                 return
@@ -150,7 +149,6 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
                 progressHud.hide(true, afterDelay: 1)
                 return
             }
-            println(data)
             if data == "success" {
                 progressHud.labelText = "提交成功"
                 progressHud.mode = MBProgressHUDMode.CustomView

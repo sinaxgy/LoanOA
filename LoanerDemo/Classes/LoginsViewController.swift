@@ -59,7 +59,6 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
     
     @IBAction func settingAction(sender: UIButton) {
         let pvView:PopupAnimationView = PopupAnimationView.defaultPopupView()
-        let ip = AppDelegate.app().IP
         pvView.setTextField(AppDelegate.app().IP)
         pvView.popupDelegete = self
         pvView.parentVC = self
@@ -172,6 +171,7 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
     //MARK: --personalMessageEditDelegete
     func textfieldMessageID(idunique: String!) {
         AppDelegate.app().IP = idunique
+        AppDelegate.app().ipUrl = "http://\(idunique)/"
     }
 
     override func didReceiveMemoryWarning() {

@@ -12,28 +12,32 @@ class SubPicTableViewController: UITableViewController {
     
     var subURL:String = ""
     var tableArray:NSMutableArray = []
+    let kMutableCell = "mutableCell"
+    let kSingleCell = "singleCell"
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.registerNib(UINib(nibName: "MutableTableViewCell", bundle: nil), forCellReuseIdentifier: kMutableCell)
+        self.tableView.registerNib(UINib(nibName: "SingleTableViewCell", bundle: nil), forCellReuseIdentifier: kSingleCell)
+        //self.tableView.registerClass(MutableTableViewCell.self, forCellReuseIdentifier: kMutableCell)
         self.reload()
-//        var picItem:PicJsonItemInfo = PicJsonItemInfo(tbName: "", json: JSON.nullJSON)
-//        var ar:NSMutableArray = []
-//        ar.addObject(picItem)
     }
     
     func reload(){
         NetworkRequest.AlamofireGetJSON(self.subURL, closure: {
             (data) in
-            println(data)
             let js:JSON = JSON(data)
             if js.type == .Array {
-                for dic in js {
-                    for (key,value) in dic {
+                for var i:Int = 0; i < js.count ; i++ {
+                    let element = js[i]
+                    for (key,value) in element {
                         let item:PicJsonItemInfo = PicJsonItemInfo(tbName: key as String, json: value)
-                        
+                        self.tableArray.addObject(item)
                     }
                 }
             }
+            self.tableView.reloadData()
+            println(self.tableArray.count)
         })
     }
 
@@ -47,26 +51,45 @@ class SubPicTableViewController: UITableViewController {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
-        return 0
+        return self.tableArray.count
     }
     
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 60
+    }
     
-
-    /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
+        if self.tableArray[indexPath.row].isKindOfClass(PicJsonItemInfo) {
+            let item:PicJsonItemInfo = self.tableArray[indexPath.row] as! PicJsonItemInfo
+            if item.multipage == "0" {
+                var cell:SingleTableViewCell = tableView.dequeueReusableCellWithIdentifier(kSingleCell, forIndexPath: indexPath) as! SingleTableViewCell
+                cell.titleLabel?.text = item.pic_explain
+                var url = ""
+                if item.imageurl.count == 1 {
+                    url = "\(AppDelegate.app().ipUrl)" + (item.imageurl.firstObject as! String)
+                }
+                cell.imageV?.setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: "history"))
+                cell.subTextLabel?.text = "2015/07/27"
+                return cell
+            }else if item.multipage == "1" {
+                var cell:MutableTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMutableCell, forIndexPath: indexPath) as! MutableTableViewCell
+                cell.titleLabel.text = item.pic_explain
+                var url = ""
+                if item.imageurl.count == 1 {
+                    url = "\(AppDelegate.app().ipUrl)" + (item.imageurl.firstObject as! String)
+                }
+                cell.imageV.setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: "history"))
+                cell.subTextLabel.text = "2015/05/27"
+                return cell
+            }
+        }
 
-        // Configure the cell...
-
-        return cell
+        return UITableViewCell()
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.

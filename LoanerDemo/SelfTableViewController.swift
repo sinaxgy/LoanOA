@@ -35,6 +35,7 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
     func textfieldMessageID(idunique: String!) {
         //let IP = "http://\(idunique)/"
         AppDelegate.app().IP = idunique
+        AppDelegate.app().ipUrl = "http://\(idunique)/"
         let id = AppDelegate.app().getuser_idFromPlist()
         KeyChain.updateIPItem(id, IP: idunique)
         let ip = KeyChain.getIPItem(id)

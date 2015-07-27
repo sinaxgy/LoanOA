@@ -41,11 +41,9 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
                 alert.show()
             }
             if data != nil {
-                //println(data)
                 let typejs = JSON(data!)
                 if typejs.type == .Dictionary {
                     self.typeDic = typejs.object as! NSDictionary
-                    //println(self.typeDic)
                     if self.typeDic.count < 2 {
                         let alert:UIAlertView = UIAlertView(title: "错误", message: "获取业务类型失败,无返回类型有误", delegate: nil, cancelButtonTitle: "确定")
                         alert.show()
@@ -56,7 +54,6 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
                     for key in keys {
                         typeArray.addObject(self.typeDic.objectForKey(key)!)
                     }
-                    //println(typeArray)
                     if (self.typeMenu != nil) {
                         self.typeMenu.dismissMenuPopover()
                     }
@@ -107,8 +104,9 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     
     func reload(sender:AnyObject) {
         if self.request == nil {
-            let ip = "http://\(AppDelegate.app().IP)/"
-            self.request = Alamofire.request(.GET, ip + config + readHisURL + "\(AppDelegate.app().getuser_idFromPlist())")
+            let asa:String = AppDelegate.app().getuser_idFromPlist() as String
+            let ip = "http://\(AppDelegate.app().IP)/" + config + readHisURL + "\(asa)"
+            self.request = Alamofire.request(.GET, ip)
         }
         if (self.refreshControl!.refreshing) {
             self.refreshControl?.attributedTitle = NSAttributedString(string: "加载中...")

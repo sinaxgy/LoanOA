@@ -61,6 +61,10 @@
 		C5D9CC761B661E0900F603F0 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9CC701B661E0900F603F0 /* UIImageView+AFNetworking.m */; };
 		C5D9CC781B661FEC00F603F0 /* SubPicTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D9CC771B661FEC00F603F0 /* SubPicTableViewController.swift */; };
 		C5DBEC201B664F8E003F5749 /* PicJsonItemInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBEC1F1B664F8E003F5749 /* PicJsonItemInfo.swift */; };
+		C5DBEC271B665EE1003F5749 /* MutableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBEC251B665EE1003F5749 /* MutableTableViewCell.swift */; };
+		C5DBEC281B665EE1003F5749 /* MutableTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DBEC261B665EE1003F5749 /* MutableTableViewCell.xib */; };
+		C5DBEC2B1B666676003F5749 /* SingleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBEC291B666676003F5749 /* SingleTableViewCell.swift */; };
+		C5DBEC2C1B666676003F5749 /* SingleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DBEC2A1B666676003F5749 /* SingleTableViewCell.xib */; };
 		C5DC25841B4EBFA800BF188A /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DC25831B4EBFA800BF188A /* TabBarViewController.swift */; };
 		C5E2422E1B4A7586006CD3D2 /* CircleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E2422C1B4A7586006CD3D2 /* CircleViewController.swift */; };
 		C5E2422F1B4A7586006CD3D2 /* CircleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5E2422D1B4A7586006CD3D2 /* CircleViewController.xib */; };
@@ -198,6 +202,10 @@
 		C5D9CC701B661E0900F603F0 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		C5D9CC771B661FEC00F603F0 /* SubPicTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SubPicTableViewController.swift; path = Classes/SubPicTableViewController.swift; sourceTree = "<group>"; };
 		C5DBEC1F1B664F8E003F5749 /* PicJsonItemInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PicJsonItemInfo.swift; path = Classes/PicJsonItemInfo.swift; sourceTree = "<group>"; };
+		C5DBEC251B665EE1003F5749 /* MutableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MutableTableViewCell.swift; path = Classes/Cell/MutableTableViewCell.swift; sourceTree = "<group>"; };
+		C5DBEC261B665EE1003F5749 /* MutableTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MutableTableViewCell.xib; path = Classes/Cell/MutableTableViewCell.xib; sourceTree = "<group>"; };
+		C5DBEC291B666676003F5749 /* SingleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SingleTableViewCell.swift; path = Classes/SingleTableViewCell.swift; sourceTree = "<group>"; };
+		C5DBEC2A1B666676003F5749 /* SingleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SingleTableViewCell.xib; path = Classes/SingleTableViewCell.xib; sourceTree = "<group>"; };
 		C5DC25831B4EBFA800BF188A /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabBarViewController.swift; path = Classes/TabBarViewController.swift; sourceTree = "<group>"; };
 		C5E2422C1B4A7586006CD3D2 /* CircleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CircleViewController.swift; path = Classes/CircleViewController.swift; sourceTree = "<group>"; };
 		C5E2422D1B4A7586006CD3D2 /* CircleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CircleViewController.xib; path = Classes/CircleViewController.xib; sourceTree = "<group>"; };
@@ -362,7 +370,7 @@
 				C503A9881B4B6C6E0081200D /* VC */,
 				C503A98B1B4B6CAD0081200D /* Model */,
 				C5D7B9AC1B39556600823343 /* OCFile */,
-				C5D7B9B61B3A772D00823343 /* tableViewCell */,
+				C5D7B9B61B3A772D00823343 /* Cell */,
 				C58681F61B43C48C0021FEA9 /* Resources */,
 				C5D7B9761B390C2F00823343 /* SwiftJSON */,
 				C5D7B9101B3909BE00823343 /* Supporting Files */,
@@ -424,15 +432,19 @@
 			name = OCFile;
 			sourceTree = "<group>";
 		};
-		C5D7B9B61B3A772D00823343 /* tableViewCell */ = {
+		C5D7B9B61B3A772D00823343 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
 				C5D7B9B71B3A77E900823343 /* BaseTableViewCell.swift */,
 				C5D7B9B91B3A7BD700823343 /* DetailTableViewCell.swift */,
+				C5DBEC291B666676003F5749 /* SingleTableViewCell.swift */,
+				C5DBEC2A1B666676003F5749 /* SingleTableViewCell.xib */,
+				C5DBEC251B665EE1003F5749 /* MutableTableViewCell.swift */,
+				C5DBEC261B665EE1003F5749 /* MutableTableViewCell.xib */,
 				C58A00E71B589B7200C90FE6 /* ParticularsTableViewCell.swift */,
 				C58A00E81B589B7200C90FE6 /* ParticularsTableViewCell.xib */,
 			);
-			name = tableViewCell;
+			name = Cell;
 			sourceTree = "<group>";
 		};
 		C5D9CC631B661DF400F603F0 /* AFNetworking */ = {
@@ -582,6 +594,7 @@
 				C503A99B1B4B72C90081200D /* Icon.png in Resources */,
 				C5F218EA1B4AA8350072D445 /* Menu_PopOver_BG.png in Resources */,
 				C503A9951B4B72C90081200D /* Icon-60@2x.png in Resources */,
+				C5DBEC281B665EE1003F5749 /* MutableTableViewCell.xib in Resources */,
 				C5F218EB1B4AA8350072D445 /* Menu_PopOver_BG@2x.png in Resources */,
 				C503A9971B4B72C90081200D /* Icon-72.png in Resources */,
 				C503A9A21B4B75F30081200D /* Icon-40@3x.png in Resources */,
@@ -590,6 +603,7 @@
 				C5F218E91B4AA8350072D445 /* DefaultLine.png in Resources */,
 				C503A9A01B4B75D90081200D /* Icon-40@2x.png in Resources */,
 				C503A99A1B4B72C90081200D /* Icon-76@2x.png in Resources */,
+				C5DBEC2C1B666676003F5749 /* SingleTableViewCell.xib in Resources */,
 				C5F218F31B4AC97A0072D445 /* person@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -610,7 +624,9 @@
 			files = (
 				C5D9CC741B661E0900F603F0 /* AFURLRequestSerialization.m in Sources */,
 				C5D9CC731B661E0900F603F0 /* AFURLConnectionOperation.m in Sources */,
+				C5DBEC271B665EE1003F5749 /* MutableTableViewCell.swift in Sources */,
 				C5E2422E1B4A7586006CD3D2 /* CircleViewController.swift in Sources */,
+				C5DBEC2B1B666676003F5749 /* SingleTableViewCell.swift in Sources */,
 				C5D7B97D1B390C4800823343 /* SwiftyJSON.swift in Sources */,
 				C5A2EF981B65025E00361B08 /* MasterImageTableViewController.swift in Sources */,
 				C5D7B9B31B3A4DDF00823343 /* tableItemInfo.swift in Sources */,
