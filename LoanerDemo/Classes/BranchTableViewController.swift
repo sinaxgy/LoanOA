@@ -66,6 +66,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
                 alert.show()
                 return
             }
+            self.request = nil
             if json == nil {
                 self.navigationItem.titleView = nil
                 self.navigationItem.prompt = nil

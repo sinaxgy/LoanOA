@@ -228,6 +228,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        println(indexPath.row)
         var browseView:BranchTableViewController = BranchTableViewController()
         if self.json.type == .Dictionary {
             let key: AnyObject = self.sortJsonArray[indexPath.row]

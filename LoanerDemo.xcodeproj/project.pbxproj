@@ -53,6 +53,13 @@
 		C5D7B9B81B3A77EA00823343 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D7B9B71B3A77E900823343 /* BaseTableViewCell.swift */; };
 		C5D7B9BA1B3A7BD700823343 /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D7B9B91B3A7BD700823343 /* DetailTableViewCell.swift */; };
 		C5D7B9BC1B3A7E0F00823343 /* BranchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D7B9BB1B3A7E0F00823343 /* BranchTableViewController.swift */; };
+		C5D9CC711B661E0900F603F0 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9CC661B661E0900F603F0 /* AFHTTPRequestOperation.m */; };
+		C5D9CC721B661E0900F603F0 /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9CC681B661E0900F603F0 /* AFSecurityPolicy.m */; };
+		C5D9CC731B661E0900F603F0 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9CC6A1B661E0900F603F0 /* AFURLConnectionOperation.m */; };
+		C5D9CC741B661E0900F603F0 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9CC6C1B661E0900F603F0 /* AFURLRequestSerialization.m */; };
+		C5D9CC751B661E0900F603F0 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9CC6E1B661E0900F603F0 /* AFURLResponseSerialization.m */; };
+		C5D9CC761B661E0900F603F0 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9CC701B661E0900F603F0 /* UIImageView+AFNetworking.m */; };
+		C5D9CC781B661FEC00F603F0 /* SubPicTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D9CC771B661FEC00F603F0 /* SubPicTableViewController.swift */; };
 		C5DC25841B4EBFA800BF188A /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DC25831B4EBFA800BF188A /* TabBarViewController.swift */; };
 		C5E2422E1B4A7586006CD3D2 /* CircleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E2422C1B4A7586006CD3D2 /* CircleViewController.swift */; };
 		C5E2422F1B4A7586006CD3D2 /* CircleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5E2422D1B4A7586006CD3D2 /* CircleViewController.xib */; };
@@ -176,6 +183,19 @@
 		C5D7B9B71B3A77E900823343 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseTableViewCell.swift; path = Classes/BaseTableViewCell.swift; sourceTree = "<group>"; };
 		C5D7B9B91B3A7BD700823343 /* DetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DetailTableViewCell.swift; path = Classes/DetailTableViewCell.swift; sourceTree = "<group>"; };
 		C5D7B9BB1B3A7E0F00823343 /* BranchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BranchTableViewController.swift; path = Classes/BranchTableViewController.swift; sourceTree = "<group>"; };
+		C5D9CC651B661E0900F603F0 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		C5D9CC661B661E0900F603F0 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		C5D9CC671B661E0900F603F0 /* AFSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFSecurityPolicy.h; sourceTree = "<group>"; };
+		C5D9CC681B661E0900F603F0 /* AFSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFSecurityPolicy.m; sourceTree = "<group>"; };
+		C5D9CC691B661E0900F603F0 /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLConnectionOperation.h; sourceTree = "<group>"; };
+		C5D9CC6A1B661E0900F603F0 /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLConnectionOperation.m; sourceTree = "<group>"; };
+		C5D9CC6B1B661E0900F603F0 /* AFURLRequestSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLRequestSerialization.h; sourceTree = "<group>"; };
+		C5D9CC6C1B661E0900F603F0 /* AFURLRequestSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLRequestSerialization.m; sourceTree = "<group>"; };
+		C5D9CC6D1B661E0900F603F0 /* AFURLResponseSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLResponseSerialization.h; sourceTree = "<group>"; };
+		C5D9CC6E1B661E0900F603F0 /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
+		C5D9CC6F1B661E0900F603F0 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
+		C5D9CC701B661E0900F603F0 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
+		C5D9CC771B661FEC00F603F0 /* SubPicTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SubPicTableViewController.swift; path = Classes/SubPicTableViewController.swift; sourceTree = "<group>"; };
 		C5DC25831B4EBFA800BF188A /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabBarViewController.swift; path = Classes/TabBarViewController.swift; sourceTree = "<group>"; };
 		C5E2422C1B4A7586006CD3D2 /* CircleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CircleViewController.swift; path = Classes/CircleViewController.swift; sourceTree = "<group>"; };
 		C5E2422D1B4A7586006CD3D2 /* CircleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CircleViewController.xib; path = Classes/CircleViewController.xib; sourceTree = "<group>"; };
@@ -219,6 +239,7 @@
 				C5D7B9B41B3A5AA000823343 /* DetailTableViewController.swift */,
 				C58A00E41B58961200C90FE6 /* RequestTableViewController.swift */,
 				C5A2EF971B65025E00361B08 /* MasterImageTableViewController.swift */,
+				C5D9CC771B661FEC00F603F0 /* SubPicTableViewController.swift */,
 				C5E2422C1B4A7586006CD3D2 /* CircleViewController.swift */,
 				C5E2422D1B4A7586006CD3D2 /* CircleViewController.xib */,
 				C51346DD1B54F59B00316894 /* MainFile */,
@@ -385,6 +406,7 @@
 		C5D7B9AC1B39556600823343 /* OCFile */ = {
 			isa = PBXGroup;
 			children = (
+				C5D9CC631B661DF400F603F0 /* AFNetworking */,
 				C5B9DA111B50C66600468BFE /* UIViewController+DropViewController.h */,
 				C5B9DA121B50C66600468BFE /* UIViewController+DropViewController.m */,
 				C5B9DA091B50C64300468BFE /* LewPopupViewAnimationDrop.h */,
@@ -408,6 +430,25 @@
 				C58A00E81B589B7200C90FE6 /* ParticularsTableViewCell.xib */,
 			);
 			name = tableViewCell;
+			sourceTree = "<group>";
+		};
+		C5D9CC631B661DF400F603F0 /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				C5D9CC651B661E0900F603F0 /* AFHTTPRequestOperation.h */,
+				C5D9CC661B661E0900F603F0 /* AFHTTPRequestOperation.m */,
+				C5D9CC671B661E0900F603F0 /* AFSecurityPolicy.h */,
+				C5D9CC681B661E0900F603F0 /* AFSecurityPolicy.m */,
+				C5D9CC691B661E0900F603F0 /* AFURLConnectionOperation.h */,
+				C5D9CC6A1B661E0900F603F0 /* AFURLConnectionOperation.m */,
+				C5D9CC6B1B661E0900F603F0 /* AFURLRequestSerialization.h */,
+				C5D9CC6C1B661E0900F603F0 /* AFURLRequestSerialization.m */,
+				C5D9CC6D1B661E0900F603F0 /* AFURLResponseSerialization.h */,
+				C5D9CC6E1B661E0900F603F0 /* AFURLResponseSerialization.m */,
+				C5D9CC6F1B661E0900F603F0 /* UIImageView+AFNetworking.h */,
+				C5D9CC701B661E0900F603F0 /* UIImageView+AFNetworking.m */,
+			);
+			name = AFNetworking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -564,18 +605,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5D9CC741B661E0900F603F0 /* AFURLRequestSerialization.m in Sources */,
+				C5D9CC731B661E0900F603F0 /* AFURLConnectionOperation.m in Sources */,
 				C5E2422E1B4A7586006CD3D2 /* CircleViewController.swift in Sources */,
 				C5D7B97D1B390C4800823343 /* SwiftyJSON.swift in Sources */,
 				C5A2EF981B65025E00361B08 /* MasterImageTableViewController.swift in Sources */,
 				C5D7B9B31B3A4DDF00823343 /* tableItemInfo.swift in Sources */,
+				C5D9CC761B661E0900F603F0 /* UIImageView+AFNetworking.m in Sources */,
 				C592A98B1B53BB090038F2A4 /* KeyChain.swift in Sources */,
 				C5D7B9B51B3A5AA100823343 /* DetailTableViewController.swift in Sources */,
+				C5D9CC721B661E0900F603F0 /* AFSecurityPolicy.m in Sources */,
 				C5F218EF1B4AA9250072D445 /* NetworkRequest.swift in Sources */,
 				C5B9DA0E1B50C64300468BFE /* PopupAnimationView.m in Sources */,
 				C58A00E51B58961200C90FE6 /* RequestTableViewController.swift in Sources */,
+				C5D9CC781B661FEC00F603F0 /* SubPicTableViewController.swift in Sources */,
 				C5D7B97F1B390D5E00823343 /* SelfTableViewController.swift in Sources */,
 				C5D7B9751B390AC800823343 /* HistoryTableViewController.swift in Sources */,
 				C5DC25841B4EBFA800BF188A /* TabBarViewController.swift in Sources */,
+				C5D9CC711B661E0900F603F0 /* AFHTTPRequestOperation.m in Sources */,
 				C5B9DA131B50C66600468BFE /* UIViewController+DropViewController.m in Sources */,
 				C526CD3A1B3BF6CD00A695BE /* DatepickerView.swift in Sources */,
 				C5A0B2021B5A81F4000C00AD /* LoginsViewController.swift in Sources */,
@@ -586,6 +633,7 @@
 				C58A00E91B589B7200C90FE6 /* ParticularsTableViewCell.swift in Sources */,
 				C5B9DA0D1B50C64300468BFE /* LewPopupViewAnimationDrop.m in Sources */,
 				C5D7B9BC1B3A7E0F00823343 /* BranchTableViewController.swift in Sources */,
+				C5D9CC751B661E0900F603F0 /* AFURLResponseSerialization.m in Sources */,
 				C52BD9D51B4CC54F000316A8 /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

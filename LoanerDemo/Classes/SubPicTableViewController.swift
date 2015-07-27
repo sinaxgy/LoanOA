@@ -1,43 +1,29 @@
 //
-//  MasterImageTableViewController.swift
+//  SubPicTableViewController.swift
 //  LoanerDemo
 //
-//  Created by 徐成 on 15/7/26.
+//  Created by 徐成 on 15/7/27.
 //  Copyright (c) 2015年 徐成. All rights reserved.
 //
 
 import UIKit
 
-struct requestURL {
-    var footer:String {
-        didSet{
-            self.URL = ipurl + config + self.footer
-            println(self.URL)
-        }
-    }
-    var URL:String
-    var pro_id:String
-}
-
-let ipurl = "http://\(AppDelegate.app().IP)/"
-
-class MasterImageTableViewController: UITableViewController {
-
-    var picURL:requestURL = requestURL(footer: "", URL: "", pro_id: "");
-    var masterJson:JSON = JSON.nullJSON
-    var masterSubURL:NSMutableArray = []
+class SubPicTableViewController: UITableViewController {
     
+    var subURL:String = ""
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        let asa = "http://10.104.4.177/web/index.php/app/picture?pro_id=31&tag=证件照片"
-        NetworkRequest.AlamofireGetJSON(self.picURL.URL, closure: {
+        self.reload()
+    }
+    
+    func reload(){
+        NetworkRequest.AlamofireGetJSON(self.subURL, closure: {
             (data) in
-            println(">>>>>>>>>>>>>")
             println(data)
-            self.masterJson = JSON(data)
-            self.tableView.reloadData()
         })
     }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -48,50 +34,26 @@ class MasterImageTableViewController: UITableViewController {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 1
+        return 0
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return self.masterJson.count
+        return 0
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 55
-    }
+    
 
+    /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "masterCell")
-        let js = self.masterJson[indexPath.row];
-        if js.type == .Dictionary {
-            let dic:NSDictionary = js.object as! NSDictionary
-            for (key,value) in dic {
-                cell.textLabel?.text = key.description
-                for (k,v) in value as! NSDictionary {
-                    if k.description == "image" {
-                        var imgU:requestURL = requestURL(footer: "", URL: "", pro_id: "")
-                        imgU.footer = v as! String
-                        cell.imageView?.setImageWithURL(NSURL(string: imgU.URL), placeholderImage: UIImage(named: "history"))
-                    }else if k.description == "url" {
-                        var imgU:requestURL = requestURL(footer: "", URL: "", pro_id: "")
-                        imgU.footer = v as! String
-                        self.masterSubURL.addObject(imgU.URL)
-                    }
-                }
-            }
-        }
-        
+        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
+
+        // Configure the cell...
+
         return cell
     }
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var subPicVC:SubPicTableViewController = SubPicTableViewController()
-        let cell = self.tableView.cellForRowAtIndexPath(indexPath)
-        subPicVC.title = cell?.textLabel?.text
-        subPicVC.subURL = self.masterSubURL[indexPath.row] as! String
-        self.navigationController?.pushViewController(subPicVC, animated: true)
-    }
+    */
 
     /*
     // Override to support conditional editing of the table view.

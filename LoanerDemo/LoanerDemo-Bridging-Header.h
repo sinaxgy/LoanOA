@@ -7,3 +7,4 @@
 #import "MBProgressHUD.h"
 #import "LewPopupViewAnimationDrop.h"
 #import "PopupAnimationView.h"
+#import "UIImageView+AFNetworking.h"

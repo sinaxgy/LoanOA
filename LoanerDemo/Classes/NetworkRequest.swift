@@ -17,12 +17,9 @@ class NetworkRequest: NSObject {
         }
     }
     
-    static func defaultRequest() {
-    
-    }
-    
     static func AlamofireGetJSON(url:String,closure:(AnyObject)->Void) {
         var request: Alamofire.Request!
+        println(url)
         request = Alamofire.request(.GET, url)
         request.responseJSON() {
             (_,_,data,error) in
@@ -43,13 +40,4 @@ class NetworkRequest: NSObject {
             }
         })
     }
-    
-//    static func POSTResponseString(URLString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> (NSURLRequest, NSHTTPURLResponse?, String?, NSError?) -> Void {
-//        var request: Alamofire.Request?
-//        request = Alamofire.request(.POST, URLString, parameters: parameters)
-//        
-//        request?.responseString(){ (_, _, data, error) in
-//            return data
-//        }
-//    }
 }
