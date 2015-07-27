@@ -21,11 +21,14 @@ class NetworkRequest: NSObject {
     
     }
     
-    static func AlamofireGetJSON(url:String,closure:(JSON,NSError)) {
+    static func AlamofireGetJSON(url:String,closure:(AnyObject)->Void) {
         let request = Alamofire.request(.GET, url)
         request.responseJSON() {
-            (_,_,json,data) in
-            return closure
+            (_,_,data,error) in
+            if error != nil {
+                
+            }
+             closure(data!)
         }
     }
     

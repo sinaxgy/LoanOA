@@ -20,7 +20,10 @@ class MasterImageTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        NetworkRequest.AlamofireGetJSON("", closure: {
+            (data) in
+            println(data)
+        })
     }
     
     
@@ -28,9 +31,6 @@ class MasterImageTableViewController: UITableViewController {
         if self.request == nil {
             let ip = "http://\(AppDelegate.app().IP)/"
             self.request = Alamofire.request(.GET, ip + config + readHisURL + "\(AppDelegate.app().getuser_idFromPlist())")
-        }
-        if (self.refreshControl!.refreshing) {
-            self.refreshControl?.attributedTitle = NSAttributedString(string: "加载中...")
         }
         
         self.request?.responseJSON(){ (_, _, json, error) in
@@ -48,13 +48,10 @@ class MasterImageTableViewController: UITableViewController {
                     let alert:UIAlertView = UIAlertView(title: "错误", message: "加载数据失败", delegate: nil, cancelButtonTitle: "确定")
                     alert.show()
                 }
-                self.navigationItem.titleView = nil
-                self.navigationItem.prompt = nil
-                self.refreshControl?.endRefreshing()
                 self.request = nil
                 return
             }
-            //println(json)
+            println(json)
             self.tableView.reloadData()
             self.request = nil
         }
