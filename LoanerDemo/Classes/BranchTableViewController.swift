@@ -173,6 +173,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
                 var imageVC:MasterImageTableViewController = MasterImageTableViewController()
                 imageVC.picURL.footer = self.proMessage.subjson[indexPath.row].description
                 imageVC.title = "图片上传"
+                imageVC.pro_id = self.pro_id
                 self.navigationController?.pushViewController(imageVC, animated: true)
                 return
             }

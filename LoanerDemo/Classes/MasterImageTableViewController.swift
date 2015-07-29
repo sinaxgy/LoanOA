@@ -25,17 +25,34 @@ class MasterImageTableViewController: UITableViewController {
     var picURL:requestURL = requestURL(footer: "", URL: "", pro_id: "");
     var masterJson:JSON = JSON.nullJSON
     var masterSubURL:NSMutableArray = []
+    var titleArray:NSMutableArray = []
     let kSingleCell = "singleCell"
+    var pro_id = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.showActivityIndicatorViewInNavigationItem()
         self.tableView.registerNib(UINib(nibName: "SingleTableViewCell", bundle: nil), forCellReuseIdentifier: kSingleCell)
         NetworkRequest.AlamofireGetJSON(self.picURL.URL, closure: {
             (data) in
             self.masterJson = JSON(data)
             self.tableView.reloadData()
+            self.hiddenActivityIndicatorViewInNavigationItem()
         })
     }
+    
+    func showActivityIndicatorViewInNavigationItem() {
+        var actView:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        self.navigationItem.titleView = actView
+        actView.startAnimating()
+        self.navigationItem.prompt = "数据加载中..."
+    }
+    
+    func hiddenActivityIndicatorViewInNavigationItem() {
+        self.navigationItem.titleView = nil
+        self.navigationItem.prompt = nil
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -66,9 +83,11 @@ class MasterImageTableViewController: UITableViewController {
             let dic:NSDictionary = js.object as! NSDictionary
             for (key,value) in dic {
                 cell.titleLabel?.text = key.description
+                self.titleArray.addObject(key.description)
                 for (k,v) in value as! NSDictionary {
                     if k.description == "image" {
                         let url = AppDelegate.app().ipUrl + (v as! String)
+                        println(url)
                         cell.imageV?.setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: "history"))
                     }else if k.description == "url" {
                         var imgU:requestURL = requestURL(footer: "", URL: "", pro_id: "")
@@ -85,9 +104,9 @@ class MasterImageTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var subPicVC:SubPicTableViewController = SubPicTableViewController()
-        let cell = self.tableView.cellForRowAtIndexPath(indexPath)
-        subPicVC.title = cell?.textLabel?.text
+        subPicVC.title = self.titleArray[indexPath.row] as? String
         subPicVC.subURL = self.masterSubURL[indexPath.row] as! String
+        subPicVC.pro_id = self.pro_id
         self.navigationController?.pushViewController(subPicVC, animated: true)
     }
 }

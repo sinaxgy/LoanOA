@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return true
         }
         self.IP = KeyChain.getIPItem(self.getuser_idFromPlist()) as String
+        self.ipUrl = "http://\(self.IP)/"
         return true
     }
     
