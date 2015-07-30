@@ -17,7 +17,7 @@ extension NSMutableData {
     }
 }
 
-class SubPicTableViewController: UITableViewController ,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate{
+class SubPicTableViewController: UITableViewController ,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,QBImagePickerControllerDelegate{
     
     var subURL:String = ""
     var tableArray:NSMutableArray = []
@@ -109,7 +109,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 var cell:MutableTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMutableCell, forIndexPath: indexPath) as! MutableTableViewCell
                 cell.titleLabel.text = item.pic_explain
                 var url = ""
-                if item.imageurl.count == 1 {
+                if item.imageurl.count > 0 {
                     url = "\(AppDelegate.app().ipUrl)" + (item.imageurl.firstObject as! String)
                 }
                 cell.imageV.setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: "history"))
@@ -130,8 +130,9 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             let loginStory:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let browseVC:BrowseViewController = BrowseViewController()
             browseVC.imageArray = item.imageurl
-            let cell = self.tableView.cellForRowAtIndexPath(indexPath) as! SingleTableViewCell
-            browseVC.image = cell.imageV.image!
+            if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? SingleTableViewCell {
+                browseVC.image = cell.imageV.image!
+            }
             self.navigationController?.presentViewController(browseVC, animated: true, completion: nil)
         }
         if item.imageurl.count == 0{
@@ -219,12 +220,12 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                         hud.mode = MBProgressHUDMode.CustomView
                         hud.hide(true, afterDelay: 1)
                         println(data)
-                        if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
+                        if let cell1 = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
                             let url = AppDelegate.app().ipUrl + (data as! String) as String + "?\(arc4random() % 10)"
                             //上传成功，更改显示UI及data source
-                            cell.imageV.setImageWithURL(NSURL(string: url), placeholderImage: nil)
+                            cell1.imageV.setImageWithURL(NSURL(string: url), placeholderImage: nil)
                             if item.imageurl.count == 0 {
-                                item.imageurl = NSArray(object: data as! String)
+                                item.imageurl = NSMutableArray(object: data as! String)
                             }
                         }
                     },failed:{
@@ -267,7 +268,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                             if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
                                 cell.imageV.image = UIImage(named: "history")
                                 println(item.imageurl.count)
-                                item.imageurl = NSArray()
+                                item.imageurl = NSMutableArray()
                                 let ite = self.tableArray[self.selectedIndexPath.row] as! PicJsonItemInfo
                                 println(ite.imageurl.count)
                             }
@@ -289,7 +290,12 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             switch buttonIndex {
             case 1:             //从相册中选取
                 println("1")
-                self.openPictureLibrary()
+                if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
+                    self.openPictureLibrary()
+                }else {
+                    self.openQBImagePicker()
+                }
+                
             case 2:             //打开照相机
                 println("2")
                 self.takePhoto()
@@ -297,5 +303,73 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 break
             }
         }
+    }
+    
+    //MARK:-----QBImagePickerControllerDelegate
+    func openQBImagePicker() {
+        var qbPicker = QBImagePickerController()
+        qbPicker.delegate = self
+        qbPicker.mediaType = QBImagePickerMediaType.Image
+        qbPicker.allowsMultipleSelection = true
+        qbPicker.showsNumberOfSelectedAssets = true
+        qbPicker.minimumNumberOfSelection = 1
+        qbPicker.maximumNumberOfSelection = 10
+        self.presentViewController(qbPicker, animated: true, completion: nil)
+    }
+    
+    func qb_imagePickerController(imagePickerController: QBImagePickerController!, didFinishPickingAssets assets: [AnyObject]!) {
+        println(assets.count)
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        var currentIndex = 0
+        for asset in assets {
+            let manager = PHImageManager.defaultManager()
+            var imageUrlArray:NSMutableArray = []
+            manager.requestImageDataForAsset(asset as! PHAsset, options: nil, resultHandler: {
+                (data,string,imageOrientation,ip) in
+            })
+            manager.requestImageForAsset(asset as! PHAsset, targetSize: PHImageManagerMaximumSize, contentMode: .AspectFit, options: nil, resultHandler: {
+                (image,info) in
+                currentIndex++
+                let imageData:NSData = UIImagePNGRepresentation(image)
+                println(imageData.length)
+                if var item:PicJsonItemInfo = self.tableArray[self.selectedIndexPath.row] as? PicJsonItemInfo {
+                    let str = "pro_id=\(self.pro_id)&filename=\(item.tbName)&page=\(currentIndex)&nsdata="
+                    println(str)
+                    var uploadData:NSMutableData = NSMutableData()
+                    uploadData.appendString(str)
+                    uploadData.appendData(imageData)
+                    NetworkRequest.AlamofireUploadImage("\(AppDelegate.app().ipUrl)web/index.php/app/upload", data: uploadData, progress: {
+                        (totalBytesWritten,totalBytesExpectedToWrite) in
+                        let sub:Float = Float(totalBytesWritten) * 0.000977
+                        let sup:Float = Float(totalBytesExpectedToWrite) * 0.000977
+                        println("totalBytesWritten:\(totalBytesWritten/1024)")
+                        println("totalBytesExpectedToWrite:\(totalBytesExpectedToWrite/1024)")
+                        }, closure: {
+                            data in
+                            println(data)
+                            println(currentIndex)
+                            imageUrlArray.addObject(data as! String)
+                            if currentIndex == 0 {
+                                if let cell1 = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? MutableTableViewCell {
+                                    let url = AppDelegate.app().ipUrl + (data as! String) as String + "?\(arc4random() % 10)"
+                                    //上传成功，更改显示UI及data source
+                                    cell1.imageV.setImageWithURL(NSURL(string: url), placeholderImage: nil)
+                                }
+                            }
+                            
+                            if currentIndex == assets.count {
+                                item.imageurl = NSMutableArray(array: imageUrlArray)
+                            }
+                        },failed:{
+                    })
+                }
+            })
+        }
+    }
+    
+    func qb_imagePickerControllerDidCancel(imagePickerController: QBImagePickerController!) {
+        self.dismissViewControllerAnimated(true, completion: {
+            println("dismissViewControllerAnimated!!!")
+        })
     }
 }

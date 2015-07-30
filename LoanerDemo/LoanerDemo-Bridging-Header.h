@@ -8,3 +8,4 @@
 #import "LewPopupViewAnimationDrop.h"
 #import "PopupAnimationView.h"
 #import "UIImageView+AFNetworking.h"
+#import "QBImagePickerController.h"

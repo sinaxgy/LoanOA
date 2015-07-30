@@ -13,7 +13,7 @@ class PicJsonItemInfo: NSObject {
     var tbName:String = ""
     var pic_explain:String = ""
     var multipage:String = ""
-    var imageurl:NSArray = []
+    var imageurl:NSMutableArray = []
     
     init(tbName:String , json:JSON) {
         self.tbName = tbName
@@ -26,7 +26,8 @@ class PicJsonItemInfo: NSObject {
                 self.multipage = json.dictionary![key as! String]!.description
             case "imageurl":
                 if let value = json.dictionary?["imageurl"]! {
-                    self.imageurl = value.object as! NSArray
+                    let array = value.object as! NSArray
+                    self.imageurl.addObjectsFromArray(array as [AnyObject])
                 }
             default:
                 break
