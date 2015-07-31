@@ -19,6 +19,7 @@ struct requestURL {
 }
 
 let ipurl = "http://\(AppDelegate.app().IP)/"
+let placeholderImageName = "history"
 
 class MasterImageTableViewController: UITableViewController {
 
@@ -88,7 +89,7 @@ class MasterImageTableViewController: UITableViewController {
                     if k.description == "image" {
                         let url = AppDelegate.app().ipUrl + (v as! String)
                         println(url)
-                        cell.imageV?.setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: "history"))
+                        cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                     }else if k.description == "url" {
                         var imgU:requestURL = requestURL(footer: "", URL: "", pro_id: "")
                         imgU.footer = v as! String

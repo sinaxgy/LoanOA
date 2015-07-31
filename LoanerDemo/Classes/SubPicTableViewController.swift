@@ -17,19 +17,22 @@ extension NSMutableData {
     }
 }
 
-class SubPicTableViewController: UITableViewController ,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,QBImagePickerControllerDelegate{
+class SubPicTableViewController: UITableViewController ,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,QBImagePickerControllerDelegate,ZLPhotoPickerBrowserViewControllerDelegate,ZLPhotoPickerBrowserViewControllerDataSource,MutableTableViewDelegate{
     
     var subURL:String = ""
     var tableArray:NSMutableArray = []
     let kMutableCell = "mutableCell"
     let kSingleCell = "singleCell"
+    let kMutablePhotoesCell = "mutablePhotoesCell"
     var pro_id = ""
     var selectedIndexPath:NSIndexPath = NSIndexPath()
+    var hudProgress:MBProgressHUD!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.registerNib(UINib(nibName: "MutableTableViewCell", bundle: nil), forCellReuseIdentifier: kMutableCell)
         self.tableView.registerNib(UINib(nibName: "SingleTableViewCell", bundle: nil), forCellReuseIdentifier: kSingleCell)
+        self.tableView.registerNib(UINib(nibName: "PopMutableTableViewCell", bundle: nil), forCellReuseIdentifier: kMutablePhotoesCell)
         self.reload()
     }
     
@@ -83,6 +86,9 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if let item = self.tableArray[indexPath.row] as? NSArray {
+            return 130
+        }
         return 60
     }
     
@@ -96,7 +102,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                     if item.imageurl.count == 1 {
                         url = "\(AppDelegate.app().ipUrl)" + (item.imageurl.firstObject as! String)
                     }
-                    cell.imageV?.setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: "history"))
+                    cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                     cell.subTextLabel?.text = "2015/07/27"
                     cell.selectionStyle = UITableViewCellSelectionStyle.None
                     
@@ -106,16 +112,24 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                     return cell
                 }
             }else if item.multipage == "1" {
-                var cell:MutableTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMutableCell, forIndexPath: indexPath) as! MutableTableViewCell
-                cell.titleLabel.text = item.pic_explain
-                var url = ""
-                if item.imageurl.count > 0 {
-                    url = "\(AppDelegate.app().ipUrl)" + (item.imageurl.firstObject as! String)
+                if var cell:MutableTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMutableCell, forIndexPath: indexPath) as? MutableTableViewCell {
+                    cell.setupShowButtonState()
+                    cell.titleLabel.text = item.pic_explain
+                    var url = ""
+                    if item.imageurl.count > 0 {
+                        url = "\(AppDelegate.app().ipUrl)" + (item.imageurl.firstObject as! String)
+                    }
+                    cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
+                    cell.subTextLabel.text = "2015/05/27"
+                    cell.delagate = self
+                    cell.selectionStyle = UITableViewCellSelectionStyle.None
+                    return cell
                 }
-                cell.imageV.setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: "history"))
-                cell.subTextLabel.text = "2015/05/27"
-                
-                cell.selectionStyle = UITableViewCellSelectionStyle.None
+            }
+        }else if self.tableArray[indexPath.row].isKindOfClass(NSArray) {
+            if let cell = tableView.dequeueReusableCellWithIdentifier(kMutablePhotoesCell, forIndexPath: indexPath) as? PopMutableTableViewCell {
+                cell.setupMutableCollection()
+                cell.imageUrlArray = self.tableArray[indexPath.row] as! NSArray
                 return cell
             }
         }
@@ -127,13 +141,17 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
         self.selectedIndexPath = indexPath
         let item:PicJsonItemInfo = self.tableArray[indexPath.row] as! PicJsonItemInfo
         if item.imageurl.count > 0 {
-            let loginStory:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let browseVC:BrowseViewController = BrowseViewController()
-            browseVC.imageArray = item.imageurl
-            if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? SingleTableViewCell {
-                browseVC.image = cell.imageV.image!
-            }
-            self.navigationController?.presentViewController(browseVC, animated: true, completion: nil)
+            self.hudProgress = MBProgressHUD(view: self.view)
+            self.navigationController?.view.addSubview(self.hudProgress)
+            self.hudProgress.show(true)
+            self.setupPhotoBrowser()
+//            let loginStory:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//            let browseVC:BrowseViewController = BrowseViewController()
+//            browseVC.imageArray = item.imageurl
+//            if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? SingleTableViewCell {
+//                browseVC.image = cell.imageV.image!
+//            }
+//            self.navigationController?.presentViewController(browseVC, animated: true, completion: nil)
         }
         if item.imageurl.count == 0{
             var sheetAction:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "从相册中选取","打开照相机")
@@ -142,6 +160,29 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
         }
     }
     
+    //MARK:-----MutableTableViewDelegate
+    func mutablePhotoesDidBeshowedMore(cell: MutableTableViewCell, isShow: Bool) {
+        let indexPath:NSIndexPath = self.tableView.indexPathForCell(cell)!
+        let insertPath:NSIndexPath = NSIndexPath(forRow: indexPath.row + 1, inSection: indexPath.section)
+        println("show");println(indexPath.row)
+        if let item = self.tableArray[indexPath.row] as? PicJsonItemInfo {
+            if item.imageurl.count == 0 {
+                return
+            }else {
+                if isShow { //展示
+                    self.tableArray.insertObject(item.imageurl, atIndex: indexPath.row + 1)
+                    self.tableView.beginUpdates()
+                    self.tableView.insertRowsAtIndexPaths([insertPath], withRowAnimation: UITableViewRowAnimation.Middle)
+                    self.tableView.endUpdates()
+                }else {
+                    self.tableArray.removeObjectAtIndex(insertPath.row)
+                    self.tableView.beginUpdates()
+                    self.tableView.deleteRowsAtIndexPaths([insertPath], withRowAnimation: UITableViewRowAnimation.Middle)
+                    self.tableView.endUpdates()
+                }
+            }
+        }
+    }
     
     //MARK:-----Camera function
     func takePhoto(){
@@ -207,7 +248,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 uploadData.appendString(str)
                 uploadData.appendData(UIImagePNGRepresentation(image))
                 NetworkRequest.AlamofireUploadImage("\(AppDelegate.app().ipUrl)web/index.php/app/upload", data: uploadData, progress: {
-                    (totalBytesWritten,totalBytesExpectedToWrite) in
+                    (bytesWritten,totalBytesWritten,totalBytesExpectedToWrite) in
                         hud.mode = MBProgressHUDMode.Determinate
                         let sub:Float = Float(totalBytesWritten) * 0.000977
                         let sup:Float = Float(totalBytesExpectedToWrite) * 0.000977
@@ -223,7 +264,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                         if let cell1 = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
                             let url = AppDelegate.app().ipUrl + (data as! String) as String + "?\(arc4random() % 10)"
                             //上传成功，更改显示UI及data source
-                            cell1.imageV.setImageWithURL(NSURL(string: url), placeholderImage: nil)
+                            cell1.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                             if item.imageurl.count == 0 {
                                 item.imageurl = NSMutableArray(object: data as! String)
                             }
@@ -266,7 +307,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                         (data) in
                         if data as! String == "success" {
                             if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
-                                cell.imageV.image = UIImage(named: "history")
+                                cell.imageV.image = UIImage(named: placeholderImageName)
                                 println(item.imageurl.count)
                                 item.imageurl = NSMutableArray()
                                 let ite = self.tableArray[self.selectedIndexPath.row] as! PicJsonItemInfo
@@ -291,9 +332,11 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             case 1:             //从相册中选取
                 println("1")
                 if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
-                    self.openPictureLibrary()
+                    //self.openPictureLibrary()
+                    self.openZLPhotoMutablePicker(1)
                 }else {
-                    self.openQBImagePicker()
+                    //self.openQBImagePicker()
+                    self.openZLPhotoMutablePicker(9)
                 }
                 
             case 2:             //打开照相机
@@ -304,6 +347,129 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             }
         }
     }
+    
+    //MARK:-----ZLPhotoPickerViewController
+    func openZLPhotoMutablePicker(minCount:NSInteger) {
+        var pickerVC:ZLPhotoPickerViewController = ZLPhotoPickerViewController()
+        pickerVC.status = PickerViewShowStatus.CameraRoll
+        pickerVC.minCount = minCount
+        pickerVC.showPickerVc(self)
+        pickerVC.callBack = { (assets) in
+            if let array:NSArray = assets as? NSArray {
+                var queue:dispatch_queue_t = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+                var group:dispatch_group_t = dispatch_group_create()
+                var imageUrlArray:NSMutableArray = []
+                var currentIndex = 0;var total:Float = 0;var current:Float = 0
+                let cellView = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath)
+                var hud:MBProgressHUD = MBProgressHUD(view: cellView)
+                cellView?.addSubview(hud)
+                hud.show(true)
+                if minCount != 1 {currentIndex++}       //是否多选
+                for ass in array {
+                    if let asset = ass as? ZLPhotoAssets {
+                        let image = asset.originImage()
+                        let imageData:NSData = UIImagePNGRepresentation(image)
+                        total += Float(imageData.length) * 0.000977
+                        println(">>>>>>>>>>>>>>>>")
+                        println(imageData.length / 1024)
+                        dispatch_group_async(group, queue, {
+                            if var item:PicJsonItemInfo = self.tableArray[self.selectedIndexPath.row] as? PicJsonItemInfo {
+                                let str = "pro_id=\(self.pro_id)&filename=\(item.tbName)&page=\(currentIndex++)&nsdata="
+                                println(str)
+                                var uploadData:NSMutableData = NSMutableData()
+                                uploadData.appendString(str)
+                                uploadData.appendData(imageData)
+                                NetworkRequest.AlamofireUploadImage("\(AppDelegate.app().ipUrl)" + config + uploadUrl, data: uploadData, progress: {
+                                    (bytesWritten,totalBytesWritten,totalBytesExpectedToWrite) in
+                                    hud.mode = MBProgressHUDMode.DeterminateHorizontalBar
+                                    hud.progress = current / total
+                                    current += (Float(bytesWritten) * 0.000977)
+                                    println(current)
+                                    println(total)
+                                    println("totalBytesWritten:\(totalBytesWritten/1024)")
+                                    println("totalBytesExpectedToWrite:\(totalBytesExpectedToWrite/1024)")
+                                    }, closure: {
+                                        data in
+                                        println("completion>>>>>>>>>>>>>>>>>>>")
+                                        println(data)
+                                        imageUrlArray.addObject(data as! String)
+                                        if imageUrlArray.count == array.count { //发送完成
+                                            hud.hide(true)
+                                            if minCount != 1 {
+                                                println(imageUrlArray)
+                                                let array:NSArray = imageUrlArray.sortedArrayUsingComparator({
+                                                    (s1,s2) -> NSComparisonResult in
+                                                    if (s1 as! String) > (s2 as! String) {
+                                                        return NSComparisonResult.OrderedDescending
+                                                    }
+                                                    return NSComparisonResult.OrderedAscending
+                                                })
+                                                println(array)
+                                                item.imageurl = NSMutableArray(array: array)
+                                                
+                                                if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? MutableTableViewCell {
+                                                    let url = AppDelegate.app().ipUrl + (item.imageurl.firstObject as! String)
+                                                    cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
+                                                }
+                                                
+                                            }else {
+                                                item.imageurl = NSMutableArray(array: imageUrlArray)
+                                                if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
+                                                    let url = AppDelegate.app().ipUrl + (item.imageurl.firstObject as! String)
+                                                    cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
+                                                }
+                                            }
+                                        }
+                                    },failed:{
+                                })
+                            }
+                        })
+                    }
+                }
+                dispatch_group_notify(group, queue, {
+                })
+            }
+        }
+    }
+    
+    func setupPhotoBrowser() {
+        var photoBrowser:ZLPhotoPickerBrowserViewController = ZLPhotoPickerBrowserViewController()
+        photoBrowser.delegate = self
+        photoBrowser.dataSource = self
+        photoBrowser.editing = true
+        photoBrowser.currentIndexPath = NSIndexPath(forRow: 0, inSection: 0)
+        self.presentViewController(photoBrowser, animated: false, completion: nil)
+    }
+    
+    func numberOfSectionInPhotosInPickerBrowser(pickerBrowser: ZLPhotoPickerBrowserViewController!) -> Int {
+        return 1
+    }
+    
+    func photoBrowser(photoBrowser: ZLPhotoPickerBrowserViewController!, numberOfItemsInSection section: UInt) -> Int {
+        let item = self.tableArray[self.selectedIndexPath.row] as! PicJsonItemInfo
+        return item.imageurl.count
+    }
+    
+    func photoBrowser(pickerBrowser: ZLPhotoPickerBrowserViewController!, photoAtIndexPath indexPath: NSIndexPath!) -> ZLPhotoPickerBrowserPhoto! {
+        if self.hudProgress != nil {
+            self.hudProgress.hide(true)
+            self.hudProgress = nil
+        }
+        let item = self.tableArray[self.selectedIndexPath.row] as! PicJsonItemInfo
+        let str: String = AppDelegate.app().ipUrl + (item.imageurl[indexPath.row] as! String)
+        println(indexPath.row)
+        println(str)
+        var photo:ZLPhotoPickerBrowserPhoto = ZLPhotoPickerBrowserPhoto(anyImageObjWith: str)
+        if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
+            photo.toView = cell.imageV
+            //photo.thumbImage = cell.imageV.image
+        }else if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? MutableTableViewCell {
+            photo.toView = cell.imageV
+            //photo.thumbImage = cell.imageV.image
+        }
+        return photo
+    }
+    
     
     //MARK:-----QBImagePickerControllerDelegate
     func openQBImagePicker() {
@@ -339,7 +505,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                     uploadData.appendString(str)
                     uploadData.appendData(imageData)
                     NetworkRequest.AlamofireUploadImage("\(AppDelegate.app().ipUrl)web/index.php/app/upload", data: uploadData, progress: {
-                        (totalBytesWritten,totalBytesExpectedToWrite) in
+                        (bytesWritten,totalBytesWritten,totalBytesExpectedToWrite) in
                         let sub:Float = Float(totalBytesWritten) * 0.000977
                         let sup:Float = Float(totalBytesExpectedToWrite) * 0.000977
                         println("totalBytesWritten:\(totalBytesWritten/1024)")
@@ -353,12 +519,17 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                                 if let cell1 = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? MutableTableViewCell {
                                     let url = AppDelegate.app().ipUrl + (data as! String) as String + "?\(arc4random() % 10)"
                                     //上传成功，更改显示UI及data source
-                                    cell1.imageV.setImageWithURL(NSURL(string: url), placeholderImage: nil)
+                                    cell1.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                                 }
                             }
                             
                             if currentIndex == assets.count {
                                 item.imageurl = NSMutableArray(array: imageUrlArray)
+                                if let cell1 = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
+                                    let url = AppDelegate.app().ipUrl + (data as! String) as String + "?\(arc4random() % 10)"
+                                    //上传成功，更改显示UI及data source
+                                    cell1.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
+                                }
                             }
                         },failed:{
                     })

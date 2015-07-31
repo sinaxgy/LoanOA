@@ -66,17 +66,18 @@ class NetworkRequest: NSObject {
         })
     }
     
-    static func AlamofireUploadImage(url:String,data:NSData,progress:(Int64,Int64)->Void,closure:(AnyObject)->Void,failed:()->Void) {
+    static func AlamofireUploadImage(url:String,data:NSData,progress:(Int64,Int64,Int64)->Void,closure:(AnyObject)->Void,failed:()->Void) {
         var upload:Alamofire.Request!
         upload = Alamofire.upload(.POST, url, data)
         upload.progress(closure: {
             bytesWritten, totalBytesWritten, totalBytesExpectedToWrite in
-            progress(totalBytesWritten,totalBytesExpectedToWrite)
+            progress(bytesWritten,totalBytesWritten,totalBytesExpectedToWrite)
         })
         upload.responseString() {
             (_,_,data,error) in
             upload = nil
             if error != nil {
+                println("error>>>>>>>>>>>>>>>>>>>")
                 println(error)
                 failed()
                 let alert:UIAlertView = UIAlertView(title: "错误", message: "网络请求失败", delegate: nil, cancelButtonTitle: "确定")

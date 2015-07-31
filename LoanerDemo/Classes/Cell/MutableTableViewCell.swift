@@ -8,20 +8,32 @@
 
 import UIKit
 
+protocol MutableTableViewDelegate {
+    func mutablePhotoesDidBeshowedMore(cell:MutableTableViewCell,isShow:Bool)
+}
+
 class MutableTableViewCell: UITableViewCell {
     
     @IBOutlet weak var imageV: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var showBtn: UIButton!
     @IBOutlet weak var subTextLabel: UILabel!
-    
+    var delagate:MutableTableViewDelegate!
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
     
-    @IBAction func showSubViewClicked(sender: AnyObject) {
+    func setupShowButtonState() {
+        self.showBtn.setImage(UIImage(named: "hideUp"), forState: UIControlState.Normal)
+        self.showBtn.setImage(UIImage(named: "showDown"), forState: UIControlState.Selected)
+    }
+    
+    @IBAction func showSubViewClicked(sender: UIButton) {
+        println("showSubViewClicked")
+        self.showBtn.selected = !self.showBtn.selected
+        self.delagate.mutablePhotoesDidBeshowedMore(self,isShow: self.showBtn.selected)
     }
     
 

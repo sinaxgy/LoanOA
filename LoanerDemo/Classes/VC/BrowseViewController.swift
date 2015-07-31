@@ -57,7 +57,7 @@ class BrowseViewController: UIViewController {
             let subUrl = str.stringByReplacingCharactersInRange(NSMakeRange(str.length - 10, 10), withString: ".jpg")
             println(subUrl)
             let url = AppDelegate.app().ipUrl + subUrl + "?\(arc4random() % 10)"
-            self.imageView.setImageWithURL(NSURL(string: url))
+            self.imageView.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
         }
     }
     

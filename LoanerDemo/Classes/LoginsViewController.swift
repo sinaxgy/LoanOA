@@ -12,11 +12,12 @@ import Alamofire
 //let ip = "http://112.126.64.235:8843/"
 //let ip = "http://123.57.219.112/loanOA/"  http://10.104.4.153/web/index.php/app/proinfo?pro_id=
 //let ip = "http://10.104.4.153/"
-let config = "web/index.php/"
+let config = "loanOA/web/index.php/"
 let loginURL = "app/login"
 let readHisURL = "app/getprojects?user_id="
 let typeURL = "app/index?type="
 let readTableURL = "app/proinfo?pro_id="
+let uploadUrl = "app/upload"
 
 class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessageEditDelegete{
     
