@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 import Foundation
 
 class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate{
@@ -22,33 +21,22 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     var body: String?
     var elapsedTime: NSTimeInterval?
     
-    var request: Alamofire.Request? {
-        didSet {
-            oldValue?.cancel()
-            
-            self.headers.removeAll()
-            self.body = nil
-            self.elapsedTime = nil
-        }
-    }
     @IBAction func tableAddAction(sender: AnyObject) {
-        let ip = "http://\(AppDelegate.app().IP)/"
-        var requestType = Alamofire.request(.GET, ip + config + "app/service")
-        requestType.responseJSON() {
-            (_,_,data,error) in
-            if error != nil {
-                let alert:UIAlertView = UIAlertView(title: "错误", message: "获取业务类型失败,无返回类型", delegate: nil, cancelButtonTitle: "确定")
-                alert.show()
-            }
+        var progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
+        self.navigationController?.view.addSubview(progressHud)
+        progressHud.show(true)
+        let url = AppDelegate.app().ipUrl + config + "app/service"
+        NetworkRequest.AlamofireGetJSON(url, success: { (data) in
             if data != nil {
                 let typejs = JSON(data!)
                 if typejs.type == .Dictionary {
                     self.typeDic = typejs.object as! NSDictionary
                     if self.typeDic.count < 2 {
-                        let alert:UIAlertView = UIAlertView(title: "错误", message: "获取业务类型失败,无返回类型有误", delegate: nil, cancelButtonTitle: "确定")
-                        alert.show()
+                        progressHud.labelText = "数据异常"
+                        progressHud.hide(true, afterDelay: 1)
                         return
                     }
+                    progressHud.hide(true)
                     let keys = self.typeDic.allKeys
                     var typeArray:NSMutableArray = NSMutableArray()         //菜单选项数组
                     for key in keys {
@@ -63,16 +51,20 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
                     self.typeMenu.showInView(self.view)
                 }
             }
-        }
+            }, failed: {
+                progressHud.labelText = "连接异常"
+                progressHud.hide(true, afterDelay: 1)}, outTime: {
+                    progressHud.labelText = "请求超时"
+                    progressHud.hide(true, afterDelay: 1)})
     }
     
     func menuPopover(menuView: PopoverMenuView!, didSelectMenuItemAtIndex selectedIndex: Int) {
         let ip = "http://\(AppDelegate.app().IP)/"
         let keys = self.typeDic.allKeys
         let type:String = keys[selectedIndex] as! String
-        //println(type)
         var addView:BranchTableViewController = BranchTableViewController()
-        addView.request = Alamofire.request(.GET, ip + config + typeURL + type)
+        //addView.request = Alamofire.request(.GET, ip + config + typeURL + type)
+        addView.url = AppDelegate.app().ipUrl + config + typeURL + type
         addView.typeOp.type = type
         addView.typeOp.typeName = self.typeDic.objectForKey(type) as! String
         addView.pro_id = "速评表"
@@ -83,9 +75,6 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
 
     override func viewDidLoad() {
         self.tabBarItem.badgeValue = "12"
-        
-        //self.view.backgroundColor = UIColor(patternImage: UIImage(named: "background")!)
-        
         super.viewDidLoad()
         self.refreshControl = UIRefreshControl(frame: CGRectMake(0, 0, self.tableView.frame.size.width, 100))
         self.refreshControl?.addTarget(self, action: "reload:", forControlEvents: UIControlEvents.ValueChanged)
@@ -99,77 +88,34 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         self.view.addSubview(self.activityView)
         self.activityView.startAnimating()
         self.showActivityIndicatorViewInNavigationItem()
-        
     }
     
     func reload(sender:AnyObject) {
-        if self.request == nil {
-            let asa:String = AppDelegate.app().getuser_idFromPlist() as String
-            let ip = "http://\(AppDelegate.app().IP)/" + config + readHisURL + "\(asa)"
-            self.request = Alamofire.request(.GET, ip)
-        }
         if (self.refreshControl!.refreshing) {
             self.refreshControl?.attributedTitle = NSAttributedString(string: "加载中...")
         }
         
-        self.request?.responseJSON(){ (_, _, json, error) in
-            if self.request == nil {
-                return
-            }
-            if error != nil {
-                println(error)
-                switch UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) {
-                case .OrderedSame, .OrderedDescending:
-                    var alert:UIAlertController = UIAlertController(title: "错误", message: "装载失败", preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "确定", style: UIAlertActionStyle.Cancel, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
-                case .OrderedAscending:
-                    
-                    let alert:UIAlertView = UIAlertView(title: "错误", message: "加载数据失败", delegate: nil, cancelButtonTitle: "确定")
-                    alert.show()
+        let user_id:String = AppDelegate.app().getuser_idFromPlist() as String
+        let url = "http://\(AppDelegate.app().IP)/" + config + readHisURL + "\(user_id)"
+        NetworkRequest.AlamofireGetJSON(url, success: { (data) in
+            self.hiddenActivityIndicatorViewInNavigationItem()
+            if data == nil {println("empty");return}
+            self.json = JSON(data!)
+            if self.json != nil {
+                if self.json.count != 0 {           //项目编号排序
+                    var keys:NSArray = (self.json.object as! NSDictionary).allKeys
+                    self.sortJsonArray = keys.sortedArrayUsingComparator({
+                        (s1,s2) -> NSComparisonResult in
+                        if (s1 as! String) > (s2 as! String) {
+                            return NSComparisonResult.OrderedAscending
+                        }
+                        return NSComparisonResult.OrderedDescending
+                    })
                 }
-                self.navigationItem.titleView = nil
-                self.navigationItem.prompt = nil
-                self.refreshControl?.endRefreshing()
-                self.activityView.stopAnimating()
-                self.request = nil
-                return
+                self.tableView.reloadData()
             }
-            //println(json)
-            self.json = JSON(json!)
-            if self.json.count != 0 {           //项目编号排序
-                var keys:NSArray = (self.json.object as! NSDictionary).allKeys
-                self.sortJsonArray = keys.sortedArrayUsingComparator({
-                    (s1,s2) -> NSComparisonResult in
-                    if (s1 as! String) > (s2 as! String) {
-                        return NSComparisonResult.OrderedAscending
-                    }
-                    return NSComparisonResult.OrderedDescending
-                })
-                //println(self.sortJsonArray)
-            }
-            
-            self.tableView.reloadData()
-            self.navigationItem.titleView = nil
-            self.navigationItem.prompt = nil
-            self.refreshControl?.endRefreshing()
-            self.activityView.stopAnimating()
-            self.request = nil
-        }
-        
-        let gcdTimer:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(15 * NSEC_PER_SEC))
-        dispatch_after(gcdTimer, dispatch_get_main_queue(), {
-            if self.request != nil {
-                self.request?.cancel()
-                self.request = nil
-                self.navigationItem.titleView = nil
-                self.navigationItem.prompt = nil
-                self.refreshControl?.endRefreshing()
-                self.activityView.stopAnimating()
-                let alert:UIAlertView = UIAlertView(title: "错误", message: "请求超时，请检查网络配置", delegate: nil, cancelButtonTitle: "确定")
-                alert.show()
-            }
-        })
+            }, failed: {self.hiddenActivityIndicatorViewInNavigationItem()
+            }, outTime: {self.hiddenActivityIndicatorViewInNavigationItem()})
     }
     
     func showActivityIndicatorViewInNavigationItem() {
@@ -177,6 +123,13 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         self.navigationItem.titleView = actView
         actView.startAnimating()
         self.navigationItem.prompt = "数据加载中..."
+    }
+    
+    func hiddenActivityIndicatorViewInNavigationItem() {
+        self.navigationItem.titleView = nil
+        self.navigationItem.prompt = nil
+        self.refreshControl?.endRefreshing()
+        self.activityView.stopAnimating()
     }
 
     override func didReceiveMemoryWarning() {
@@ -239,8 +192,8 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
             }
             browseView.pro_id = key as! String
             browseView.isAdd = false
-            let ip = "http://\(AppDelegate.app().IP)/"
-            browseView.request = Alamofire.request(.GET, ip  + config + readTableURL + "\(key)" + "&remark=" + "\(AppDelegate.app().getuser_idFromPlist())")
+            browseView.url = AppDelegate.app().ipUrl + config + readTableURL + "\(key)" + "&remark=" + AppDelegate.app().getuser_idFromPlist()
+            //browseView.request = Alamofire.request(.GET, ip  + config + readTableURL + "\(key)" + "&remark=" + "\(AppDelegate.app().getuser_idFromPlist())")
             let nav:UINavigationController = UINavigationController(rootViewController: browseView)
             self.navigationController?.presentViewController(nav, animated: true, completion: nil)
         }

@@ -13,10 +13,10 @@ protocol AddTableViewCellTextFieldDelegate {
     func signEditingTextField(textfield:UITextField)
 }
 
-let disenableTableArray = ["pro_num","pro_title","service_type","loan_period","offline_id"]
 
 class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDelegate,DatePickerViewDateDelegate{
     
+    let disenableTableArray = ["pro_num","pro_title","service_type","loan_period","offline_id"]
     var itemInfo:tableItemInfo!
     var editable:Bool? {
         didSet{
@@ -50,7 +50,7 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
     }
     
     func initView() {
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(10, self.bounds.height / 2 - 20, 200, 40))
+        var titleLabel:UILabel = UILabel(frame: CGRectMake(10, self.bounds.height / 2 - 20, 150, 40))
         titleLabel.font = UIFont.systemFontOfSize(14)
         titleLabel.text = self.itemInfo.explain as String
         
@@ -62,12 +62,13 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
     //MARK: -- 文本框设置
     func initTextField(){
         let rect = UIScreen.mainScreen().bounds
-        textfield = UITextField(frame: CGRectMake(rect.width - 160, self.bounds.height / 2 - 15, 150, 30))
+        textfield = UITextField(frame: CGRectMake(160, self.bounds.height / 2 - 15, rect.width - 160, 30))
         textfield.layer.cornerRadius = 6
         textfield.borderStyle = UITextBorderStyle.RoundedRect
         textfield.autocorrectionType = UITextAutocorrectionType.No
         textfield.clearButtonMode = UITextFieldViewMode.WhileEditing
         textfield.delegate = self
+        textfield.borderStyle = UITextBorderStyle.RoundedRect
         textfield.font = UIFont.systemFontOfSize(13)
         textfield.textAlignment = NSTextAlignment.Right
         textfield.keyboardType = UIKeyboardType.Default

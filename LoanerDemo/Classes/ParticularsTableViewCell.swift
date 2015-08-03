@@ -17,17 +17,21 @@ class ParticularsTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFie
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var msgTextField: UITextField!
+    let disenableTableArray = ["pro_num","pro_title","service_type","loan_period","offline_id"]
     
     var itemInfo:tableItemInfo!
     
+    var editable:Bool? {
+        didSet{
+            self.initTextField()
+        }
+    }
     var superView:UIViewController!
     var textDelegate:TableViewCellTextFieldDelegate!
     
     
-    init(title:String, forjson json:JSON){
-        super.init(style: UITableViewCellStyle.Default, reuseIdentifier: "particularsCell")
-        //self = NSBundle.mainBundle().loadNibNamed("ParticularsTableViewCell", owner: nil, options: nil).lasta
-        //super.
+    func inits(title:String, forjson json:JSON){
+        //super.init(style: UITableViewCellStyle.Default, reuseIdentifier: "particularsCell")
         self.selectionStyle = UITableViewCellSelectionStyle.None
         self.itemInfo = tableItemInfo(title: title, forjson: json)
         self.initViewInfomation()
@@ -113,6 +117,25 @@ class ParticularsTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFie
             self.msgTextField.enabled = false
         }
     }
+    
+    func initTextField(){
+        self.msgTextField.enabled = self.editable!
+        for table in disenableTableArray {
+            if table as String == self.itemInfo.title {
+                self.msgTextField.enabled = false
+                break
+            }
+        }
+//        if self.itemInfo.type.isEqualToString("datepicker") {
+//            var datePicker:DatepickerView = DatepickerView(width: self.bounds.width)
+//            datePicker.dateDelegate = self
+//            self.msgTextField.inputView = datePicker
+//        }
+//        if self.itemInfo.value != "" {
+//            self.msgTextField.text = self.itemInfo.value as String
+//        }
+    }
+
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

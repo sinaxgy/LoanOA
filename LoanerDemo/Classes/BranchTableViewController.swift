@@ -27,6 +27,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
     var typeOp = operationType(type: "", typeName: "")
     var dbjson:JSON = JSON.nullJSON
     var detailKeyArray:NSArray = []
+    var url = ""
     var request: Alamofire.Request? {
         didSet {
             oldValue?.cancel()
@@ -54,26 +55,19 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
         self.navigationItem.prompt = "数据加载中..."
     }
     
+    func hiddenActivityIndicatorViewInNavigationItem() {
+        self.navigationItem.titleView = nil
+        self.navigationItem.prompt = nil
+    }
+    
     func loadJSONOfView() {
-        self.request?.responseJSON(){ (_, _, json, error) in
-            if error != nil {
-                self.navigationItem.titleView = nil
-                self.navigationItem.prompt = nil
-                self.title = self.typeOp.typeName
-                let alert:UIAlertView = UIAlertView(title: "错误", message: "数据加载失败", delegate: nil, cancelButtonTitle: "确定")
-                alert.show()
-                return
-            }
-            self.request = nil
-            if json == nil {
-                self.navigationItem.titleView = nil
-                self.navigationItem.prompt = nil
+        NetworkRequest.AlamofireGetJSON(self.url, success: { (data) in
+            if data == nil {
+                self.hiddenActivityIndicatorViewInNavigationItem()
                 self.title = "后台无数据"
-                let alert:UIAlertView = UIAlertView(title: "错误", message: "后台无数据", delegate: nil, cancelButtonTitle: "确定")
-                alert.show()
                 return
             }
-            let js:JSON = JSON(json!)
+            let js:JSON = JSON(data!)
             var jsonArray:NSMutableArray = NSMutableArray()
             var msgArray:NSMutableArray = []
             var jsArray:NSMutableArray = []
@@ -117,25 +111,12 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate{
                 }
             }
             self.reSortArrayAndJson(msgArray, jsAr: jsArray)
-            
-            //self.proMessage.subjson = JSON(jsonArray)
-            //println(self.proMessage.subjson)
             self.tableView.reloadData()
-            self.navigationItem.titleView = nil
-            self.navigationItem.prompt = nil
-        }
-        
-        let gcdTimer:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(15 * NSEC_PER_SEC))
-        dispatch_after(gcdTimer, dispatch_get_main_queue(), {
-            if self.request != nil {
-                self.request?.cancel()
-                self.request = nil
-                self.navigationItem.titleView = nil
-                self.navigationItem.prompt = nil
-                let alert:UIAlertView = UIAlertView(title: "错误", message: "请求超时，请检查网络配置", delegate: nil, cancelButtonTitle: "确定")
-                alert.show()
-            }
-        })
+            self.hiddenActivityIndicatorViewInNavigationItem()
+            }, failed: {
+                self.title = self.typeOp.typeName
+                self.hiddenActivityIndicatorViewInNavigationItem()}, outTime: {
+                    self.hiddenActivityIndicatorViewInNavigationItem()})
     }
 
     override func didReceiveMemoryWarning() {

@@ -34,12 +34,24 @@ class MasterImageTableViewController: UITableViewController {
         super.viewDidLoad()
         self.showActivityIndicatorViewInNavigationItem()
         self.tableView.registerNib(UINib(nibName: "SingleTableViewCell", bundle: nil), forCellReuseIdentifier: kSingleCell)
-        NetworkRequest.AlamofireGetJSON(self.picURL.URL, closure: {
+        var progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
+        self.navigationController?.view.addSubview(progressHud)
+        progressHud.show(true)
+        NetworkRequest.AlamofireGetJSON(self.picURL.URL, success: {
             (data) in
-            self.masterJson = JSON(data)
-            self.tableView.reloadData()
+            progressHud.hide(true)
+            self.masterJson = JSON(data!)
+            if self.masterJson != nil {
+                self.tableView.reloadData()
+            }
             self.hiddenActivityIndicatorViewInNavigationItem()
-        })
+            }, failed: {
+                self.hiddenActivityIndicatorViewInNavigationItem()
+                progressHud.labelText = "连接异常"
+                progressHud.hide(true, afterDelay: 1)}, outTime: {
+                    self.hiddenActivityIndicatorViewInNavigationItem()
+                    progressHud.labelText = "请求超时"
+                    progressHud.hide(true, afterDelay: 1)})
     }
     
     func showActivityIndicatorViewInNavigationItem() {
@@ -94,8 +106,9 @@ class MasterImageTableViewController: UITableViewController {
                         var imgU:requestURL = requestURL(footer: "", URL: "", pro_id: "")
                         imgU.footer = v as! String
                         self.masterSubURL.addObject(imgU.URL)
+                    }else if k.description == "date" {
+                        cell.subTextLabel?.text = v as? String
                     }
-                    cell.subTextLabel?.text = "2015/07/27"
                 }
             }
         }

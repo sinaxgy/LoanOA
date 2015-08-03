@@ -14,6 +14,7 @@ class PicJsonItemInfo: NSObject {
     var pic_explain:String = ""
     var multipage:String = ""
     var imageurl:NSMutableArray = []
+    var date:String = ""
     
     init(tbName:String , json:JSON) {
         self.tbName = tbName
@@ -24,6 +25,8 @@ class PicJsonItemInfo: NSObject {
                 self.pic_explain = json.dictionary![key as! String]!.description
             case "multipage":
                 self.multipage = json.dictionary![key as! String]!.description
+            case "date":
+                self.date = json.dictionary![key as! String]!.description
             case "imageurl":
                 if let value = json.dictionary?["imageurl"]! {
                     let array = value.object as! NSArray

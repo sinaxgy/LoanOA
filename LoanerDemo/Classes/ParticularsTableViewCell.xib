@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -21,15 +21,15 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Rc-H3-zmb">
-                        <rect key="frame" x="8" y="11" width="167" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="8" y="11" width="168" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2vZ-aT-3Nb">
-                        <rect key="frame" x="175" y="7" width="144" height="30"/>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2vZ-aT-3Nb">
+                        <rect key="frame" x="176" y="11" width="144" height="17"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="144" id="itz-7g-jfB"/>
+                            <constraint firstAttribute="width" constant="144" id="Bxu-vy-Oij"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
@@ -37,13 +37,10 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="7Rc-H3-zmb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="3" id="1Ec-7d-5ZG"/>
-                    <constraint firstItem="2vZ-aT-3Nb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-1" id="5sw-Z7-O5U"/>
-                    <constraint firstItem="2vZ-aT-3Nb" firstAttribute="leading" secondItem="7Rc-H3-zmb" secondAttribute="trailing" id="8bZ-du-1Fi"/>
+                    <constraint firstItem="2vZ-aT-3Nb" firstAttribute="leading" secondItem="7Rc-H3-zmb" secondAttribute="trailing" id="Cwg-j5-cf7"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="2vZ-aT-3Nb" secondAttribute="trailing" constant="-8" id="ICB-Ve-K6v"/>
                     <constraint firstItem="7Rc-H3-zmb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="M3y-te-BLN"/>
-                    <constraint firstItem="2vZ-aT-3Nb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-1" id="MM5-MR-bvV"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="2vZ-aT-3Nb" secondAttribute="trailing" constant="-7" id="Uy5-Ei-K6H"/>
-                    <constraint firstItem="2vZ-aT-3Nb" firstAttribute="leading" secondItem="7Rc-H3-zmb" secondAttribute="trailing" id="c7j-lD-MsM"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="2vZ-aT-3Nb" secondAttribute="trailing" constant="-7" id="sQb-ym-MQ7"/>
+                    <constraint firstItem="2vZ-aT-3Nb" firstAttribute="centerY" secondItem="7Rc-H3-zmb" secondAttribute="centerY" id="Ycq-FD-Y9B"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

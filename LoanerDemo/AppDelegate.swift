@@ -12,8 +12,8 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var user_id:NSString = "a"
-    var offline_id:NSString = ""
+    var user_id:String = "a"
+    var offline_id:String = ""
     var IP = "112.126.64.235:8843"//10.104.4.1521111"             //112.126.64.23:8843/"var IP = "h1ttp://10.104.4.153/"
     var ipUrl = "http://10.104.4.177/"
 
@@ -31,11 +31,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func getuser_idFromPlist() -> NSString {
+    func getuser_idFromPlist() -> String {
         let filepath = NSHomeDirectory().stringByAppendingPathComponent("Documents").stringByAppendingPathComponent("selfInfo.plist")
         if NSFileManager.defaultManager().fileExistsAtPath(filepath) {
             let dicInfo:NSDictionary = NSDictionary(contentsOfFile: filepath)!
-            return dicInfo.objectForKey("user_id") as! NSString
+            return dicInfo.objectForKey("user_id") as! String
         }
         return self.user_id
     }
