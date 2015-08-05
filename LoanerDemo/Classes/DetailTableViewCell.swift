@@ -10,7 +10,7 @@ import UIKit
 
 protocol AddTableViewCellTextFieldDelegate {
     func catchTextFieldvalue(value:String ,key:String)
-    func signEditingTextField(textfield:UITextField)
+    func signEditingTextField(textfield:UITextField,cell:DetailTableViewCell)
 }
 
 
@@ -80,6 +80,15 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
             }
         }
         
+        if self.itemInfo.options.count > 0{
+            for key in self.itemInfo.options {
+                if key as! String == "must" {
+                    self.textfield.leftView = UIImageView(image: UIImage(named: "mustMark"))
+                    self.textfield.leftViewMode = UITextFieldViewMode.Always
+                }
+            }
+        }
+        
         if self.itemInfo.type.isEqualToString("datepicker") {
             var datePicker:DatepickerView = DatepickerView(width: self.bounds.width)
             datePicker.dateDelegate = self
@@ -92,7 +101,7 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        self.textDelegate.signEditingTextField(textField)
+        self.textDelegate.signEditingTextField(textField,cell:self)
     }
     
 //    func textFieldDidBeginEditing(textField: UITextField) {
@@ -133,6 +142,11 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
     }
 
     func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+        if textField.text == "" && textField.leftView != nil {
+            let alert = UIAlertView(title: "警告", message: "此项不可为空", delegate: nil, cancelButtonTitle: "确定")
+            alert.show()
+            return false
+        }
         textDelegate.catchTextFieldvalue(textField.text, key: self.itemInfo.title as String)
         return true
     }

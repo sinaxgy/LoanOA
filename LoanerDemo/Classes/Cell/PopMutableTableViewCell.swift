@@ -259,7 +259,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
                         uploadData.appendString(str)
                         uploadData.appendData(imageData)
                         NetworkRequest.AlamofireUploadImage(url, data: uploadData, progress: {(_,written,totalExpectedToWrite) in
-                            hud.mode = MBProgressHUDMode.DeterminateHorizontalBar
+                            hud.mode = MBProgressHUDMode.Determinate
                             let sub:Float = Float(written) * 0.000977
                             let sup:Float = Float(totalExpectedToWrite) * 0.000977
                             hud.progress = sub/sup

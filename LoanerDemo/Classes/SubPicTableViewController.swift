@@ -261,7 +261,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 uploadData.appendData(UIImagePNGRepresentation(image))
                 NetworkRequest.AlamofireUploadImage("\(AppDelegate.app().ipUrl)web/index.php/app/upload", data: uploadData, progress: {
                     (bytesWritten,totalBytesWritten,totalBytesExpectedToWrite) in
-                        hud.mode = MBProgressHUDMode.Determinate
+                        hud.mode = MBProgressHUDMode.DeterminateHorizontalBar
                         let sub:Float = Float(totalBytesWritten) * 0.000977
                         let sup:Float = Float(totalBytesExpectedToWrite) * 0.000977
                         hud.progress = sub/sup
@@ -365,8 +365,8 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             case 1:             //从相册中选取
                 println("1")
                 if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
-                    //self.openPictureLibrary()
-                    self.openZLPhotoSinglePicker()
+                    self.openPictureLibrary()
+                    //self.openZLPhotoSinglePicker()
                     //self.openZLPhotoMutablePicker(1)
                 }else {
                     //self.openQBImagePicker()
@@ -463,10 +463,6 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                                 hud.mode = MBProgressHUDMode.DeterminateHorizontalBar
                                 hud.progress = current / total
                                 current += (Float(bytesWritten) * 0.000977)
-//                                println(current)
-//                                println(total)
-//                                println("totalBytesWritten:\(totalBytesWritten/1024)")
-//                                println("totalBytesExpectedToWrite:\(totalBytesExpectedToWrite/1024)")
                                 }, success: {
                                     data in
                                     if data == nil {println("empty return");return}
@@ -484,15 +480,22 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                                             return NSComparisonResult.OrderedAscending
                                         })
                                         println(array)
+                                        if item.imageurl.count == 0{
+                                            if let cell = self.tableView.cellForRowAtIndexPath(currentIndexPath) as? MutableTableViewCell {
+                                                let url = AppDelegate.app().ipUrl + (array.firstObject as! String)
+                                                cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
+                                            }
+                                        }
                                         item.imageurl.addObjectsFromArray(array as [AnyObject])
-                                        println(item.imageurl)
-                                        if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? MutableTableViewCell {
-                                            let url = AppDelegate.app().ipUrl + (item.imageurl.firstObject as! String)
-                                            cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
+                                        let nextIndex = NSIndexPath(forRow: currentIndexPath.row, inSection: currentIndexPath.section)
+                                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: currentIndexPath.row + 1, inSection: currentIndexPath.section)) as? PopMutableTableViewCell {
+                                            cell.imageUrlArray = NSMutableArray(array: item.imageurl)
+                                            cell.mutableCollection.reloadData()
                                         }
                                     }},failed:{
                                 },outTime:{})
-                            sleep(3)
+        
+                            sleep(2)
                         })
                     }
                 }

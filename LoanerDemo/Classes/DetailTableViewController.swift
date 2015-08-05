@@ -7,9 +7,8 @@
 //
 
 import UIKit
-import Alamofire
 
-class DetailTableViewController: UITableViewController ,AddTableViewCellTextFieldDelegate{
+class DetailTableViewController: UITableViewController ,AddTableViewCellTextFieldDelegate,UIAlertViewDelegate{
     
     //var headTitle:String = ""
     var json:JSON = JSON.nullJSON           //存储“data”对应的value值
@@ -24,7 +23,6 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //println(self.json)
         self.title = self.typeTitle.typeName
         var tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
         self.view.addGestureRecognizer(tapGesture)
@@ -67,7 +65,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
         self.postDic.setObject(value, forKey: key)
     }
     
-    func signEditingTextField(textfield: UITextField) {
+    func signEditingTextField(textfield: UITextField,cell:DetailTableViewCell) {
         if (self.resigntf != nil) {
             if self.resigntf == textfield {
                 return
@@ -81,64 +79,16 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
     }
     
     func postJson() {
+        if self.resigntf != nil {
+            self.resigntf.resignFirstResponder()
+        }
         if self.postDic.count < self.json.count {
-            let alert:UIAlertView = UIAlertView(title: "错误", message: "请完成表单", delegate: nil, cancelButtonTitle: "确定")
+            let alert = UIAlertView(title: "不完整的表单", message: "请完成整个表单", delegate: nil, cancelButtonTitle: "确定")
             alert.show()
             return
         }
-        var progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
-        self.navigationController?.view.addSubview(progressHud)
-        progressHud.labelText = "正在提交表单"
-        progressHud.show(true)
-        
-        var request: Alamofire.Request?
-        let user_id: NSString = AppDelegate.app().getuser_idFromPlist()
-        self.postDic.setObject(AppDelegate.app().getoffline_id(), forKey: "offline_id")
-        
-        let pjs = JSON(self.postDic)
-        //println(self.postDic)
-        let ip = "http://\(AppDelegate.app().IP)/"
-        request = Alamofire.request(.POST, ip + config + "assess/app-add",
-            parameters: ["service_type":"\(self.typeTitle.type)","data":"\(pjs)","db_table":"\(self.dbjson)",
-                "user_id":"\(user_id)"])
-        
-        request?.responseString(){ (_, _, data, error) in
-            if request == nil {
-                return
-            }
-            if error != nil {
-                progressHud.labelText = "连接异常"
-                progressHud.hide(true, afterDelay: 1)
-                return
-            }
-            //println(data)
-            if data == "success" {
-                progressHud.labelText = "提交成功"
-                progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
-                progressHud.hide(true, afterDelay: 2)
-                var gcdT:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * NSEC_PER_SEC))
-                dispatch_after(gcdT, dispatch_get_main_queue(), {
-                        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-                    })
-            }else{
-                progressHud.labelText = "提交失败"
-                progressHud.hide(true, afterDelay: 1)
-            }
-            request = nil
-        }
-        
-        let gcdTimer:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(15 * NSEC_PER_SEC))
-        dispatch_after(gcdTimer, dispatch_get_main_queue(), {
-            if request != nil {
-                request?.cancel()
-                request = nil
-                progressHud.labelText = "请求超时"
-                progressHud.hide(true, afterDelay: 1)
-                let alert:UIAlertView = UIAlertView(title: "错误", message: "请求超时，请检查网络配置", delegate: nil, cancelButtonTitle: "确定")
-                alert.show()
-            }
-        })
+        var alert = UIAlertView(title: "注意", message: "确定提交速评表？\n提交完成之后不可修改！", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+        alert.show()
     }
     
     func setCellFromAddJSON(row: Int,forjson jsons:JSON) -> UITableViewCell{
@@ -148,6 +98,10 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
             cell.superView = self
             cell.textDelegate = self
             cell.editable = self.tableView.editing
+            
+            if cell.textfield.leftView != nil {
+                cell.textfield.leftView = nil
+            }
             if self.postDic.count > 0 {             //填写表单时的数据填充
                 for rekey in self.postDic.allKeys {
                     if rekey as! String == jsons.dictionaryValue.keys.array[row] as String {
@@ -205,6 +159,49 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
                 }
                 break
             }
+        }
+    }
+    
+    //MARK:--UIAlertViewDelegate
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 1 {
+            var progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
+            self.navigationController?.view.addSubview(progressHud)
+            progressHud.show(true)
+            progressHud.labelText = "正在提交表单"
+            
+            let user_id: NSString = AppDelegate.app().getuser_idFromPlist()
+            self.postDic.setObject(AppDelegate.app().getoffline_id(), forKey: "offline_id")
+            let pjs = JSON(self.postDic)
+            let url = AppDelegate.app().ipUrl + config + "assess/app-add"
+            
+            NetworkRequest.AlamofirePostParameters(url,
+                parameters: ["service_type":"\(self.typeTitle.type)","data":"\(pjs)","db_table":"\(self.dbjson)",
+                "user_id":"\(user_id)"],
+                success: {(data) in
+                    println(data)
+                    if data as! String == "success" {
+                        progressHud.labelText = "提交成功"
+                        progressHud.mode = MBProgressHUDMode.CustomView
+                        progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
+                        progressHud.hide(true, afterDelay: 2)
+                        var gcdT:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * NSEC_PER_SEC))
+                        dispatch_after(gcdT, dispatch_get_main_queue(), {
+                            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                        })
+                    }else{
+                        progressHud.labelText = "提交失败"
+                        progressHud.hide(true, afterDelay: 1)
+                    }
+
+                }, failed: {
+                    progressHud.labelText = "连接异常"
+                    progressHud.hide(true, afterDelay: 1)
+                }, outTime: {
+                    progressHud.labelText = "请求超时"
+                    progressHud.hide(true, afterDelay: 1)})
+            
+            
         }
     }
 }

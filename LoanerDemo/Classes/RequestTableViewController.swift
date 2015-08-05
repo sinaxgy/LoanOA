@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 
 struct tag_Infomation {
     var suffixURL:String
@@ -17,11 +16,13 @@ struct tag_Infomation {
     var arraysort:NSArray
 }
 
-class RequestTableViewController: UITableViewController ,AddTableViewCellTextFieldDelegate{
+class RequestTableViewController: UITableViewController ,AddTableViewCellTextFieldDelegate,UIAlertViewDelegate{
     
     @IBOutlet var particularsCell: ParticularsTableViewCell!
     var tag_name:String = ""
+    var emptyAbleArray:NSMutableArray = []
     var pro_id:String = ""
+    var editable:Bool = false;var isNew:Bool = false
     
     var tag_Message:tag_Infomation = tag_Infomation(suffixURL: "", editable: false, tableJson: JSON.nullJSON, dbjson: JSON.nullJSON, arraysort: [])
     
@@ -29,21 +30,13 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
     var resigntf:UITextField!
     
     var textDelegate:AddTableViewCellTextFieldDelegate!
-    
-    var request:Alamofire.Request? {
-        didSet {
-        }
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         var tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
         self.view.addGestureRecognizer(tapGesture)
-        
-        self.refreshControl = UIRefreshControl(frame: CGRectMake(0, 0, self.tableView.frame.size.width, 100))
-        self.refreshControl?.addTarget(self, action: "reload:", forControlEvents: UIControlEvents.ValueChanged)
-        self.tableView.tableHeaderView?.addSubview(self.refreshControl!)
-        self.reload(self.refreshControl!)
+    
+        self.reload()
         
         self.showActivityIndicatorViewInNavigationItem()
     }
@@ -55,26 +48,23 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
         }
     }
     
-    func reload(sender:AnyObject) {
-        if self.request == nil {
-            let ip = "http://\(AppDelegate.app().IP)/"
-            self.request = Alamofire.request(.GET, ip + config + readHisURL + self.tag_Message.suffixURL)
-        }
-        if (self.refreshControl!.refreshing) {
-            self.refreshControl?.attributedTitle = NSAttributedString(string: "加载中...")
-        }
-        self.request?.responseJSON() {
-            (_,_,data,error) in
-            if error != nil {
-                let alert:UIAlertView = UIAlertView(title: "错误", message: "加载数据失败", delegate: nil, cancelButtonTitle: "确定")
-                alert.show()
+    func reload() {
+        let progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
+        self.navigationController?.view.addSubview(progressHud)
+        progressHud.show(true)
+        
+        let url = AppDelegate.app().ipUrl + config + self.tag_Message.suffixURL
+        NetworkRequest.AlamofireGetJSON(url, success: {(data) in
+            println(data)
+            let mainJSON = JSON(data!)
+            if mainJSON.count == 0 {
+                progressHud.labelText = "后台数据异常"
+                progressHud.hide(true, afterDelay: 1)
                 self.hideActivityIndicatorViewInNavigationItem()
                 return
             }
-            let mainJSON = JSON(data!)
-            if mainJSON == nil {
-                return
-            }
+            progressHud.hide(true)
+            println(mainJSON)
             let mainKeys = mainJSON.dictionary!.keys.array
             for key in mainKeys {
                 if let keyarray = mainJSON.dictionary?["arraysort"] {
@@ -96,11 +86,18 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
                     self.tag_Message.tableJson = data
                 }
             }
-            self.tableView.reloadData()
-            self.title = self.tag_name
             self.hideActivityIndicatorViewInNavigationItem()
             self.checkValueEmptyForIsEdit()
-        }
+            self.tableView.reloadData()
+            self.title = self.tag_name
+            }, failed: {
+                progressHud.labelText = "请求失败"
+                progressHud.hide(true, afterDelay: 1)
+            self.hideActivityIndicatorViewInNavigationItem()
+            }, outTime: {
+                progressHud.labelText = "请求超时"
+                progressHud.hide(true, afterDelay: 1)
+                self.hideActivityIndicatorViewInNavigationItem()})
     }
     
     func showActivityIndicatorViewInNavigationItem() {
@@ -114,68 +111,14 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
         self.navigationItem.titleView = nil
         self.navigationItem.prompt = nil
         self.refreshControl?.endRefreshing()
-        self.request = nil
     }
     
     func postJson(sender:UIBarButtonItem) {
-        //println(self.postDic.allKeys)
-        if self.postDic.count == 0 {
-            return
+        if self.resigntf != nil {
+            self.resigntf.resignFirstResponder()
         }
-        var progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
-        self.navigationController?.view.addSubview(progressHud)
-        progressHud.labelText = "正在提交表单"
-        progressHud.show(true)
-        
-        var request: Alamofire.Request?
-        let user_id: NSString = AppDelegate.app().getuser_idFromPlist()
-        self.postDic.setObject(AppDelegate.app().getoffline_id(), forKey: "offline_id")
-        
-        let pjs = JSON(self.postDic)
-        //println(self.postDic)
-        let ip = "http://\(AppDelegate.app().IP)/"
-        request = Alamofire.request(.POST, ip + config + "app/save-info",
-            parameters: ["pro_id":"\(self.pro_id)",
-                "data":"\(pjs)",
-                "db_table":"\(self.tag_Message.dbjson)",
-                "user_id":"\(user_id)"])
-        
-        request?.responseString(){ (_, _, data, error) in
-            if request == nil {
-                return
-            }
-            if error != nil {
-                progressHud.labelText = "连接异常"
-                progressHud.hide(true, afterDelay: 1)
-                return
-            }
-            if data == "success" {
-                progressHud.labelText = "提交成功"
-                progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
-                progressHud.hide(true, afterDelay: 2)
-                var gcdT:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * NSEC_PER_SEC))
-                dispatch_after(gcdT, dispatch_get_main_queue(), {
-                    self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-                })
-            }else{
-                progressHud.labelText = "提交失败"
-                progressHud.hide(true, afterDelay: 1)
-            }
-            request = nil
-        }
-        
-        let gcdTimer:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(15 * NSEC_PER_SEC))
-        dispatch_after(gcdTimer, dispatch_get_main_queue(), {
-            if request != nil {
-                request?.cancel()
-                request = nil
-                progressHud.labelText = "请求超时"
-                progressHud.hide(true, afterDelay: 1)
-                let alert:UIAlertView = UIAlertView(title: "错误", message: "请求超时，请检查网络配置", delegate: nil, cancelButtonTitle: "确定")
-                alert.show()
-            }
-        })
+        let alert = UIAlertView(title: "保存资料", message: "确定保存资料？", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+        alert.show()
     }
     
     func textFieldEditenable(sender:UIBarButtonItem) {
@@ -183,7 +126,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
             self.navigationItem.rightBarButtonItem = nil
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "完成", style: UIBarButtonItemStyle.Plain, target: self, action: "postJson:")
         }
-        self.tableView.editing = true
+        self.editable = true
         self.tableView.reloadData()
     }
     
@@ -207,12 +150,16 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
                         break
                     }
                 }
-                if isEditable {
-                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "完成", style: UIBarButtonItemStyle.Plain, target: self, action: "postJson:")
-                }else {
-                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "编辑", style: UIBarButtonItemStyle.Plain, target: self, action: "textFieldEditenable:")
+                if !isEditable {
                     break
                 }
+            }
+            if isEditable {
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.Plain, target: self, action: "postJson:")
+                self.editable = true;self.isNew = true
+            }else {
+                self.isNew = false
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "编辑", style: UIBarButtonItemStyle.Plain, target: self, action: "textFieldEditenable:")
             }
         }
     }
@@ -228,7 +175,12 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
             var cell = DetailTableViewCell(title: key, forjson: js)
             cell.superView = self
             cell.textDelegate = self
-            cell.editable = self.tableView.editing
+            cell.editable = self.editable
+            if cell.textfield.leftView != nil {
+                if !self.emptyAbleArray.containsObject(cell.itemInfo.title) && cell.textfield.text == "" {
+                    self.emptyAbleArray.addObject(cell.itemInfo.title)
+                }
+            }
             if self.postDic.count > 0 {             //填写表单时的数据填充
                 for rekey in self.postDic.allKeys {
                     if rekey as! String == jsons.dictionaryValue.keys.array[row] as String {
@@ -244,10 +196,13 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
     
     // MARK: - TableViewCellTextFieldDelegate
     func catchTextFieldvalue(value: String, key: String) {
+        if value == "" {
+            return
+        }
         self.postDic.setObject(value, forKey: key)
     }
     
-    func signEditingTextField(textfield: UITextField) {
+    func signEditingTextField(textfield: UITextField,cell:DetailTableViewCell) {
         if (self.resigntf != nil) {
             if self.resigntf == textfield {
                 return
@@ -258,6 +213,12 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
             self.resigntf = nil
         }
         self.resigntf = textfield
+        
+        if textfield.leftView != nil {
+            if !self.emptyAbleArray.containsObject(cell.itemInfo.title) {
+                self.emptyAbleArray.addObject(cell.itemInfo.title)
+            }
+        }
     }
 
     // MARK: - Table view data source
@@ -281,51 +242,53 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         return self.setCellFromAddJSON(indexPath.row, forjson: self.tag_Message.tableJson)
     }
-
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
+    
+    //MARK:--UIAlertViewDelegate
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 1 {
+            let keys:NSArray = self.postDic.allKeys
+            for key in self.emptyAbleArray {
+                if !keys.containsObject(key) {
+                    let alert:UIAlertView = UIAlertView(title: "错误", message: "请完成必填表单", delegate: nil, cancelButtonTitle: "确定")
+                    alert.show()
+                    return
+                }
+            }
+            var progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
+            self.navigationController?.view.addSubview(progressHud)
+            progressHud.labelText = "正在提交表单"
+            progressHud.show(true)
+            
+            let user_id: NSString = AppDelegate.app().getuser_idFromPlist()
+            self.postDic.setObject(AppDelegate.app().getoffline_id(), forKey: "offline_id")
+            
+            let pjs = JSON(self.postDic)
+            println(self.postDic)
+            let url = AppDelegate.app().ipUrl + config + "app/save-info"
+            NetworkRequest.AlamofirePostParameters(url,
+                parameters: ["pro_id":"\(self.pro_id)",
+                "data":"\(pjs)",
+                "db_table":"\(self.tag_Message.dbjson)",
+                    "user_id":"\(user_id)"], success: {(data) in
+                        if data as! String == "success" {
+                            progressHud.labelText = "提交成功"
+                            progressHud.mode = MBProgressHUDMode.CustomView
+                            progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
+                            progressHud.hide(true, afterDelay: 2)
+                            var gcdT:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * NSEC_PER_SEC))
+                            dispatch_after(gcdT, dispatch_get_main_queue(), {
+                                self.navigationController?.popToRootViewControllerAnimated(true)
+                            })
+                        }else{
+                            progressHud.labelText = "提交失败"
+                            progressHud.hide(true, afterDelay: 1)
+                        }
+                }, failed: {
+                        progressHud.labelText = "连接异常"
+                        progressHud.hide(true, afterDelay: 1)
+                }, outTime: {
+                    progressHud.labelText = "请求超时"
+                    progressHud.hide(true, afterDelay: 1)})
+        }
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

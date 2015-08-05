@@ -100,7 +100,6 @@ class MasterImageTableViewController: UITableViewController {
                 for (k,v) in value as! NSDictionary {
                     if k.description == "image" {
                         let url = AppDelegate.app().ipUrl + (v as! String)
-                        println(url)
                         cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                     }else if k.description == "url" {
                         var imgU:requestURL = requestURL(footer: "", URL: "", pro_id: "")

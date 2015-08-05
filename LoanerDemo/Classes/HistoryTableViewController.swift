@@ -58,19 +58,18 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
                     progressHud.hide(true, afterDelay: 1)})
     }
     
+    //MARK:--PopoverMenuViewDelegate
     func menuPopover(menuView: PopoverMenuView!, didSelectMenuItemAtIndex selectedIndex: Int) {
         let ip = "http://\(AppDelegate.app().IP)/"
         let keys = self.typeDic.allKeys
         let type:String = keys[selectedIndex] as! String
         var addView:BranchTableViewController = BranchTableViewController()
-        //addView.request = Alamofire.request(.GET, ip + config + typeURL + type)
         addView.url = AppDelegate.app().ipUrl + config + typeURL + type
         addView.typeOp.type = type
         addView.typeOp.typeName = self.typeDic.objectForKey(type) as! String
         addView.pro_id = "速评表"
         let nav:UINavigationController = UINavigationController(rootViewController: addView)
         self.navigationController?.presentViewController(nav, animated: true, completion: nil)
-            //pushViewController(addView, animated: true)
     }
 
     override func viewDidLoad() {
@@ -79,7 +78,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         self.refreshControl = UIRefreshControl(frame: CGRectMake(0, 0, self.tableView.frame.size.width, 100))
         self.refreshControl?.addTarget(self, action: "reload:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.tableHeaderView?.addSubview(self.refreshControl!)
-        self.reload(self.refreshControl!)
+        //self.reload(self.refreshControl!)
         
         self.activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
         self.activityView.frame = self.navigationController!.view.bounds
@@ -88,6 +87,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         self.view.addSubview(self.activityView)
         self.activityView.startAnimating()
         self.showActivityIndicatorViewInNavigationItem()
+        
     }
     
     func reload(sender:AnyObject) {
@@ -126,7 +126,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     }
     
     func hiddenActivityIndicatorViewInNavigationItem() {
-        self.navigationItem.titleView = nil
+        self.navigationItem.titleView = UIImageView(image: UIImage(named: "mainTitle"))
         self.navigationItem.prompt = nil
         self.refreshControl?.endRefreshing()
         self.activityView.stopAnimating()
@@ -160,8 +160,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "historyCell")
         if self.json.type == .Dictionary {
             var keys:NSArray = (self.json.object as! NSDictionary).allKeys
-            //let keys = array.sort
-            //println(keys)
+            //cell.selectionStyle = UITableViewCellSelectionStyle.None
             let key: AnyObject = self.sortJsonArray[indexPath.row]
             let js = self.json[key as! String]
             if js.type == .Dictionary {
@@ -193,9 +192,14 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
             browseView.pro_id = key as! String
             browseView.isAdd = false
             browseView.url = AppDelegate.app().ipUrl + config + readTableURL + "\(key)" + "&remark=" + AppDelegate.app().getuser_idFromPlist()
-            //browseView.request = Alamofire.request(.GET, ip  + config + readTableURL + "\(key)" + "&remark=" + "\(AppDelegate.app().getuser_idFromPlist())")
             let nav:UINavigationController = UINavigationController(rootViewController: browseView)
             self.navigationController?.presentViewController(nav, animated: true, completion: nil)
         }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.tableView.reloadData()
+        self.reload(self.refreshControl!)
+        //self.tableView.touchesShouldCancelInContentView(self.tableView)
     }
 }

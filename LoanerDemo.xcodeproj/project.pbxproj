@@ -71,6 +71,7 @@
 		C5374AC41B69C0F100A80625 /* UIImage+WebP.m in Sources */ = {isa = PBXBuildFile; fileRef = C5374AB41B69C0F100A80625 /* UIImage+WebP.m */; };
 		C5374AC51B69C0F100A80625 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C5374AB61B69C0F100A80625 /* UIImageView+HighlightedWebCache.m */; };
 		C5374AC61B69C0F100A80625 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C5374AB81B69C0F100A80625 /* UIView+WebCacheOperation.m */; };
+		C5479E711B70E2AD00A48227 /* BranchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5479E701B70E2AD00A48227 /* BranchItem.swift */; };
 		C55D298B1B4BC5BF003F714A /* login_input_rect.png in Resources */ = {isa = PBXBuildFile; fileRef = C55D298A1B4BC5BF003F714A /* login_input_rect.png */; };
 		C55D298E1B4BD134003F714A /* savepwn.png in Resources */ = {isa = PBXBuildFile; fileRef = C55D298C1B4BD134003F714A /* savepwn.png */; };
 		C55D298F1B4BD134003F714A /* savepws.png in Resources */ = {isa = PBXBuildFile; fileRef = C55D298D1B4BD134003F714A /* savepws.png */; };
@@ -289,6 +290,7 @@
 		C5374AB61B69C0F100A80625 /* UIImageView+HighlightedWebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+HighlightedWebCache.m"; path = "Classes/OCFile/ZLPhotoLib/Utils/Lib/SDWebImage/UIImageView+HighlightedWebCache.m"; sourceTree = "<group>"; };
 		C5374AB71B69C0F100A80625 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+WebCacheOperation.h"; path = "Classes/OCFile/ZLPhotoLib/Utils/Lib/SDWebImage/UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		C5374AB81B69C0F100A80625 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+WebCacheOperation.m"; path = "Classes/OCFile/ZLPhotoLib/Utils/Lib/SDWebImage/UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
+		C5479E701B70E2AD00A48227 /* BranchItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BranchItem.swift; path = Classes/BranchItem.swift; sourceTree = "<group>"; };
 		C55D29771B4BB620003F714A /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		C55D298A1B4BC5BF003F714A /* login_input_rect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = login_input_rect.png; path = Resources/login_input_rect.png; sourceTree = "<group>"; };
 		C55D298C1B4BD134003F714A /* savepwn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = savepwn.png; path = Resources/savepwn.png; sourceTree = "<group>"; };
@@ -407,6 +409,7 @@
 			isa = PBXGroup;
 			children = (
 				C5DE16FA1B67633300498C10 /* CameraManagerCenter.swift */,
+				C5479E701B70E2AD00A48227 /* BranchItem.swift */,
 				C5F218EE1B4AA9250072D445 /* NetworkRequest.swift */,
 				C5E71B6D1B6B643900FCE0A2 /* LoanerHelper.swift */,
 				C5D7B9B21B3A4DDF00823343 /* tableItemInfo.swift */,
@@ -854,7 +857,6 @@
 				TargetAttributes = {
 					C5D7B90C1B3909BE00823343 = {
 						CreatedOnToolsVersion = 6.3;
-						DevelopmentTeam = 37RRWFQN4Y;
 					};
 					C5D7B9211B3909BE00823343 = {
 						CreatedOnToolsVersion = 6.3;
@@ -1013,6 +1015,7 @@
 				C5D7B97F1B390D5E00823343 /* SelfTableViewController.swift in Sources */,
 				C5374A8B1B69C05300A80625 /* UIImageView+WebCache.m in Sources */,
 				C5D7B9751B390AC800823343 /* HistoryTableViewController.swift in Sources */,
+				C5479E711B70E2AD00A48227 /* BranchItem.swift in Sources */,
 				C5DC25841B4EBFA800BF188A /* TabBarViewController.swift in Sources */,
 				C5D9CC711B661E0900F603F0 /* AFHTTPRequestOperation.m in Sources */,
 				C5B9DA131B50C66600468BFE /* UIViewController+DropViewController.m in Sources */,
@@ -1177,15 +1180,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: zhongtou guotai  (Beijing) investment management co., LTD";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zhongtou guotai  (Beijing) investment management co., LTD";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = LoanerDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "车融资OA";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "57aa1a72-0cb5-4cd8-b870-c2bd69421454";
 				SWIFT_OBJC_BRIDGING_HEADER = "LoanerDemo/LoanerDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1197,15 +1201,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: zhongtou guotai  (Beijing) investment management co., LTD";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zhongtou guotai  (Beijing) investment management co., LTD";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = LoanerDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "车融资OA";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "57aa1a72-0cb5-4cd8-b870-c2bd69421454";
 				SWIFT_OBJC_BRIDGING_HEADER = "LoanerDemo/LoanerDemo-Bridging-Header.h";
 			};
 			name = Release;
