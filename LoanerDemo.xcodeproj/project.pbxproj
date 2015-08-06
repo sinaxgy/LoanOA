@@ -857,6 +857,7 @@
 				TargetAttributes = {
 					C5D7B90C1B3909BE00823343 = {
 						CreatedOnToolsVersion = 6.3;
+						DevelopmentTeam = 37RRWFQN4Y;
 					};
 					C5D7B9211B3909BE00823343 = {
 						CreatedOnToolsVersion = 6.3;
@@ -1192,6 +1193,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "LoanerDemo/LoanerDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1212,6 +1214,7 @@
 				PRODUCT_NAME = "车融资OA";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "LoanerDemo/LoanerDemo-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

@@ -44,7 +44,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
     func keyboardHide() {
         if self.resigntf != nil {
             self.resigntf.resignFirstResponder()
-            self.resigntf = nil
+            //self.resigntf = nil
         }
     }
     
@@ -181,7 +181,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
             }
             if self.postDic.count > 0 {             //填写表单时的数据填充
                 for rekey in self.postDic.allKeys {
-                    if rekey as! String == jsons.dictionaryValue.keys.array[row] as String {
+                    if rekey as! String == cell.itemInfo.title {
                         cell.textfield.text = self.postDic.objectForKey(rekey as! String) as! String
                         break
                     }

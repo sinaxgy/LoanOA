@@ -26,7 +26,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
         self.title = self.typeTitle.typeName
         var tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
         self.view.addGestureRecognizer(tapGesture)
-        self.checkValueEmptyForIsEdit()
+        //self.checkValueEmptyForIsEdit()
         if self.isAdd {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "完成", style: UIBarButtonItemStyle.Plain, target: self, action:"postJson")
         }
@@ -97,14 +97,14 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
             let cell = DetailTableViewCell(title: key, forjson: js)
             cell.superView = self
             cell.textDelegate = self
-            cell.editable = self.tableView.editing
+            cell.editable = self.isAdd
             
             if cell.textfield.leftView != nil {
                 cell.textfield.leftView = nil
             }
             if self.postDic.count > 0 {             //填写表单时的数据填充
                 for rekey in self.postDic.allKeys {
-                    if rekey as! String == jsons.dictionaryValue.keys.array[row] as String {
+                    if rekey as! String == cell.itemInfo.title {
                         cell.textfield.text = self.postDic.objectForKey(rekey as! String) as! String
                         break
                     }
@@ -148,6 +148,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
     func checkValueEmptyForIsEdit() {
         if self.json.type == .Dictionary {
             let dic:NSDictionary = (self.json.dictionary?[self.detailKeyArray.firstObject as! String]?.object as? NSDictionary)!
+            println(dic)
             for (key,value) in dic {
                 if key as! String == "value" {
                     if value as! String != "" {
@@ -156,8 +157,8 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
                         self.tableView.editing = true
                     }
                     self.tableView.reloadData()
+                    break
                 }
-                break
             }
         }
     }

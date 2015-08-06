@@ -19,7 +19,7 @@ struct requestURL {
 }
 
 let ipurl = "http://\(AppDelegate.app().IP)/"
-let placeholderImageName = "history"
+let placeholderImageName = "defaultimage"
 
 class MasterImageTableViewController: UITableViewController {
 

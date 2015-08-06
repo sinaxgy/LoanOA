@@ -112,29 +112,14 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         switch self.itemInfo.type {
         case "select":
-            switch UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) {
-            case .OrderedSame, .OrderedDescending:
-                var alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-                var cancelAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil)
-                alertController.addAction(cancelAction)
-                for key in self.itemInfo.options {
-                    var selectAction = UIAlertAction(title: "\(key)", style: UIAlertActionStyle.Default, handler: {(_) in
-                        self.textfield.text = key as! String
-                        self.textDelegate.catchTextFieldvalue(textField.text, key: self.itemInfo.title as String)
-                    })
-                    alertController.addAction(selectAction)
-                }
-                self.superView.presentViewController(alertController, animated: true, completion: nil)
-            case .OrderedAscending:
-                var selectSheet:UIActionSheet = UIActionSheet()
-                selectSheet.delegate = self
-                for key in self.itemInfo.options {
-                    selectSheet.addButtonWithTitle(key as! String)
-                }
-                selectSheet.addButtonWithTitle("取消")
-                selectSheet.cancelButtonIndex = selectSheet.numberOfButtons - 1
-                selectSheet.showInView(self.superView.view)
+            var selectSheet:UIActionSheet = UIActionSheet()
+            selectSheet.delegate = self
+            for key in self.itemInfo.options {
+                selectSheet.addButtonWithTitle(key as! String)
             }
+            selectSheet.addButtonWithTitle("取消")
+            selectSheet.cancelButtonIndex = selectSheet.numberOfButtons - 1
+            selectSheet.showInView(self.superView.view)
             return false
         default:
             return true

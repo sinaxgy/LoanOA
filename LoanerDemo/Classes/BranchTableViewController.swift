@@ -17,7 +17,7 @@ struct operationType {
 class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UIAlertViewDelegate,PopoverMenuViewDelegate{
     
     var isAdd:Bool = true
-    var pro_id:String = ""
+    var pro_id:String = "";var isShowNoti = false
     var typeOp = operationType(type: "", typeName: "")
     var dbjson:JSON = JSON.nullJSON
     var detailKeyArray:NSArray = []
@@ -64,7 +64,8 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                 case ("submitEnable","true"):       items.addObject(key)
                 case ("db_table",_):                self.dbjson = value
                 case ("dataRemark",_):
-                    if value != "" {
+                    if value != "" && !self.isShowNoti {
+                        self.isShowNoti = true
                         var hud = MBProgressHUD(view: self.navigationController?.view)
                         self.navigationController?.view.addSubview(hud)
                         hud.mode = MBProgressHUDMode.Text;
@@ -289,7 +290,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
         }else {
             var items:NSMutableArray = []
             for key in array {
-                if key as! String == "submitAction" {
+                if key as! String == "submitEnable" {
                     items.addObject("提交资料")
                 }
                 if key as! String == "specialAction" {
