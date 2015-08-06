@@ -55,7 +55,6 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
         
         let url = AppDelegate.app().ipUrl + config + self.tag_Message.suffixURL
         NetworkRequest.AlamofireGetJSON(url, success: {(data) in
-            println(data)
             let mainJSON = JSON(data!)
             if mainJSON.count == 0 {
                 progressHud.labelText = "后台数据异常"
@@ -64,7 +63,6 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
                 return
             }
             progressHud.hide(true)
-            println(mainJSON)
             let mainKeys = mainJSON.dictionary!.keys.array
             for key in mainKeys {
                 if let keyarray = mainJSON.dictionary?["arraysort"] {
@@ -200,6 +198,17 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
             return
         }
         self.postDic.setObject(value, forKey: key)
+        if key == "loan_term" {
+            let index = self.tag_Message.arraysort.indexOfObject("repay_method")
+            if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? DetailTableViewCell {
+                let strValue = value as NSString
+                if strValue.intValue < 31 {
+                    cell.textfield.text = "融满付息，到期还本"
+                }else {
+                    cell.textfield.text = "融满按月付息，到期还本"
+                }
+            }
+        }
     }
     
     func signEditingTextField(textfield: UITextField,cell:DetailTableViewCell) {
@@ -263,7 +272,6 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
             self.postDic.setObject(AppDelegate.app().getoffline_id(), forKey: "offline_id")
             
             let pjs = JSON(self.postDic)
-            println(self.postDic)
             let url = AppDelegate.app().ipUrl + config + "app/save-info"
             NetworkRequest.AlamofirePostParameters(url,
                 parameters: ["pro_id":"\(self.pro_id)",

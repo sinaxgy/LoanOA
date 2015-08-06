@@ -16,7 +16,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
     
     @IBOutlet weak var mutableCollection: UICollectionView!
     let mColCell = "mutableCollectionCell"
-    var imageUrlArray:NSMutableArray = []
+    var imageUrlArray:NSMutableArray = [];var editable = false
     var viewController:UIViewController = UIViewController()
     var selectedIndexPath:NSIndexPath = NSIndexPath()
     var tbName = "";var pro_id = "";var delegate:popMutablePhotoesDelegate!
@@ -40,7 +40,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let cell = self.mutableCollection.dequeueReusableCellWithReuseIdentifier(self.mColCell, forIndexPath: indexPath) as? SubPopCollectionViewCell {
-            let url = AppDelegate.app().ipUrl + (self.imageUrlArray[indexPath.row] as! String)
+            let url = AppDelegate.app().ipUrl + (self.imageUrlArray[indexPath.row] as! String) + "?\(arc4random() % 100)"
             cell.imageView.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
             
             var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
@@ -51,7 +51,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSizeMake(60, 80)
+        return CGSizeMake(80, 80)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -63,8 +63,6 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        println("collectionView")
-        println(indexPath.row)
         self.setupPhotoBrowser(indexPath)
     }
 
@@ -80,7 +78,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
     }
     
     func handleLongPress(recognizer:UIGestureRecognizer) {
-        if recognizer.state == UIGestureRecognizerState.Began {
+        if recognizer.state == UIGestureRecognizerState.Began && self.editable {
             if let index = self.mutableCollection.indexPathForCell((recognizer.view as? SubPopCollectionViewCell)!) {
                 self.selectedIndexPath = index
                 if index.row != self.imageUrlArray.count - 1 {      //最后一个
@@ -104,14 +102,12 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
             case 0:         //删除
                 let url = AppDelegate.app().ipUrl + config + "app/delete"
                 NetworkRequest.AlamofirePostParameters(url, parameters: ["path":"\(JSON([self.imageUrlArray[self.selectedIndexPath.row]]))"], success: {(data) in
-                    println(data)
                     if data as! String == "success" {
                         self.imageUrlArray.removeObjectAtIndex(self.selectedIndexPath.row)
                         self.mutableCollection.reloadData()
                         self.delegate.photoesDidBeChanged(self.imageUrlArray,cell: self)
                     }
                     }, failed: {}, outTime: {})
-                println("0")
             case 2:         //替换
                 var sheetAction:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "从相册中选取","打开照相机")
                 sheetAction.tag = 219
@@ -168,11 +164,18 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
         }
         
+        if image.imageOrientation != UIImageOrientation.Up {
+            UIGraphicsBeginImageContext(image.size)
+            image.drawInRect(CGRectMake(0, 0, image.size.width, image.size.height))
+            image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+        }
+        
         if let cell:SubPopCollectionViewCell = (self.mutableCollection.cellForItemAtIndexPath(self.selectedIndexPath) as? SubPopCollectionViewCell) {
             var hud:MBProgressHUD = MBProgressHUD(view: cell.contentView)
             cell.contentView.addSubview(hud)
             hud.show(true)
-            let str = "pro_id=\(self.pro_id)&filename=\(self.tbName)&page=\(self.selectedIndexPath.row)&nsdata="
+            let str = "pro_id=\(self.pro_id)&filename=\(self.tbName)&page=\(self.selectedIndexPath.row + 1)&nsdata="
             var uploadData:NSMutableData = NSMutableData()
             uploadData.appendString(str)
             uploadData.appendData(UIImagePNGRepresentation(image))
@@ -182,16 +185,13 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
                 let sub:Float = Float(totalBytesWritten) * 0.000977
                 let sup:Float = Float(totalBytesExpectedToWrite) * 0.000977
                 hud.progress = sub/sup
-                println("totalBytesWritten:\(totalBytesWritten/1024)")
-                println("totalBytesExpectedToWrite:\(totalBytesExpectedToWrite/1024)")
                 }, success: {
                     data in
-                    println(data)
                     if data == nil {println("empty return");return}
                     hud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
                     hud.mode = MBProgressHUDMode.CustomView
                     hud.hide(true, afterDelay: 1)
-                    self.imageUrlArray.replaceObjectAtIndex(self.selectedIndexPath.row, withObject: data as! String)
+                    //self.imageUrlArray.replaceObjectAtIndex(self.selectedIndexPath.row, withObject: data as! String)
                     self.delegate.photoesDidBeChanged(self.imageUrlArray,cell: self)
                     self.mutableCollection.reloadData()
                 },failed:{
@@ -224,9 +224,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
     }
     
     func photoBrowser(pickerBrowser: ZLPhotoPickerBrowserViewController!, photoAtIndexPath indexPath: NSIndexPath!) -> ZLPhotoPickerBrowserPhoto! {
-        let str: String = AppDelegate.app().ipUrl + (self.imageUrlArray[indexPath.row] as! String)
-        println(indexPath.row)
-        println(str)
+        let str: String = AppDelegate.app().ipUrl  + LoanerHelper.OriginalImageURLStrWithSmallURLStr(self.imageUrlArray[indexPath.row] as! String) + "?\(arc4random() % 100)"
         var photo:ZLPhotoPickerBrowserPhoto = ZLPhotoPickerBrowserPhoto(anyImageObjWith: str)
         if let cell = self.mutableCollection.cellForItemAtIndexPath(indexPath) as? SubPopCollectionViewCell {
             photo.toView = cell.imageView
@@ -253,8 +251,8 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
                     let image = asset.originImage()
                     let imageData:NSData = UIImagePNGRepresentation(image)
                     dispatch_group_async(group, queue, {
-                        let str = "pro_id=\(self.pro_id)&filename=\(self.tbName)&page=\(currentIndexPath.row)&nsdata="
-                        println(str);let url = "\(AppDelegate.app().ipUrl)" + config + uploadUrl
+                        let str = "pro_id=\(self.pro_id)&filename=\(self.tbName)&page=\(currentIndexPath.row + 1)&nsdata="
+                        let url = "\(AppDelegate.app().ipUrl)" + config + uploadUrl
                         var uploadData:NSMutableData = NSMutableData()
                         uploadData.appendString(str)
                         uploadData.appendData(imageData)
@@ -265,9 +263,8 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
                             hud.progress = sub/sup
                             }, success: {(data) in
                                 if data == nil {println("empty return");hud.hide(true);return}
-                                println("completion>>>>>>>>>>>>>>>>>>>");println(data)
                                 hud.hide(true)
-                                self.imageUrlArray.replaceObjectAtIndex(currentIndexPath.row, withObject: data as! String)
+                                //self.imageUrlArray.replaceObjectAtIndex(currentIndexPath.row, withObject: data as! String)
                                 self.delegate.photoesDidBeChanged(self.imageUrlArray,cell: self)
                                 self.mutableCollection.reloadData()
                             }, failed: {},outTime:{})

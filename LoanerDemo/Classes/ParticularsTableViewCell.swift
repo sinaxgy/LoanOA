@@ -143,7 +143,6 @@ class ParticularsTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFie
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        println("2")
         // Initialization code
     }
 

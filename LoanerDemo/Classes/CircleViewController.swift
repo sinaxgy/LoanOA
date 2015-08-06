@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class CircleViewController: UIViewController ,PopoverMenuViewDelegate{
+class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertViewDelegate{
 
     @IBOutlet weak var sumLabel: UILabel!
     @IBOutlet weak var msgLabel: UILabel!
@@ -75,7 +75,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate{
                 progressHud.hide(true, afterDelay: 2)
                 let gcdTimer:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(3 * NSEC_PER_SEC))
                 dispatch_after(gcdTimer, dispatch_get_main_queue(), {
-                    self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                    self.navigationController?.popToRootViewControllerAnimated(true)
                 })
             }else {
                 progressHud.labelText = "提交失败"
@@ -88,8 +88,12 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate{
         if (self.menuView != nil) {
             self.menuView.dismissMenuPopover()
         }
-        let menuItem = ["同意","不同意","关闭项目"]
-        self.menuView = PopoverMenuView(frame: CGRectMake(self.view.bounds.width - 150, 70, 140.0, 3*44.0), menuItems: menuItem)
+        var menuItem = ["同意","不同意","关闭项目"]
+        if self.title == "业务部反馈" {
+            menuItem = ["同意","不同意"]
+        }
+        self.menuView = PopoverMenuView(frame: CGRectMake(self.view.bounds.width - 150, 70, 140.0, CGFloat(menuItem.count) * 44.0), menuItems: menuItem)
+        self.menuView.tag = menuItem.count
         self.menuView.menuPopoverDelegate = self
         self.menuView.showInView(self.view)
     }
@@ -140,20 +144,25 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate{
         var submitDic:NSMutableDictionary = NSMutableDictionary()
         submitDic.setValue(user_id, forKey: "user_id")
         submitDic.setValue(self.pro_id, forKey: "pro_id")
-        
         var footerURL:String = ""
-        
         self.menuView.dismissMenuPopover()
         switch selectedIndex {
         case 0:
             footerURL = "agree"
         case 1:
+            if menuView.tag == 2 {
+                let alert = UIAlertView(title: "警告", message: "不同意业务部建议即将关闭项目！确定关闭？", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+                alert.show()
+                return
+            }
             let feedbackVC:CircleViewController = CircleViewController()
             feedbackVC.pro_id = self.pro_id
             self.navigationController?.pushViewController(feedbackVC, animated: true)
             return
         case 2:
-            footerURL = "close"
+            let alert = UIAlertView(title: "警告", message: "不同意业务部建议即将关闭项目！确定关闭？", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+            alert.show()
+            return
         default:
             break
         }
@@ -175,10 +184,45 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate{
                 progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
                 progressHud.hide(true, afterDelay: 2)
                 sleep(2)
-                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                self.navigationController?.popToRootViewControllerAnimated(true)
             }else{
                 progressHud.labelText = "提交失败"
                 progressHud.hide(true, afterDelay: 1)
+            }
+        }
+    }
+    
+    //MARK:--UIAlertViewDelegate
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 1 {
+            let user_id:NSString = AppDelegate.app().getuser_idFromPlist()
+            var submitDic:NSMutableDictionary = NSMutableDictionary()
+            submitDic.setValue(user_id, forKey: "user_id")
+            submitDic.setValue(self.pro_id, forKey: "pro_id")
+            self.menuView.dismissMenuPopover()
+            let progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
+            self.navigationController?.view.addSubview(progressHud)
+            progressHud.labelText = "正在提交"
+            progressHud.show(true)
+            
+            var request: Alamofire.Request?
+            let js:JSON = JSON(submitDic)
+            let ip = "http://\(AppDelegate.app().IP)/"
+            request = Alamofire.request(.POST, ip + config + "app/close",
+                parameters: ["data":"\(js)"])
+            request?.responseString() { (_, _, data, error) in
+                //println(data)
+                if data == "success" {
+                    progressHud.labelText = "提交成功"
+                    progressHud.mode = MBProgressHUDMode.CustomView
+                    progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
+                    progressHud.hide(true, afterDelay: 2)
+                    sleep(2)
+                    self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                }else{
+                    progressHud.labelText = "提交失败"
+                    progressHud.hide(true, afterDelay: 1)
+                }
             }
         }
     }

@@ -19,7 +19,6 @@ class NetworkRequest: NSObject {
     
     static func AlamofireGetJSON(url:String,success:(AnyObject?)->Void,failed:()->Void,outTime:()->Void) {
         var request: Alamofire.Request!
-        println(url)
         request = Alamofire.request(.GET, url)
         request.responseJSON() {
             (_,_,data,error) in
@@ -40,7 +39,6 @@ class NetworkRequest: NSObject {
     
     static func AlamofirePostParameters(url:String,parameters:[String:AnyObject]?,success:(AnyObject?)->Void,failed:()->Void,outTime:()->Void) {
         var request: Alamofire.Request!
-        println(url)
         request = Alamofire.request(.POST, url, parameters: parameters)
         request.responseString() {
             (_,_,data,error) in

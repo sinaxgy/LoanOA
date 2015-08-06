@@ -71,7 +71,6 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                         hud.show(true)
                         hud.detailsLabelFont = UIFont.systemFontOfSize(15)
                         hud.detailsLabelText = "\(value)"
-                        println(hud.labelText)
                         hud.hide(true, afterDelay: 3)
                     }
                 case ("view",_):
@@ -81,9 +80,9 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                         alert.show()
                         return
                     }
-                    for (vKey,vValue) in value {
+                    for (vKey,vValue) in value {    //vValue为标签数组的标签元素
                         //遍历各标签
-                        for (kk,vv) in vValue {     //vValue为标签
+                        for (kk,vv) in vValue {     //vv，标签元素对应的value值
                             //标签层属性
                             var branchItem:BranchItem = BranchItem()
                             for (k,v) in vv {       //遍历标签层属性
@@ -113,7 +112,6 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                 }
             }
             if items.count > 0 {
-                println(items.count);println("items.count>>>>>>>>>>")
                 self.createMenuWithArray(items)
             }
             self.tableView.reloadData()
@@ -169,6 +167,11 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                     imageVC.picURL.footer = branch.data.description
                     imageVC.title = "图片上传"
                     imageVC.pro_id = self.pro_id
+                    if branch.editable == "true" {
+                        imageVC.editable = true
+                    }else if branch.editable == "false" {
+                        imageVC.editable = false
+                    }
                     self.navigationController?.pushViewController(imageVC, animated: true)
                     return
                 }else {
@@ -185,6 +188,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
             case 2:
                 let circleVC:CircleViewController = CircleViewController()
                 circleVC.json = branch.data
+                circleVC.title = branch.tag_name
                 circleVC.pro_id = self.pro_id
                 self.navigationController?.pushViewController(circleVC, animated: true)
             case 13,14:
@@ -205,8 +209,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
     
     //MARK: barButtonAction
     func submitAction() {
-        println("submitting")
-        var alert:UIAlertView = UIAlertView(title: "提交资料", message: "确定提交项目资料？次项目将进入下一流程！", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+        var alert:UIAlertView = UIAlertView(title: "提交资料", message: "确定提交项目资料？此项目将进入下一流程！", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
         alert.tag = 12
         alert.show()
     }
@@ -252,7 +255,6 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
             progressHud.show(true)
             
             NetworkRequest.AlamofirePostParameters(url, parameters: ["data":"\(JSON(submitDic))"], success: {(data) in
-                println(data)
                 if data as! String == "success" {
                     progressHud.mode = MBProgressHUDMode.CustomView
                     progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
@@ -281,13 +283,13 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
         }
         if array.count == 1 {
             if array.firstObject as! String == "submitEnable" {
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "submitEnable")
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "submitAction")
                 return
             }
         }else {
             var items:NSMutableArray = []
             for key in array {
-                if key as! String == "submitEnable" {
+                if key as! String == "submitAction" {
                     items.addObject("提交资料")
                 }
                 if key as! String == "specialAction" {

@@ -31,7 +31,6 @@ class MutableTableViewCell: UITableViewCell {
     }
     
     @IBAction func showSubViewClicked(sender: UIButton) {
-        println("showSubViewClicked")
         self.showBtn.selected = !self.showBtn.selected
         self.delagate.mutablePhotoesDidBeshowedMore(self,isShow: self.showBtn.selected)
     }

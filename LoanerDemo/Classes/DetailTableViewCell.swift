@@ -16,7 +16,7 @@ protocol AddTableViewCellTextFieldDelegate {
 
 class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDelegate,DatePickerViewDateDelegate{
     
-    let disenableTableArray = ["pro_num","pro_title","service_type","loan_period","offline_id"]
+    let disenableTableArray = ["pro_num","pro_title","service_type","loan_period","offline_id","repay_method"]
     var itemInfo:tableItemInfo!
     var editable:Bool? {
         didSet{
@@ -146,6 +146,23 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
             let alert = UIAlertView(title: "警告", message: "此项不可为空", delegate: nil, cancelButtonTitle: "确定")
             alert.show()
             return false
+        }
+        if self.itemInfo.type == "text" && self.itemInfo.options.count > 0 {
+            for key in self.itemInfo.options {
+                if key as! String != "must" {
+                    let msg = LoanerHelper.vaildInputWith(key as! String, targetString: textField.text)
+                    if msg != nil {
+                        var vaildHud:MBProgressHUD = MBProgressHUD(view: self.superView.view)
+                        self.superView.view.addSubview(vaildHud)
+                        vaildHud.show(true)
+                        vaildHud.mode = MBProgressHUDMode.Text
+                        vaildHud.detailsLabelText = msg
+                        vaildHud.detailsLabelFont = UIFont.systemFontOfSize(17)
+                        vaildHud.hide(true, afterDelay: 2)
+                        return false
+                    }
+                }
+            }
         }
         textDelegate.catchTextFieldvalue(textField.text, key: self.itemInfo.title as String)
         return true

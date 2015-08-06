@@ -7,6 +7,7 @@
 //
 
 #import "PopupAnimationView.h"
+#import "MBProgressHUD.h"
 
 @implementation PopupAnimationView
 @synthesize okButton,idLabel,idText,parentVC,popupDelegete;
@@ -78,6 +79,12 @@
     return YES;
 }
 
+-(BOOL)isVaildIP:(NSString*)str {
+    NSString*pre = @"^\\d{1,3}(.\\d{1,3}){3}(:\\d{1,4})?";
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",pre];
+    return [predicate evaluateWithObject:str];
+}
+
 #pragma mark UITextFieldDelegate
 //处理键盘弹出时会遮盖单行输入框的问题，将视图上移
 -(void)textFieldDidBeginEditing:(UITextField *)textField
@@ -92,5 +99,20 @@
     [UIView commitAnimations];
 }
 
+//- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+//{
+//    if (![self isVaildIP:textField.text]) {
+//        MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.parentVC.view];
+//        [self.parentVC.view addSubview:hud];
+//        [hud show:true];
+//        hud.mode = MBProgressHUDModeText;
+//        hud.detailsLabelFont = [UIFont systemFontOfSize:17];
+//        hud.detailsLabelText = @"请输入正确格式的IP地址\n端口号使用:连接";
+//        [hud hide:true afterDelay:2];
+//        return false;
+//    }
+//    [self personalMsgEdited];
+//    return true;
+//}
 
 @end

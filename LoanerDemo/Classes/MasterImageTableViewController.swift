@@ -27,7 +27,7 @@ class MasterImageTableViewController: UITableViewController {
     var masterJson:JSON = JSON.nullJSON
     var masterSubURL:NSMutableArray = []
     var titleArray:NSMutableArray = []
-    let kSingleCell = "singleCell"
+    let kSingleCell = "singleCell";var editable = false
     var pro_id = ""
     
     override func viewDidLoad() {
@@ -99,7 +99,7 @@ class MasterImageTableViewController: UITableViewController {
                 self.titleArray.addObject(key.description)
                 for (k,v) in value as! NSDictionary {
                     if k.description == "image" {
-                        let url = AppDelegate.app().ipUrl + (v as! String)
+                        let url = AppDelegate.app().ipUrl + (v as! String) + "?\(arc4random() % 100)"
                         cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                     }else if k.description == "url" {
                         var imgU:requestURL = requestURL(footer: "", URL: "", pro_id: "")
@@ -119,6 +119,7 @@ class MasterImageTableViewController: UITableViewController {
         var subPicVC:SubPicTableViewController = SubPicTableViewController()
         subPicVC.title = self.titleArray[indexPath.row] as? String
         subPicVC.subURL = self.masterSubURL[indexPath.row] as! String
+        subPicVC.editable = self.editable
         subPicVC.pro_id = self.pro_id
         self.navigationController?.pushViewController(subPicVC, animated: true)
     }

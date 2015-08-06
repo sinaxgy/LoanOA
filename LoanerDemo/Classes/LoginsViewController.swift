@@ -171,6 +171,16 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
     
     //MARK: --personalMessageEditDelegete
     func textfieldMessageID(idunique: String!) {
+        if !LoanerHelper.isvaildIP(idunique) {
+            var hud = MBProgressHUD(view: self.view)
+            self.view.addSubview(hud)
+            hud.show(true)
+            hud.mode = MBProgressHUDMode.Text
+            hud.detailsLabelText = "请务必输入正确格式的IP地址\n端口号使用:连接"
+            hud.detailsLabelFont = UIFont.systemFontOfSize(17)
+            hud.hide(true, afterDelay: 2)
+            return
+        }
         AppDelegate.app().IP = idunique
         AppDelegate.app().ipUrl = "http://\(idunique)/"
     }

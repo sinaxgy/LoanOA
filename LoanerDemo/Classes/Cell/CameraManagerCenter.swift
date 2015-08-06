@@ -78,7 +78,6 @@ class CameraManageCenter: NSObject ,UIImagePickerControllerDelegate,UINavigation
         if picker.sourceType == UIImagePickerControllerSourceType.Camera {
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
         }
-        println("camera!!!")
         self.cameraDelegate.cameraManagerImage(image)
     }
     

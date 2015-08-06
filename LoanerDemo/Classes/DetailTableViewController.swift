@@ -35,7 +35,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
     func keyboardHide() {
         if self.resigntf != nil {
             self.resigntf.resignFirstResponder()
-            self.resigntf = nil
+            //self.resigntf = nil
         }
     }
 
@@ -179,7 +179,6 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
                 parameters: ["service_type":"\(self.typeTitle.type)","data":"\(pjs)","db_table":"\(self.dbjson)",
                 "user_id":"\(user_id)"],
                 success: {(data) in
-                    println(data)
                     if data as! String == "success" {
                         progressHud.labelText = "提交成功"
                         progressHud.mode = MBProgressHUDMode.CustomView
