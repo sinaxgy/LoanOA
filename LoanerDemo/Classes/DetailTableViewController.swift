@@ -53,6 +53,10 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
         return self.detailKeyArray.count
     }
     
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return cellHeight
+    }
+    
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return false
     }

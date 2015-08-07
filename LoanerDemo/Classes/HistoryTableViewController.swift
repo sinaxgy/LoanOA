@@ -9,6 +9,11 @@
 import UIKit
 import Foundation
 
+let isIphone = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.Phone ? true:false)
+let detailFontSize:CGFloat = (isIphone ? 12 : 24)
+let textFontSize:CGFloat = (isIphone ? 17 : 34)
+let cellHeight:CGFloat = (isIphone ? 55 : 100)
+
 class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate{
     
     var activityView:UIActivityIndicatorView!
@@ -73,7 +78,6 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     }
 
     override func viewDidLoad() {
-        self.tabBarItem.badgeValue = "12"
         super.viewDidLoad()
         self.refreshControl = UIRefreshControl(frame: CGRectMake(0, 0, self.tableView.frame.size.width, 100))
         self.refreshControl?.addTarget(self, action: "reload:", forControlEvents: UIControlEvents.ValueChanged)
@@ -146,7 +150,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 55
+        return cellHeight
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -167,9 +171,10 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
                 if js.count == 1 {
                     let text: AnyObject? = (js.object as! NSDictionary).allKeys.first
                     cell.textLabel?.text = text?.description
+                    cell.textLabel?.font = UIFont.systemFontOfSize(textFontSize)
                     let detail = js[text as! String]
                     cell.detailTextLabel?.text = detail.description
-                    cell.detailTextLabel?.font = UIFont.systemFontOfSize(12)
+                    cell.detailTextLabel?.font = UIFont.systemFontOfSize(detailFontSize)
                     cell.detailTextLabel?.textColor = UIColor.grayColor()
                 }
             }

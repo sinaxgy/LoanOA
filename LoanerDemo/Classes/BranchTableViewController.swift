@@ -141,6 +141,10 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
         // Return the number of rows in the section.
         return self.branchItems.count
     }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return cellHeight
+    }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "cell")
@@ -151,8 +155,10 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                 textAttach.image = UIImage(named: "mustMark")
                 var str:NSAttributedString = NSAttributedString(attachment: textAttach)
                 cell.textLabel?.attributedText = str
+                
             }
             cell.textLabel?.text = branch.tag_name
+            cell.textLabel?.font = UIFont.systemFontOfSize(textFontSize)
         }
         return cell
     }

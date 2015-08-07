@@ -55,7 +55,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(15, 15, 5, 15)
+        return UIEdgeInsetsMake(0, 0, 0, 0)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {

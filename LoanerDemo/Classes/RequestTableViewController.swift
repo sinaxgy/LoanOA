@@ -244,6 +244,10 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
         return self.tag_Message.tableJson.count
     }
     
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return cellHeight
+    }
+    
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return false
     }

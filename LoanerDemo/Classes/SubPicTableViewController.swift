@@ -10,6 +10,14 @@ import UIKit
 import AVFoundation
 
 let parallelNum = 2
+//MARK:--自定义运算符
+infix operator %+ {associativity left precedence 150}
+func %+ (left:Int,right:Int) -> Int {
+    if left % right != 0 {
+        return left / right + 1
+    }
+    return left / right
+}
 
 extension NSMutableData {
     func appendString(string: String) {
@@ -95,9 +103,10 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if let item = self.tableArray[indexPath.row] as? NSArray {
-            return 130
+            let k = item.count %+ Int(UIScreen.mainScreen().bounds.width / 90)
+            return CGFloat(k) * 100
         }
-        return 60
+        return cellHeight
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

@@ -51,7 +51,7 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
     
     func initView() {
         var titleLabel:UILabel = UILabel(frame: CGRectMake(10, self.bounds.height / 2 - 20, 150, 40))
-        titleLabel.font = UIFont.systemFontOfSize(14)
+        titleLabel.font = UIFont.systemFontOfSize(textFontSize)
         titleLabel.text = self.itemInfo.explain as String
         
         self.addSubview(titleLabel)
@@ -69,7 +69,7 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
         textfield.clearButtonMode = UITextFieldViewMode.WhileEditing
         textfield.delegate = self
         textfield.borderStyle = UITextBorderStyle.RoundedRect
-        textfield.font = UIFont.systemFontOfSize(13)
+        textfield.font = UIFont.systemFontOfSize(detailFontSize)
         textfield.textAlignment = NSTextAlignment.Right
         textfield.keyboardType = UIKeyboardType.Default
         self.textfield.enabled = self.editable!
