@@ -11,7 +11,7 @@ import Foundation
 
 let isIphone = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.Phone ? true:false)
 let detailFontSize:CGFloat = (isIphone ? 12 : 24)
-let textFontSize:CGFloat = (isIphone ? 17 : 34)
+let textFontSize:CGFloat = (isIphone ? 15 : 34)
 let cellHeight:CGFloat = (isIphone ? 55 : 100)
 
 class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate{

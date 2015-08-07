@@ -10,7 +10,7 @@ import UIKit
 
 protocol TableViewCellTextFieldDelegate {
     func catchTextFieldvalue(value:String ,key:String)
-    func signEditingTextField(textfield:UITextField)
+    func signEditingTextField(textfield:UITextField,cell:ParticularsTableViewCell)
 }
 
 class ParticularsTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDelegate,DatePickerViewDateDelegate{
@@ -40,7 +40,7 @@ class ParticularsTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFie
     
     //MARK:--UITextFieldDelegate
     func textFieldDidBeginEditing(textField: UITextField) {
-        self.textDelegate.signEditingTextField(textField)
+        self.textDelegate.signEditingTextField(textField,cell: self)
     }
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {

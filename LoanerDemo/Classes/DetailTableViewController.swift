@@ -53,9 +53,9 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
         return self.detailKeyArray.count
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return cellHeight
-    }
+//    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        return cellHeight
+//    }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return false
@@ -102,7 +102,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
             cell.superView = self
             cell.textDelegate = self
             cell.editable = self.isAdd
-            
+            cell.titleLabel.textColor = UIColor.blackColor()
             if cell.textfield.leftView != nil {
                 cell.textfield.leftView = nil
             }
@@ -119,36 +119,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
         return UITableViewCell()
     }
     
-    func setCellFromJSON(row: Int, twojson:JSON) -> UITableViewCell{
-        let key = twojson.dictionaryValue.keys.array[row]
-        if let js = twojson.dictionary?[key] {
-            let cell = DetailTableViewCell(title: key, twojson: js)
-            cell.superView = self
-            cell.textDelegate = self
-            return cell
-        }
-        return UITableViewCell()
-    }
-    
-    func setCellFromDictionary(row: Int,dic:NSDictionary) -> UITableViewCell {
-        let array:NSArray = dic.allKeys
-        if let text:String = dic.objectForKey(array[row]) as? String {
-            let cell = DetailTableViewCell(value: text, key: array[row] as! String)
-            cell.superView = self
-            cell.textDelegate = self
-            if self.postDic.count > 0 {             //填写表单时的数据填充
-                for rekey in self.postDic.allKeys {
-                    if rekey as! String == array[row] as! String {
-                        cell.textfield.text = self.postDic.objectForKey(rekey as! String) as! String
-                        break
-                    }
-                }
-            }
-            return cell
-        }
-        return UITableViewCell()
-    }
-    
+        
     func checkValueEmptyForIsEdit() {
         if self.json.type == .Dictionary {
             let dic:NSDictionary = (self.json.dictionary?[self.detailKeyArray.firstObject as! String]?.object as? NSDictionary)!

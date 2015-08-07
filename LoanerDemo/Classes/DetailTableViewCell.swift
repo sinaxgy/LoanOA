@@ -18,11 +18,13 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
     
     let disenableTableArray = ["pro_num","pro_title","service_type","loan_period","offline_id","repay_method"]
     var itemInfo:tableItemInfo!
-    var editable:Bool? {
+    let labelSize:CGSize = (isIphone ? CGSizeMake(160,40) : CGSizeMake(320,80))
+    var editable:Bool! {
         didSet{
             self.initTextField()
         }
     }
+    var titleLabel:UILabel!
     var textfield:UITextField!
     var superView:UIViewController!
     var textDelegate:AddTableViewCellTextFieldDelegate!
@@ -34,58 +36,44 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
         self.initView()
     }
     
-    init(title:String, twojson:JSON){
-        super.init(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "detailCell")
-        self.selectionStyle = UITableViewCellSelectionStyle.None
-        self.itemInfo = tableItemInfo(value: title, twojson: twojson)
-        self.itemInfo.type = "text"
-        self.initView()
-    }
-    
-    init(value:String,key:String) {
-        super.init(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "detailCell")
-        self.selectionStyle = UITableViewCellSelectionStyle.None
-        self.itemInfo = tableItemInfo(value: value, key: key)
-        self.initView()
-    }
-    
     func initView() {
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(10, self.bounds.height / 2 - 20, 150, 40))
+        titleLabel = UILabel(frame: CGRectMake(10, self.bounds.height / 2 - 20, labelSize.width, labelSize.height))
         titleLabel.font = UIFont.systemFontOfSize(textFontSize)
-        titleLabel.text = self.itemInfo.explain as String
-        
+        titleLabel.text = "\(self.itemInfo.explain):"
         self.addSubview(titleLabel)
         
-        //self.initTextField()
+        if self.itemInfo.options.count > 0{
+            for key in self.itemInfo.options {
+                if key as! String == "must" {
+                    titleLabel.textColor = UIColor.redColor()
+                }
+            }
+        }
     }
     
     //MARK: -- 文本框设置
     func initTextField(){
         let rect = UIScreen.mainScreen().bounds
-        textfield = UITextField(frame: CGRectMake(160, self.bounds.height / 2 - 15, rect.width - 160, 30))
+        textfield = UITextField(frame: CGRectMake(labelSize.width + 10, self.bounds.height / 2 - textFontSize, rect.width - labelSize.width - 15, labelSize.height - 10))
         textfield.layer.cornerRadius = 6
-        textfield.borderStyle = UITextBorderStyle.RoundedRect
         textfield.autocorrectionType = UITextAutocorrectionType.No
         textfield.clearButtonMode = UITextFieldViewMode.WhileEditing
         textfield.delegate = self
+        textfield.borderStyle = UITextBorderStyle.None
+        textfield.layer.borderColor = UIColor.clearColor().CGColor
         textfield.borderStyle = UITextBorderStyle.RoundedRect
         textfield.font = UIFont.systemFontOfSize(detailFontSize)
-        textfield.textAlignment = NSTextAlignment.Right
+        textfield.textAlignment = NSTextAlignment.Left
         textfield.keyboardType = UIKeyboardType.Default
-        self.textfield.enabled = self.editable!
+        self.textfield.enabled = self.editable
+        if self.textfield.enabled {
+            textfield.placeholder = "请输入\(self.itemInfo.explain)"
+        }
         for table in disenableTableArray {
             if table as String == self.itemInfo.title {
                 self.textfield.enabled = false
+                self.textfield.textColor = UIColor.grayColor()
                 break
-            }
-        }
-        
-        if self.itemInfo.options.count > 0{
-            for key in self.itemInfo.options {
-                if key as! String == "must" {
-                    self.textfield.leftView = UIImageView(image: UIImage(named: "mustMark"))
-                    self.textfield.leftViewMode = UITextFieldViewMode.Always
-                }
             }
         }
         
@@ -103,10 +91,6 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
     func textFieldDidBeginEditing(textField: UITextField) {
         self.textDelegate.signEditingTextField(textField,cell:self)
     }
-    
-//    func textFieldDidBeginEditing(textField: UITextField) {
-//        self.textDelegate.signEditingTextField(textField)
-//    }
     
     //MARK:-- UITextFieldDelegate
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
@@ -128,9 +112,9 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
 
     func textFieldShouldEndEditing(textField: UITextField) -> Bool {
         if textField.text == "" && textField.leftView != nil {
-            let alert = UIAlertView(title: "警告", message: "此项不可为空", delegate: nil, cancelButtonTitle: "确定")
-            alert.show()
-            return false
+            textField.layer.borderColor = UIColor.redColor().CGColor
+            textField.layer.borderWidth = 3
+            return true
         }
         if self.itemInfo.type == "text" && self.itemInfo.options.count > 0 {
             for key in self.itemInfo.options {
@@ -143,12 +127,17 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
                         vaildHud.mode = MBProgressHUDMode.Text
                         vaildHud.detailsLabelText = msg
                         vaildHud.detailsLabelFont = UIFont.systemFontOfSize(17)
-                        vaildHud.hide(true, afterDelay: 2)
-                        return false
+                        vaildHud.hide(true, afterDelay: 1)
+                        textField.layer.borderColor = UIColor.redColor().CGColor
+                        textfield.textAlignment = NSTextAlignment.Center
+                        textField.layer.borderWidth = 3
+                        return true
                     }
                 }
             }
         }
+        textfield.layer.borderColor = UIColor.clearColor().CGColor
+        textfield.textAlignment = NSTextAlignment.Left
         textDelegate.catchTextFieldvalue(textField.text, key: self.itemInfo.title as String)
         return true
     }
