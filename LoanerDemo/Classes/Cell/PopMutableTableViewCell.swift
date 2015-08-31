@@ -126,7 +126,24 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
                 break
             }
 
-        case 219:
+//        case 219:
+//            switch buttonIndex {
+//            case 1:             //从相册中选取
+//                self.openZLPhotoSinglePicker()
+//            case 2:             //打开照相机
+//                self.takePhoto()
+//                break
+//            default:
+//                break
+//            }
+
+        default:
+            break
+        }
+    }
+    
+    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
+        if actionSheet.tag == 219 {
             switch buttonIndex {
             case 1:             //从相册中选取
                 self.openZLPhotoSinglePicker()
@@ -137,8 +154,6 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
                 break
             }
 
-        default:
-            break
         }
     }
     

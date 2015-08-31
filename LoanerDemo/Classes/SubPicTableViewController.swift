@@ -121,7 +121,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                     }
                     cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                     cell.subTextLabel?.text = item.date
-                    cell.selectionStyle = UITableViewCellSelectionStyle.None
+                    //cell.selectionStyle = UITableViewCellSelectionStyle.None
                     
                     var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
                     cell.addGestureRecognizer(longPress)
@@ -143,7 +143,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                     var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
                     cell.addGestureRecognizer(longPress)
                     
-                    cell.selectionStyle = UITableViewCellSelectionStyle.None
+                    //cell.selectionStyle = UITableViewCellSelectionStyle.None
                     return cell
                 }
             }
@@ -157,6 +157,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 cell.delegate = self
                 cell.imageUrlArray = self.tableArray[indexPath.row] as! NSMutableArray
                 cell.mutableCollection.reloadData()
+                cell.selectionStyle = UITableViewCellSelectionStyle.None
                 return cell
             }
         }
@@ -211,6 +212,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             picker.delegate = self
             //picker.allowsEditing = true
             picker.sourceType = UIImagePickerControllerSourceType.Camera
+            
             self.presentViewController(picker, animated: true, completion: nil)             //yes?
         }else{
             let alert:UIAlertView = UIAlertView(title: "错误", message: "摄像头不可用", delegate: nil, cancelButtonTitle: "确定")
@@ -225,6 +227,12 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             //picker.allowsEditing = true
             picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
             self.presentViewController(picker, animated: true, completion: nil)
+//            if isIphone {
+//                self.presentViewController(picker, animated: true, completion: nil)
+//            }else{
+//                let popverController = UIPopoverController(contentViewController: picker)
+//                self.popoverPresentationController
+//            }
         }else{
             let alert:UIAlertView = UIAlertView(title: "错误", message: "相册不可用", delegate: nil, cancelButtonTitle: "确定")
             alert.show()
@@ -387,6 +395,27 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             case 1:             //从相册中选取
                 if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
                     //self.openPictureLibrary()
+                    //self.openZLPhotoSinglePicker()
+                    //self.openZLPhotoMutablePicker(1)
+                }else {
+                    //self.openQBImagePicker()
+                    //self.openZLPhotoMutablePicker(9)
+                }
+            case 2:             //打开照相机
+                //self.takePhoto()
+                break
+            default:
+                break
+            }
+        }
+    }
+    
+    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
+        if actionSheet.tag == 201 {
+            switch buttonIndex {
+            case 1:             //从相册中选取
+                if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
+                    //self.openPictureLibrary()
                     self.openZLPhotoSinglePicker()
                     //self.openZLPhotoMutablePicker(1)
                 }else {
@@ -542,12 +571,11 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             self.hudProgress = nil
         }
         let item = self.tableArray[self.selectedIndexPath.row] as! PicJsonItemInfo
-        println(item.imageurl[indexPath.row])
         let str: String = AppDelegate.app().ipUrl + LoanerHelper.OriginalImageURLStrWithSmallURLStr(item.imageurl[indexPath.row] as! String) + "?\(arc4random() % 100)"
         var photo:ZLPhotoPickerBrowserPhoto = ZLPhotoPickerBrowserPhoto(anyImageObjWith: str)
         if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
             photo.toView = cell.imageV
-            //photo.thumbImage = cell.imageV.image
+            photo.thumbImage = cell.imageV.image
         }else if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? MutableTableViewCell {
             photo.toView = cell.imageV
             //photo.thumbImage = cell.imageV.image
