@@ -84,40 +84,25 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
         
         let user_id: NSString! = self.user_idText.text
         let password: NSString! = self.passwordText.text
-        let ip = "http://\(AppDelegate.app().IP)/"
-        self.request = Alamofire.request(.POST, ip + config + loginURL ,
-            parameters: ["user_id":"\(user_id)","user_password":"\(password)"],
-            encoding: .URL)
+        let url = "http://\(AppDelegate.app().IP)/" + config + loginURL
         
-        self.request?.responseJSON(){ (_, _, json, error) in
-            if self.request == nil {
-                return
-            }
-            if error != nil {
-                self.request = nil
-                progressHud.hide(true)
-                let alert:UIAlertView = UIAlertView(title: "错误", message: "连接异常，请检查IP配置", delegate: nil, cancelButtonTitle: "确定")
-                alert.show()
-                return
-            }
-            //println(json)
-            if (json?.count < 7) {
+        NetworkRequest.AlamofirePostParametersResponseJSON(url, parameters: ["user_id":"\(user_id)","user_password":"\(password)"], success: {(json) in
+            if (json.count < 7) {
                 self.request = nil
                 progressHud.hide(true)
                 let alert:UIAlertView = UIAlertView(title: "错误", message: "用户名密码错误", delegate: nil, cancelButtonTitle: "确定")
                 alert.show()
                 return
             }
-            let jsdic:NSDictionary = JSON(json!).object as! NSDictionary
-            let keys:NSArray = jsdic.allKeys
-            for key in keys {
-                let value: AnyObject? = jsdic.objectForKey(key as! NSString)
-                self.selfData.setObject(value!, forKey: (key as? NSString)!)
-            }
-            var filepath = NSTemporaryDirectory().stringByAppendingPathComponent("selfInfo.plist")
-            
+            if json.type == .Dictionary {
+                self.selfData.setDictionary(json.object as! [NSObject : AnyObject])
+            }else {println("返回数据有误")}   //预加载返回用户数据，以备保存
+            var isSaveSuccess = false
             if self.savePasswordBtn.selected {
-                filepath = NSHomeDirectory().stringByAppendingPathComponent("Documents").stringByAppendingPathComponent("selfInfo.plist")
+                UserHelper.setValueOfPWIsSaved(self.savePasswordBtn.selected)
+                UserHelper.setRecentID(self.user_idText.text)
+                isSaveSuccess = UserHelper.setCurrentUserInfo(self.selfData, user_id: self.user_idText.text)
+                
                 if !KeyChain.addKeyChainItem(self.user_idText.text, user_password: self.passwordText.text, IP: AppDelegate.app().IP) {
                     KeyChain.updateKeyChainItem(self.user_idText.text, user_password: self.passwordText.text)
                     KeyChain.updateIPItem(self.user_idText.text, IP: AppDelegate.app().IP)
@@ -126,18 +111,16 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
                 }
                 
             }else {
-                for key in keys {
+                for key in self.selfData.allKeys {
                     if key as! String == "offline_id" {
-                        AppDelegate.app().offline_id = jsdic.objectForKey(key as! NSString)!.description
+                        AppDelegate.app().offline_id = self.selfData.objectForKey(key as! NSString)!.description
                         AppDelegate.app().user_id = self.user_idText.text
                         break
                     }
                 }
+                let filepath = NSTemporaryDirectory().stringByAppendingPathComponent("selfInfo.plist")
+                isSaveSuccess = self.selfData.writeToFile(filepath, atomically: true)
             }
-            let isSaveSuccess = self.selfData.writeToFile(filepath, atomically: true)
-            assert(isSaveSuccess, "写入失败")
-            
-            self.request = nil
             
             if isSaveSuccess {
                 progressHud.labelText = "登录成功"
@@ -150,17 +133,14 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
                     AppDelegate.app().window?.rootViewController = loginStory.instantiateInitialViewController() as? UIViewController
                 })
             }
-        }
-        //超时处理
-        let gcdTimer:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(15 * NSEC_PER_SEC))
-        dispatch_after(gcdTimer, dispatch_get_main_queue(), {
-            if self.request != nil {
-                self.request?.cancel()
-                self.request = nil
-                let alert:UIAlertView = UIAlertView(title: "错误", message: "请求超时，请检查网络配置", delegate: nil, cancelButtonTitle: "确定")
+            
+            }, failed: {
+                progressHud.hide(true)
+                let alert:UIAlertView = UIAlertView(title: "错误", message: "连接异常，请检查IP配置", delegate: nil, cancelButtonTitle: "确定")
                 alert.show()
-            }
-        })
+            }, outTime: {
+                let alert:UIAlertView = UIAlertView(title: "错误", message: "请求超时，请检查网络配置", delegate: nil, cancelButtonTitle: "确定")
+                alert.show()})
     }
     
     //MARK: --UITextFieldDelegate

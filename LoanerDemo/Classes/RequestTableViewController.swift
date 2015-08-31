@@ -272,7 +272,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
             progressHud.labelText = "正在提交表单"
             progressHud.show(true)
             
-            let user_id: NSString = AppDelegate.app().getuser_idFromPlist()
+            let user_id: NSString = UserHelper.readRecentID(recentID)!
             self.postDic.setObject(AppDelegate.app().getoffline_id(), forKey: "offline_id")
             
             let pjs = JSON(self.postDic)

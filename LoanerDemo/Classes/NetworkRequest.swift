@@ -37,6 +37,26 @@ class NetworkRequest: NSObject {
         })
     }
     
+    static func AlamofirePostParametersResponseJSON(url:String,parameters:[String:AnyObject]?,success:(JSON)->Void,failed:()->Void,outTime:()->Void) {
+        var request: Alamofire.Request!
+        request = Alamofire.request(.POST, url, parameters: parameters,encoding: .URL)
+        request.responseJSON() {
+            (_,_,data,error) in
+            request = nil
+            if (error != nil && data == nil) {
+                failed()
+                return
+            }
+            success(JSON(data!))
+        }
+        let gcdTimer:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(15 * NSEC_PER_SEC))
+        dispatch_after(gcdTimer, dispatch_get_main_queue(), {
+            if request != nil {
+                outTime()
+            }
+        })
+    }
+    
     static func AlamofirePostParameters(url:String,parameters:[String:AnyObject]?,success:(AnyObject?)->Void,failed:()->Void,outTime:()->Void) {
         var request: Alamofire.Request!
         request = Alamofire.request(.POST, url, parameters: parameters)

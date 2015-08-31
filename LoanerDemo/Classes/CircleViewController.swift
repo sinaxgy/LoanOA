@@ -55,7 +55,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
         progressHud.labelText = "正在提交"
         progressHud.show(true)
         
-        let user_id:NSString = AppDelegate.app().getuser_idFromPlist()
+        let user_id:NSString = UserHelper.readRecentID(recentID)!
         
         var submitDic:NSMutableDictionary = NSMutableDictionary()
         submitDic.setValue(user_id, forKey: "user_id")
@@ -139,7 +139,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
     
     //MARK: --PopoverMenuViewDelegate
     func menuPopover(menuView: PopoverMenuView!, didSelectMenuItemAtIndex selectedIndex: Int) {
-        let user_id:NSString = AppDelegate.app().getuser_idFromPlist()
+        let user_id:NSString = UserHelper.readRecentID(recentID)!
         
         var submitDic:NSMutableDictionary = NSMutableDictionary()
         submitDic.setValue(user_id, forKey: "user_id")
@@ -195,7 +195,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
     //MARK:--UIAlertViewDelegate
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex == 1 {
-            let user_id:NSString = AppDelegate.app().getuser_idFromPlist()
+            let user_id:NSString = UserHelper.readRecentID(recentID)!
             var submitDic:NSMutableDictionary = NSMutableDictionary()
             submitDic.setValue(user_id, forKey: "user_id")
             submitDic.setValue(self.pro_id, forKey: "pro_id")

@@ -12,7 +12,6 @@ import Alamofire
 class SelfTableViewController: UITableViewController ,personalMessageEditDelegete{
     
     var selfInfoDic:NSDictionary!
-    var filepath = NSHomeDirectory().stringByAppendingPathComponent("Documents").stringByAppendingPathComponent("selfInfo.plist")
     
     let infoArray:NSArray = ["user_name","user_sex","user_id","user_tel","user_email","offline_name"]
     //,"role_id","dep_id","offline_id"
@@ -45,37 +44,25 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
         }
         AppDelegate.app().IP = idunique
         AppDelegate.app().ipUrl = "http://\(idunique)/"
-        let id = AppDelegate.app().getuser_idFromPlist()
-        KeyChain.updateIPItem(id, IP: idunique)
-        let ip = KeyChain.getIPItem(id)
+        let id = UserHelper.readRecentID(recentID)
+        KeyChain.updateIPItem(id!, IP: idunique)
+        let ip = KeyChain.getIPItem(id!)
     }
     
     func logout(sender:UIBarButtonItem) {
-        if NSFileManager.defaultManager().fileExistsAtPath(filepath) {
-            if NSFileManager.defaultManager().removeItemAtPath(filepath, error: nil) {
-                let alert:UIAlertView = UIAlertView(title: "成功", message: "注销成功", delegate: nil, cancelButtonTitle: "确定")
-                alert.show()
-            }
-            let loginView = UIStoryboard(name: "Main", bundle: nil)
-            self.navigationController?.presentViewController(
-                (loginView.instantiateViewControllerWithIdentifier("LoginsViewController") as? UIViewController)!, animated: true, completion: nil)
-        }else {
-            let alert:UIAlertView = UIAlertView(title: "提示", message: "临时登录用户，无需注销", delegate: nil, cancelButtonTitle: "确定")
-            alert.show()
-        }
+        UserHelper.setValueOfPWIsSaved(false)
+        let loginView = UIStoryboard(name: "Main", bundle: nil)
+        self.navigationController?.presentViewController(
+            (loginView.instantiateViewControllerWithIdentifier("LoginsViewController") as? UIViewController)!, animated: true, completion: nil)
     }
     
     func readSelfINfo() {
-        if !NSFileManager.defaultManager().fileExistsAtPath(filepath) {
-            self.filepath = NSTemporaryDirectory().stringByAppendingPathComponent("selfInfo.plist")
-            if !NSFileManager.defaultManager().fileExistsAtPath(filepath) {
-            let alert:UIAlertView = UIAlertView(title: "无法查看", message: "请登录后查看个人信息", delegate: nil, cancelButtonTitle: "确定")
-            alert.show()
-            return
-            }
-
+        if !UserHelper.readValueOfPWIsSaved() {
+            let filepath = NSTemporaryDirectory().stringByAppendingPathComponent("selfInfo.plist")
+            selfInfoDic = NSDictionary(contentsOfFile: filepath)!
+        }else {
+            selfInfoDic = UserHelper.readCurrentUserInfo(UserHelper.readRecentID(recentID)!)
         }
-        selfInfoDic = NSDictionary(contentsOfFile: filepath)!
     }
 
     override func didReceiveMemoryWarning() {

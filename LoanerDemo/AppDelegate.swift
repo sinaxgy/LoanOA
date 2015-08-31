@@ -14,39 +14,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var user_id:String = "a"
     var offline_id:String = ""
-    var IP = "123.57.219.112"//10.104.4.1521111"             //112.126.64.23:8843/"var IP = "h1ttp://10.104.4.153/"
+    var IP = "10.104.6.71"//"123.57.219.112"
+        {
+        didSet{
+            self.ipUrl = "http://\(self.IP)/"
+        }
+    }
     var ipUrl = "http://123.57.219.112/"
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        let filepath = NSHomeDirectory().stringByAppendingPathComponent("Documents").stringByAppendingPathComponent("selfInfo.plist")
-        if !NSFileManager.defaultManager().fileExistsAtPath(filepath) {
-            //未保存密码信息，则进入登陆界面
+        application.statusBarStyle = UIStatusBarStyle.LightContent
+        
+        // 改变 navigation bar 的背景色
+        var navigationBarAppearace = UINavigationBar.appearance()
+        //        navigationBarAppearace.translucent = false
+        navigationBarAppearace.barTintColor = UIColor(hex: 0x25b6ed)
+        
+        navigationBarAppearace.tintColor = UIColor.whiteColor()
+        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
+        
+        if !UserHelper.readValueOfPWIsSaved() {
             let loginStory:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let loginedView:LoginsViewController = (loginStory.instantiateViewControllerWithIdentifier("LoginsViewController") as? LoginsViewController)!
             self.window?.rootViewController = loginedView
             return true
         }
-        self.IP = KeyChain.getIPItem(self.getuser_idFromPlist()) as String
-        self.ipUrl = "http://\(self.IP)/"
+        self.IP = KeyChain.getIPItem(UserHelper.readRecentID(recentID)!) as String
+        
         return true
     }
     
-    func getuser_idFromPlist() -> String {
-        let filepath = NSHomeDirectory().stringByAppendingPathComponent("Documents").stringByAppendingPathComponent("selfInfo.plist")
-        if NSFileManager.defaultManager().fileExistsAtPath(filepath) {
-            let dicInfo:NSDictionary = NSDictionary(contentsOfFile: filepath)!
-            return dicInfo.objectForKey("user_id") as! String
-        }
-        return self.user_id
-    }
-    
     func getoffline_id() -> String {
-        let filepath = NSHomeDirectory().stringByAppendingPathComponent("Documents").stringByAppendingPathComponent("selfInfo.plist")
-        if NSFileManager.defaultManager().fileExistsAtPath(filepath) {
-            let dicInfo:NSDictionary = NSDictionary(contentsOfFile: filepath)!
-            return dicInfo.objectForKey("offline_id") as! String
-        }
-        return self.offline_id as String
+        let dicInfo:NSDictionary = UserHelper.readCurrentUserInfo(UserHelper.readRecentID(recentID)!)!
+        return dicInfo.objectForKey("offline_id") as! String
     }
     
     static func app() -> AppDelegate{
@@ -75,6 +75,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    
 }
 
