@@ -69,4 +69,28 @@ class LoanerHelper: NSObject {
         }
         return nil
     }
+    
+    static func keyboardTypeWithType(type:String) -> UIKeyboardType? {
+        switch type {
+        case "email":
+            return UIKeyboardType.URL
+        case "num","tel","idnum","banknum","percent","pnum","decimal":
+            return UIKeyboardType.NumbersAndPunctuation
+        default:
+            return UIKeyboardType.Default
+        }
+    }
+    
+    static func infoWithFileName(fileName:String) -> NSMutableDictionary {
+        let filePath = NSHomeDirectory().stringByAppendingPathComponent("Documents").stringByAppendingPathComponent("\(fileName).plist")
+        if NSFileManager.defaultManager().fileExistsAtPath(filePath) {
+            return NSMutableDictionary(contentsOfFile: filePath)!
+        }
+        return NSMutableDictionary()
+    }
+    
+    static func infoWriteToFile(fileName:String,info:NSMutableDictionary) {
+        let filePath = NSHomeDirectory().stringByAppendingPathComponent("Documents").stringByAppendingPathComponent("\(fileName).plist")
+        info.writeToFile(filePath, atomically: true)
+    }
 }

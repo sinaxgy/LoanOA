@@ -19,7 +19,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
     var imageUrlArray:NSMutableArray = [];var editable = false
     var viewController:UIViewController = UIViewController()
     var selectedIndexPath:NSIndexPath = NSIndexPath()
-    var tbName = "";var pro_id = "";var delegate:popMutablePhotoesDelegate!
+    var tbName = "";var delegate:popMutablePhotoesDelegate!
     
     func setupMutableCollection(viewController:UIViewController) {
         self.viewController = viewController
@@ -190,7 +190,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
             var hud:MBProgressHUD = MBProgressHUD(view: cell.contentView)
             cell.contentView.addSubview(hud)
             hud.show(true)
-            let str = "pro_id=\(self.pro_id)&filename=\(self.tbName)&page=\(self.selectedIndexPath.row + 1)&nsdata="
+            let str = "pro_id=\(AppDelegate.app().pro_id)&filename=\(self.tbName)&page=\(self.selectedIndexPath.row + 1)&nsdata="
             var uploadData:NSMutableData = NSMutableData()
             uploadData.appendString(str)
             uploadData.appendData(UIImagePNGRepresentation(image))
@@ -266,7 +266,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
                     let image = asset.originImage()
                     let imageData:NSData = UIImagePNGRepresentation(image)
                     dispatch_group_async(group, queue, {
-                        let str = "pro_id=\(self.pro_id)&filename=\(self.tbName)&page=\(currentIndexPath.row + 1)&nsdata="
+                        let str = "pro_id=\(AppDelegate.app().pro_id)&filename=\(self.tbName)&page=\(currentIndexPath.row + 1)&nsdata="
                         let url = "\(AppDelegate.app().ipUrl)" + config + uploadUrl
                         var uploadData:NSMutableData = NSMutableData()
                         uploadData.appendString(str)

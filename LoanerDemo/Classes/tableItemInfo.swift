@@ -13,11 +13,15 @@ class tableItemInfo: NSObject {
     var explain:NSString = ""
     var type:NSString = ""
     var value:NSString = ""
+    var editable:Bool = false
     var options:NSArray = []
     
-    init(title:String,forjson json:JSON) {
+    init(title:String,json:JSON,editable:Bool) {
         self.title = title
-        //var key:String = "" as String
+        let disenableTableArray:NSArray = ["pro_num","pro_title","service_type","loan_period","offline_id","repay_method"]
+        if disenableTableArray.containsObject(title) {
+            self.editable = false
+        }else{self.editable = editable}
         let array:NSArray = (json.object as! NSDictionary).allKeys.map({"\($0)"})
         for key in  array {
             switch ("\(key)") {
@@ -44,20 +48,36 @@ class tableItemInfo: NSObject {
                 break
             }
         }
-//        self.explain = json.dictionary!["explain"]!.description
-//        self.type = json.dictionary!["type"]!.description
-//        self.value = json.dictionary!["value"]!.description
-//        let opt = json.dictionary?["options"]!
-//        var nextJson: JSON = JSON(opt!.object)
-//        switch nextJson.type {
-//        case .String:
-//            let str:NSString = nextJson.description
-//            if str != ""{
-//                self.options = str.componentsSeparatedByString(",")
-//            }
-//        default:
-//            return
-//        }
+    }
+    
+    init(title:String,forjson json:JSON) {
+        self.title = title
+        let array:NSArray = (json.object as! NSDictionary).allKeys.map({"\($0)"})
+        for key in  array {
+            switch ("\(key)") {
+            case "explain":
+                self.explain = json.dictionary![key as! String]!.description
+            case "type":
+                self.type = json.dictionary![key as! String]!.description
+            case "value":
+                self.value = json.dictionary![key as! String]!.description
+            case "options":
+                let opt = json.dictionary?["options"]!
+                var nextJson: JSON = JSON(opt!.object)
+                switch nextJson.type {
+                case .String:
+                    let str:NSString = nextJson.description
+                    if str != ""{
+                        self.options = str.componentsSeparatedByString(",")
+                    }
+                default:
+                    return
+                }
+                //self.explain = json.dictionary![key as! String]!.description
+            default:
+                break
+            }
+        }
     }
     
     init(value:String,twojson:JSON) {

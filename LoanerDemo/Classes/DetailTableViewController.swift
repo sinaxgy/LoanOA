@@ -8,28 +8,36 @@
 
 import UIKit
 
-class DetailTableViewController: UITableViewController ,AddTableViewCellTextFieldDelegate,UIAlertViewDelegate{
+struct DefaultText {    //TEXT默认文字存储
+    var fileName:String! {
+        didSet{
+            self.dicTexts = LoanerHelper.infoWithFileName(fileName)
+        }
+    }
+    var dicTexts:NSMutableDictionary
+}
+
+class DetailTableViewController: UITableViewController ,AddTableViewCellTextFieldDelegate,UIAlertViewDelegate,DatePickerViewDateDelegate,UIActionSheetDelegate,SignTextDelegate{
     
     //var headTitle:String = ""
     var json:JSON = JSON.nullJSON           //存储“data”对应的value值
     var postDic:NSMutableDictionary = NSMutableDictionary()
     var resigntf:UITextField!
     var dbjson:JSON = JSON.nullJSON         //数据表字段json
-    var isAdd:Bool = true
+    var isAdd:Bool = true;var fileName:String = ""
     var detailKeyArray:NSArray = []
+    var defaultText:DefaultText = DefaultText(fileName: "", dicTexts: [:])
     
     var typeTitle = operationType(type: "", typeName: "")
-    
+    let leafCell = "leafCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = self.typeTitle.typeName
-        var tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
-        self.view.addGestureRecognizer(tapGesture)
-        //self.checkValueEmptyForIsEdit()
         if self.isAdd {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "完成", style: UIBarButtonItemStyle.Plain, target: self, action:"postJson")
         }
+        self.tableView.registerNib(UINib(nibName: "LeafTableViewCell", bundle: nil), forCellReuseIdentifier: self.leafCell)
     }
     
     func keyboardHide() {
@@ -53,16 +61,62 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
         return self.detailKeyArray.count
     }
     
-//    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        return cellHeight
-//    }
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return cellHeight
+    }
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if !self.isAdd {return}
+        var cell = tableView.cellForRowAtIndexPath(indexPath) as! LeafTableViewCell
+        if !cell.itemInfo.editable {return}
+        if cell.itemInfo.type.isEqualToString("select") {       //选择器
+            var selectSheet:UIActionSheet = UIActionSheet()
+            selectSheet.delegate = self
+            for key in cell.itemInfo.options {
+                selectSheet.addButtonWithTitle(key as! String)
+            }
+            selectSheet.addButtonWithTitle("取消")
+            selectSheet.cancelButtonIndex = selectSheet.numberOfButtons - 1
+            selectSheet.showInView(self.view)
+        }else {
+            var signView = SignViewController()
+            if cell.itemInfo.options.count > 0 {
+                for item in cell.itemInfo.options {
+                    if item.description != "must" {signView.verify = item as! String}
+                }
+            }
+            if self.defaultText.dicTexts.count > 0 {
+                if (self.defaultText.dicTexts.allKeys as NSArray).containsObject(cell.itemInfo.title) {
+                    if let dt = defaultText.dicTexts.objectForKey(cell.itemInfo.title) as? NSArray {
+                        signView.defaultTexts = NSMutableArray(array: dt)
+                    }
+                }
+            }
+            signView.text = cell.itemInfo.value as String
+            signView.delegate = self;signView.title = cell.itemInfo.explain as String
+            if cell.itemInfo.type.isEqualToString("datepicker") {
+                signView.isDateType = true
+            }
+            self.navigationController?.pushViewController(signView, animated: true)
+        }
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return self.setCellFromAddJSON(indexPath.row, forjson: self.json)
+        //return self.setCellFromAddJSON(indexPath.row, forjson: self.json)
+        var cell = tableView.dequeueReusableCellWithIdentifier(self.leafCell, forIndexPath: indexPath) as! LeafTableViewCell
+        let key:String = self.detailKeyArray[indexPath.row] as! String
+        if let js = self.json.dictionary?[key as String] {
+            cell.initCellInfomation(key, forjson: js, editable: isAdd)
+        }
+        if self.postDic.count > 0 {             //填写表单时的数据填充
+            for rekey in self.postDic.allKeys {
+                if rekey as! String == cell.itemInfo.title {
+                    cell.detailLabel.text = self.postDic.objectForKey(rekey as! String) as? String
+                    break
+                }
+            }
+        }
+        return cell
     }
     
     func catchTextFieldvalue(value: String, key: String) {
@@ -119,25 +173,6 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
         return UITableViewCell()
     }
     
-        
-    func checkValueEmptyForIsEdit() {
-        if self.json.type == .Dictionary {
-            let dic:NSDictionary = (self.json.dictionary?[self.detailKeyArray.firstObject as! String]?.object as? NSDictionary)!
-            println(dic)
-            for (key,value) in dic {
-                if key as! String == "value" {
-                    if value as! String != "" {
-                        self.tableView.editing = false
-                    }else {
-                        self.tableView.editing = true
-                    }
-                    self.tableView.reloadData()
-                    break
-                }
-            }
-        }
-    }
-    
     //MARK:--UIAlertViewDelegate
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex == 1 {
@@ -155,6 +190,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
                 parameters: ["service_type":"\(self.typeTitle.type)","data":"\(pjs)","db_table":"\(self.dbjson)",
                 "user_id":"\(user_id)"],
                 success: {(data) in
+                    println(data)
                     if data as! String == "success" {
                         progressHud.labelText = "提交成功"
                         progressHud.mode = MBProgressHUDMode.CustomView
@@ -178,5 +214,37 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
             
             
         }
+    }
+    
+    //MARK:--UIActionSheetDelegate
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        let cell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow()!) as! LeafTableViewCell
+        if buttonIndex > cell.itemInfo.options.count - 1{
+            return
+        }
+        cell.detailLabel.text = cell.itemInfo.options[buttonIndex] as? String
+        self.postDic.setObject(cell.detailLabel.text!, forKey: cell.itemInfo.title as String)
+    }
+    
+    //MARK:--SignTextDelegate
+    func signTextDidBeDone(text: String, texts: NSArray?) {
+        
+        let cell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow()!) as! LeafTableViewCell
+        cell.detailLabel.text = text
+        cell.itemInfo.value = text
+        self.postDic.setObject(cell.detailLabel.text!, forKey: cell.itemInfo.title as String)
+        if texts != nil{
+            if texts?.count > 0 {
+                self.defaultText.dicTexts.setObject(texts!, forKey: cell.itemInfo.title as String)
+                LoanerHelper.infoWriteToFile(self.fileName, info: self.defaultText.dicTexts)
+            }
+        }
+    }
+    
+    //MARK:--DatePickerViewDateDelegate
+    func datePickerDidEnsure(date: String) {
+    }
+    
+    func datePickerDidCancel() {
     }
 }

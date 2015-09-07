@@ -139,6 +139,7 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
                 let alert:UIAlertView = UIAlertView(title: "错误", message: "连接异常，请检查IP配置", delegate: nil, cancelButtonTitle: "确定")
                 alert.show()
             }, outTime: {
+                progressHud.hide(true)
                 let alert:UIAlertView = UIAlertView(title: "错误", message: "请求超时，请检查网络配置", delegate: nil, cancelButtonTitle: "确定")
                 alert.show()})
     }

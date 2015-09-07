@@ -20,6 +20,13 @@ class DatepickerView: UIView {
     
     init(width:CGFloat) {
         super.init(frame: CGRectMake(0, 0, width, 256))
+        self.backgroundColor = UIColor.whiteColor()
+        self.initView(width)
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = UIColor.lightGrayColor()
         self.initView(width)
     }
     

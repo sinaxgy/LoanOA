@@ -16,28 +16,25 @@ struct tag_Infomation {
     var arraysort:NSArray
 }
 
-class RequestTableViewController: UITableViewController ,AddTableViewCellTextFieldDelegate,UIAlertViewDelegate{
+class RequestTableViewController: UITableViewController ,AddTableViewCellTextFieldDelegate,UIAlertViewDelegate,UIActionSheetDelegate,SignTextDelegate{
     
-    @IBOutlet var particularsCell: ParticularsTableViewCell!
-    var tag_name:String = ""
     var emptyAbleArray:NSMutableArray = []
-    var pro_id:String = ""
-    var editable:Bool = false;var isNew:Bool = false
+    var editable:Bool = false
+    
+    var defaultText:DefaultText = DefaultText(fileName: "", dicTexts: [:])
     
     var tag_Message:tag_Infomation = tag_Infomation(suffixURL: "", editable: false, tableJson: JSON.nullJSON, dbjson: JSON.nullJSON, arraysort: [])
     
     var postDic:NSMutableDictionary = NSMutableDictionary()
     var resigntf:UITextField!
-    
     var textDelegate:AddTableViewCellTextFieldDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        var tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
-        self.view.addGestureRecognizer(tapGesture)
-    
+//        var tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
+//        self.view.addGestureRecognizer(tapGesture)
+        self.tableView.registerNib(UINib(nibName: "LeafTableViewCell", bundle: nil), forCellReuseIdentifier: "requestCell")
         self.reload()
-        
         self.showActivityIndicatorViewInNavigationItem()
     }
     
@@ -78,7 +75,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
                     self.tag_Message.dbjson = db_table
                 }
                 if let tag_name = mainJSON.dictionary?["tag_name"] {
-                    self.tag_name = tag_name.description
+                    self.title = tag_name.description
                 }
                 if let data = mainJSON.dictionary?["data"] {
                     self.tag_Message.tableJson = data
@@ -87,7 +84,6 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
             self.hideActivityIndicatorViewInNavigationItem()
             self.checkValueEmptyForIsEdit()
             self.tableView.reloadData()
-            self.title = self.tag_name
             }, failed: {
                 progressHud.labelText = "请求失败"
                 progressHud.hide(true, afterDelay: 1)
@@ -154,9 +150,8 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
             }
             if isEditable {
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.Plain, target: self, action: "postJson:")
-                self.editable = true;self.isNew = true
+                self.editable = true
             }else {
-                self.isNew = false
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "编辑", style: UIBarButtonItemStyle.Plain, target: self, action: "textFieldEditenable:")
             }
         }
@@ -175,7 +170,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
             cell.textDelegate = self
             cell.editable = self.editable
             if cell.textfield.leftView != nil {
-                if !self.emptyAbleArray.containsObject(cell.itemInfo.title) && cell.textfield.text == "" {
+                if !self.emptyAbleArray.containsObject(cell.itemInfo.title) && cell.textfield.text == "" {  //记录所有必填项
                     self.emptyAbleArray.addObject(cell.itemInfo.title)
                 }
             }
@@ -244,16 +239,112 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
         return self.tag_Message.tableJson.count
     }
     
-//    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        return cellHeight
-//    }
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return cellHeight
+    }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return false
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return self.setCellFromAddJSON(indexPath.row, forjson: self.tag_Message.tableJson)
+        //return self.setCellFromAddJSON(indexPath.row, forjson: self.tag_Message.tableJson)
+        var cell = tableView.dequeueReusableCellWithIdentifier("requestCell", forIndexPath: indexPath) as! LeafTableViewCell
+        
+        let key:String = self.tag_Message.arraysort[indexPath.row] as! String
+        if let js = self.tag_Message.tableJson.dictionary?[key as String] {
+            cell.initCellInfomation(key, forjson: js, editable: self.editable)
+        }
+        if cell.itemInfo.options.count > 0 {
+            for item in cell.itemInfo.options {
+                if item as! String == "must" {
+                    cell.titleLabel.textColor = UIColor(hex: 0x25b6ed)
+                    break
+                }
+            }
+        }
+        if self.postDic.count > 0 {             //填写表单时的数据填充
+            for rekey in self.postDic.allKeys {
+                if rekey as! String == cell.itemInfo.title {
+                    cell.detailLabel.text = self.postDic.objectForKey(rekey as! String) as? String
+                    break
+                }
+            }
+        }
+        return cell
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if !self.editable {return}
+        var cell = tableView.cellForRowAtIndexPath(indexPath) as! LeafTableViewCell
+        if !cell.itemInfo.editable {return}
+        if cell.itemInfo.type.isEqualToString("select") {       //选择器
+            var selectSheet:UIActionSheet = UIActionSheet()
+            selectSheet.delegate = self
+            for key in cell.itemInfo.options {
+                selectSheet.addButtonWithTitle(key as! String)
+            }
+            selectSheet.addButtonWithTitle("取消")
+            selectSheet.cancelButtonIndex = selectSheet.numberOfButtons - 1
+            selectSheet.showInView(self.view)
+        }else {
+            var signView = SignViewController()
+            if cell.itemInfo.options.count > 0 {
+                for item in cell.itemInfo.options {
+                    if item.description != "must" {signView.verify = item as! String}
+                }
+            }
+            if defaultText.dicTexts.count > 0 {
+                if (defaultText.dicTexts.allKeys as NSArray).containsObject(cell.itemInfo.title) {
+                    if let dt = defaultText.dicTexts.objectForKey(cell.itemInfo.title) as? NSArray {
+                        signView.defaultTexts = NSMutableArray(array: dt)
+                    }
+                }
+            }
+            signView.text = cell.itemInfo.value as String
+            signView.delegate = self;signView.title = cell.itemInfo.explain as String
+            if cell.itemInfo.type.isEqualToString("datepicker") {
+                signView.isDateType = true
+            }
+            self.navigationController?.pushViewController(signView, animated: true)
+        }
+    }
+    
+    //MARK:--SignTextDelegate
+    func signTextDidBeDone(text: String, texts: NSArray?) {
+        
+        let cell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow()!) as! LeafTableViewCell
+        cell.detailLabel.text = text
+        cell.itemInfo.value = text
+        self.postDic.setObject(cell.detailLabel.text!, forKey: cell.itemInfo.title as String)
+        if texts != nil{
+            if texts?.count > 0 {
+                self.defaultText.dicTexts.setObject(texts!, forKey: cell.itemInfo.title as String)
+                LoanerHelper.infoWriteToFile(defaultText.fileName, info: self.defaultText.dicTexts)
+            }
+        }
+        //联动数据
+        if cell.itemInfo.title == "loan_term" {
+            let index = self.tag_Message.arraysort.indexOfObject("repay_method")
+            if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? LeafTableViewCell {
+                let strValue = text as NSString
+                if strValue.intValue < 31 {
+                    cell.detailLabel.text = "融满付息，到期还本"
+                }else {
+                    cell.detailLabel.text = "融满按月付息，到期还本"
+                }
+            }
+        }
+    }
+    
+    //MARK:--UIActionSheetDelegate
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        let cell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow()!) as! LeafTableViewCell
+        if buttonIndex > cell.itemInfo.options.count - 1{
+            return
+        }
+        cell.detailLabel.text = cell.itemInfo.options[buttonIndex] as? String
+        self.postDic.setObject(cell.detailLabel.text!, forKey: cell.itemInfo.title as String)
     }
     
     //MARK:--UIAlertViewDelegate
@@ -278,7 +369,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
             let pjs = JSON(self.postDic)
             let url = AppDelegate.app().ipUrl + config + "app/save-info"
             NetworkRequest.AlamofirePostParameters(url,
-                parameters: ["pro_id":"\(self.pro_id)",
+                parameters: ["pro_id":"\(AppDelegate.app().pro_id)",
                 "data":"\(pjs)",
                 "db_table":"\(self.tag_Message.dbjson)",
                     "user_id":"\(user_id)"], success: {(data) in

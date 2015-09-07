@@ -13,7 +13,6 @@ protocol AddTableViewCellTextFieldDelegate {
     func signEditingTextField(textfield:UITextField,cell:DetailTableViewCell)
 }
 
-
 class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDelegate,DatePickerViewDateDelegate{
     
     let disenableTableArray = ["pro_num","pro_title","service_type","loan_period","offline_id","repay_method"]
@@ -31,7 +30,7 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
     
     init(title:String, forjson json:JSON){
         super.init(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "detailCell")
-        self.selectionStyle = UITableViewCellSelectionStyle.None
+        //self.selectionStyle = UITableViewCellSelectionStyle.None
         self.itemInfo = tableItemInfo(title: title, forjson: json)
         self.initView()
     }

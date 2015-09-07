@@ -17,7 +17,8 @@ struct operationType {
 class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UIAlertViewDelegate,PopoverMenuViewDelegate{
     
     var isAdd:Bool = true
-    var pro_id:String = "";var isShowNoti = false
+    //var pro_id:String = ""{didSet{AppDelegate.app().pro_id = self.pro_id}}
+    var isShowNoti = false
     var typeOp = operationType(type: "", typeName: "")
     var dbjson:JSON = JSON.nullJSON
     var detailKeyArray:NSArray = []
@@ -29,7 +30,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
         self.navigationItem.title = self.typeOp.typeName
         self.showActivityIndicatorViewInNavigationItem()
         //self.loadJSONOfView()
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Reply, target: self, action: "cancel:")
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "cancel:")
     }
     
     func showActivityIndicatorViewInNavigationItem() {
@@ -86,6 +87,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                         for (kk,vv) in vValue {     //vv，标签元素对应的value值
                             //标签层属性
                             var branchItem:BranchItem = BranchItem()
+                            branchItem.fileName = kk
                             for (k,v) in vv {       //遍历标签层属性
                                 switch k {
                                 case "tag_name":
@@ -173,7 +175,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                     var imageVC:MasterImageTableViewController = MasterImageTableViewController()
                     imageVC.picURL.footer = branch.data.description
                     imageVC.title = "图片上传"
-                    imageVC.pro_id = self.pro_id
+                    //imageVC.pro_id = self.pro_id
                     if branch.editable == "true" {
                         imageVC.editable = true
                     }else if branch.editable == "false" {
@@ -189,19 +191,19 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                     }else if branch.editable == "false" {
                         requestVC.tag_Message.editable = false
                     }
-                    requestVC.pro_id = self.pro_id
+                    //requestVC.pro_id = self.pro_id
                     self.navigationController?.pushViewController(requestVC, animated: true)
                 }
             case 2:
                 let circleVC:CircleViewController = CircleViewController()
                 circleVC.json = branch.data
                 circleVC.title = branch.tag_name
-                circleVC.pro_id = self.pro_id
+                //circleVC.pro_id = self.pro_id
                 self.navigationController?.pushViewController(circleVC, animated: true)
             case 13,14:
                 var detailView:DetailTableViewController = DetailTableViewController()
-                detailView.json = branch.data
-                detailView.isAdd = self.isAdd
+                detailView.json = branch.data;detailView.isAdd = self.isAdd
+                detailView.defaultText.fileName = branch.fileName
                 detailView.detailKeyArray = branch.arraysort
                 detailView.typeTitle.typeName = branch.tag_name
                 detailView.typeTitle.type = self.typeOp.type
@@ -244,7 +246,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
             let user_id:NSString = UserHelper.readRecentID(recentID)!
             var submitDic:NSMutableDictionary = NSMutableDictionary()
             submitDic.setValue(user_id, forKey: "user_id")
-            submitDic.setValue(self.pro_id, forKey: "pro_id");var footer = ""
+            submitDic.setValue(AppDelegate.app().pro_id, forKey: "pro_id");var footer = ""
             switch alertView.tag {
             case 10:
                 footer = "close"

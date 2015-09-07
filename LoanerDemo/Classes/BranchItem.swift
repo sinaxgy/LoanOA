@@ -15,5 +15,5 @@ class BranchItem: NSObject {
     var tag_name:String = ""
     var isComplete:String = ""
     var arraysort:NSArray = []
-    
+    var fileName:String = ""
 }

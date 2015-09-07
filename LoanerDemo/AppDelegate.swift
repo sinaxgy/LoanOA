@@ -12,15 +12,15 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var user_id:String = "a"
+    var user_id:String = "a";var pro_id:String = ""
     var offline_id:String = ""
-    var IP = "10.104.6.71"//"123.57.219.112"
+    var ipUrl = "http://123.57.219.112/loanOA/"
+    var IP = "123.57.219.112/loanOA/"//10.104.5.16"//"
         {
         didSet{
             self.ipUrl = "http://\(self.IP)/"
         }
     }
-    var ipUrl = "http://123.57.219.112/"
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         application.statusBarStyle = UIStatusBarStyle.LightContent
@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.rootViewController = loginedView
             return true
         }
-        self.IP = KeyChain.getIPItem(UserHelper.readRecentID(recentID)!) as String
+        //self.IP = KeyChain.getIPItem(UserHelper.readRecentID(recentID)!) as String
         
         return true
     }

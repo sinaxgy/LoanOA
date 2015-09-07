@@ -76,8 +76,6 @@
 		C55D298E1B4BD134003F714A /* savepwn.png in Resources */ = {isa = PBXBuildFile; fileRef = C55D298C1B4BD134003F714A /* savepwn.png */; };
 		C55D298F1B4BD134003F714A /* savepws.png in Resources */ = {isa = PBXBuildFile; fileRef = C55D298D1B4BD134003F714A /* savepws.png */; };
 		C58A00E51B58961200C90FE6 /* RequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58A00E41B58961200C90FE6 /* RequestTableViewController.swift */; };
-		C58A00E91B589B7200C90FE6 /* ParticularsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58A00E71B589B7200C90FE6 /* ParticularsTableViewCell.swift */; };
-		C58A00EA1B589B7200C90FE6 /* ParticularsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C58A00E81B589B7200C90FE6 /* ParticularsTableViewCell.xib */; };
 		C592A98B1B53BB090038F2A4 /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C592A98A1B53BB090038F2A4 /* KeyChain.swift */; };
 		C5A0B2021B5A81F4000C00AD /* LoginsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A0B2011B5A81F4000C00AD /* LoginsViewController.swift */; };
 		C5A2EF981B65025E00361B08 /* MasterImageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A2EF971B65025E00361B08 /* MasterImageTableViewController.swift */; };
@@ -99,7 +97,6 @@
 		C5D7B9AF1B39562800823343 /* PopoverMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D7B9AE1B39562800823343 /* PopoverMenuView.m */; };
 		C5D7B9B31B3A4DDF00823343 /* tableItemInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D7B9B21B3A4DDF00823343 /* tableItemInfo.swift */; };
 		C5D7B9B51B3A5AA100823343 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D7B9B41B3A5AA000823343 /* DetailTableViewController.swift */; };
-		C5D7B9B81B3A77EA00823343 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D7B9B71B3A77E900823343 /* BaseTableViewCell.swift */; };
 		C5D7B9BA1B3A7BD700823343 /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D7B9B91B3A7BD700823343 /* DetailTableViewCell.swift */; };
 		C5D7B9BC1B3A7E0F00823343 /* BranchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D7B9BB1B3A7E0F00823343 /* BranchTableViewController.swift */; };
 		C5D9CC711B661E0900F603F0 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9CC661B661E0900F603F0 /* AFHTTPRequestOperation.m */; };
@@ -109,6 +106,8 @@
 		C5D9CC751B661E0900F603F0 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9CC6E1B661E0900F603F0 /* AFURLResponseSerialization.m */; };
 		C5D9CC761B661E0900F603F0 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9CC701B661E0900F603F0 /* UIImageView+AFNetworking.m */; };
 		C5D9CC781B661FEC00F603F0 /* SubPicTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D9CC771B661FEC00F603F0 /* SubPicTableViewController.swift */; };
+		C5D9F3C51B96D40800C2630E /* LeafTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D9F3C31B96D40800C2630E /* LeafTableViewCell.swift */; };
+		C5D9F3C61B96D40800C2630E /* LeafTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D9F3C41B96D40800C2630E /* LeafTableViewCell.xib */; };
 		C5DBEC201B664F8E003F5749 /* PicJsonItemInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBEC1F1B664F8E003F5749 /* PicJsonItemInfo.swift */; };
 		C5DBEC271B665EE1003F5749 /* MutableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBEC251B665EE1003F5749 /* MutableTableViewCell.swift */; };
 		C5DBEC281B665EE1003F5749 /* MutableTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DBEC261B665EE1003F5749 /* MutableTableViewCell.xib */; };
@@ -131,6 +130,9 @@
 		C5F218EF1B4AA9250072D445 /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F218EE1B4AA9250072D445 /* NetworkRequest.swift */; };
 		C5F218F11B4AC8ED0072D445 /* history@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5F218F01B4AC8ED0072D445 /* history@2x.png */; };
 		C5F218F31B4AC97A0072D445 /* person@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5F218F21B4AC97A0072D445 /* person@2x.png */; };
+		C5F44EA91B970DBD001AF995 /* SignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F44EA81B970DBD001AF995 /* SignViewController.swift */; };
+		C5F44EAD1B9712D9001AF995 /* TextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F44EAB1B9712D9001AF995 /* TextTableViewCell.swift */; };
+		C5F44EAE1B9712D9001AF995 /* TextTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5F44EAC1B9712D9001AF995 /* TextTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -298,8 +300,6 @@
 		C55D298C1B4BD134003F714A /* savepwn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = savepwn.png; path = Resources/savepwn.png; sourceTree = "<group>"; };
 		C55D298D1B4BD134003F714A /* savepws.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = savepws.png; path = Resources/savepws.png; sourceTree = "<group>"; };
 		C58A00E41B58961200C90FE6 /* RequestTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestTableViewController.swift; path = Classes/RequestTableViewController.swift; sourceTree = "<group>"; };
-		C58A00E71B589B7200C90FE6 /* ParticularsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParticularsTableViewCell.swift; path = Classes/ParticularsTableViewCell.swift; sourceTree = "<group>"; };
-		C58A00E81B589B7200C90FE6 /* ParticularsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ParticularsTableViewCell.xib; path = Classes/ParticularsTableViewCell.xib; sourceTree = "<group>"; };
 		C592A98A1B53BB090038F2A4 /* KeyChain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeyChain.swift; path = Classes/KeyChain.swift; sourceTree = "<group>"; };
 		C5A0B2011B5A81F4000C00AD /* LoginsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginsViewController.swift; path = Classes/LoginsViewController.swift; sourceTree = "<group>"; };
 		C5A2EF971B65025E00361B08 /* MasterImageTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MasterImageTableViewController.swift; path = Classes/MasterImageTableViewController.swift; sourceTree = "<group>"; };
@@ -331,7 +331,6 @@
 		C5D7B9AE1B39562800823343 /* PopoverMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PopoverMenuView.m; path = Classes/OCFile/PopoverMenuView.m; sourceTree = "<group>"; };
 		C5D7B9B21B3A4DDF00823343 /* tableItemInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = tableItemInfo.swift; path = Classes/tableItemInfo.swift; sourceTree = "<group>"; };
 		C5D7B9B41B3A5AA000823343 /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DetailTableViewController.swift; path = Classes/DetailTableViewController.swift; sourceTree = "<group>"; };
-		C5D7B9B71B3A77E900823343 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseTableViewCell.swift; path = Classes/BaseTableViewCell.swift; sourceTree = "<group>"; };
 		C5D7B9B91B3A7BD700823343 /* DetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DetailTableViewCell.swift; path = Classes/DetailTableViewCell.swift; sourceTree = "<group>"; };
 		C5D7B9BB1B3A7E0F00823343 /* BranchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BranchTableViewController.swift; path = Classes/BranchTableViewController.swift; sourceTree = "<group>"; };
 		C5D9CC651B661E0900F603F0 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -347,6 +346,8 @@
 		C5D9CC6F1B661E0900F603F0 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		C5D9CC701B661E0900F603F0 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		C5D9CC771B661FEC00F603F0 /* SubPicTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SubPicTableViewController.swift; path = Classes/SubPicTableViewController.swift; sourceTree = "<group>"; };
+		C5D9F3C31B96D40800C2630E /* LeafTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LeafTableViewCell.swift; path = Classes/Cell/LeafTableViewCell.swift; sourceTree = "<group>"; };
+		C5D9F3C41B96D40800C2630E /* LeafTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LeafTableViewCell.xib; path = Classes/Cell/LeafTableViewCell.xib; sourceTree = "<group>"; };
 		C5DBEC1F1B664F8E003F5749 /* PicJsonItemInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PicJsonItemInfo.swift; path = Classes/PicJsonItemInfo.swift; sourceTree = "<group>"; };
 		C5DBEC251B665EE1003F5749 /* MutableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MutableTableViewCell.swift; path = Classes/Cell/MutableTableViewCell.swift; sourceTree = "<group>"; };
 		C5DBEC261B665EE1003F5749 /* MutableTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MutableTableViewCell.xib; path = Classes/Cell/MutableTableViewCell.xib; sourceTree = "<group>"; };
@@ -369,6 +370,9 @@
 		C5F218EE1B4AA9250072D445 /* NetworkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkRequest.swift; path = Classes/NetworkRequest.swift; sourceTree = "<group>"; };
 		C5F218F01B4AC8ED0072D445 /* history@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "history@2x.png"; path = "Resources/history@2x.png"; sourceTree = "<group>"; };
 		C5F218F21B4AC97A0072D445 /* person@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "person@2x.png"; path = "Resources/person@2x.png"; sourceTree = "<group>"; };
+		C5F44EA81B970DBD001AF995 /* SignViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignViewController.swift; path = Classes/SignViewController.swift; sourceTree = "<group>"; };
+		C5F44EAB1B9712D9001AF995 /* TextTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextTableViewCell.swift; path = Classes/Cell/TextTableViewCell.swift; sourceTree = "<group>"; };
+		C5F44EAC1B9712D9001AF995 /* TextTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TextTableViewCell.xib; path = Classes/Cell/TextTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -399,6 +403,7 @@
 				C5D7B9741B390AC800823343 /* HistoryTableViewController.swift */,
 				C5D7B9BB1B3A7E0F00823343 /* BranchTableViewController.swift */,
 				C5D7B9B41B3A5AA000823343 /* DetailTableViewController.swift */,
+				C5F44EA81B970DBD001AF995 /* SignViewController.swift */,
 				C58A00E41B58961200C90FE6 /* RequestTableViewController.swift */,
 				C5A2EF971B65025E00361B08 /* MasterImageTableViewController.swift */,
 				C5D9CC771B661FEC00F603F0 /* SubPicTableViewController.swift */,
@@ -776,10 +781,11 @@
 		C5D7B9B61B3A772D00823343 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				C5D7B9B71B3A77E900823343 /* BaseTableViewCell.swift */,
+				C5D9F3C31B96D40800C2630E /* LeafTableViewCell.swift */,
+				C5D9F3C41B96D40800C2630E /* LeafTableViewCell.xib */,
+				C5F44EAB1B9712D9001AF995 /* TextTableViewCell.swift */,
+				C5F44EAC1B9712D9001AF995 /* TextTableViewCell.xib */,
 				C5D7B9B91B3A7BD700823343 /* DetailTableViewCell.swift */,
-				C58A00E71B589B7200C90FE6 /* ParticularsTableViewCell.swift */,
-				C58A00E81B589B7200C90FE6 /* ParticularsTableViewCell.xib */,
 				C5DBEC291B666676003F5749 /* SingleTableViewCell.swift */,
 				C5DBEC2A1B666676003F5749 /* SingleTableViewCell.xib */,
 				C5DBEC251B665EE1003F5749 /* MutableTableViewCell.swift */,
@@ -927,10 +933,12 @@
 				C55D298E1B4BD134003F714A /* savepwn.png in Resources */,
 				C503A99C1B4B72C90081200D /* Icon@2x.png in Resources */,
 				C5374A981B69C08900A80625 /* paizhao.imageset in Resources */,
+				C5D9F3C61B96D40800C2630E /* LeafTableViewCell.xib in Resources */,
 				C5D7B91A1B3909BE00823343 /* Images.xcassets in Resources */,
 				C5F218EC1B4AA8350072D445 /* options_pointer.png in Resources */,
 				C5E2422F1B4A7586006CD3D2 /* CircleViewController.xib in Resources */,
 				C5F218ED1B4AA8350072D445 /* options_pointer@2x.png in Resources */,
+				C5F44EAE1B9712D9001AF995 /* TextTableViewCell.xib in Resources */,
 				C503A9961B4B72C90081200D /* Icon-60@3x.png in Resources */,
 				C5374A9A1B69C08900A80625 /* shanguangdeng2.imageset in Resources */,
 				C52BD9DB1B4CCE8E000316A8 /* 37x-Checkmark@2x.png in Resources */,
@@ -949,7 +957,6 @@
 				C5F218EB1B4AA8350072D445 /* Menu_PopOver_BG@2x.png in Resources */,
 				C503A9971B4B72C90081200D /* Icon-72.png in Resources */,
 				C503A9A21B4B75F30081200D /* Icon-40@3x.png in Resources */,
-				C58A00EA1B589B7200C90FE6 /* ParticularsTableViewCell.xib in Resources */,
 				C503A9991B4B72C90081200D /* Icon-76.png in Resources */,
 				C5374A961B69C08900A80625 /* AssetsPickerChecked.imageset in Resources */,
 				C5E71B671B6B03E900FCE0A2 /* PopMutableTableViewCell.xib in Resources */,
@@ -984,6 +991,7 @@
 				C5374AC11B69C0F100A80625 /* SDWebImagePrefetcher.m in Sources */,
 				C5374A461B69BF2400A80625 /* ZLCameraViewController.m in Sources */,
 				C5D9CC731B661E0900F603F0 /* AFURLConnectionOperation.m in Sources */,
+				C5F44EA91B970DBD001AF995 /* SignViewController.swift in Sources */,
 				C5374A5B1B69BF7600A80625 /* ZLPhotoPickerBrowserPhoto.m in Sources */,
 				C5DBEC271B665EE1003F5749 /* MutableTableViewCell.swift in Sources */,
 				C5374A551B69BF6400A80625 /* ZLPhotoPickerCustomToolBarView.m in Sources */,
@@ -1021,7 +1029,9 @@
 				C58A00E51B58961200C90FE6 /* RequestTableViewController.swift in Sources */,
 				C5D9CC781B661FEC00F603F0 /* SubPicTableViewController.swift in Sources */,
 				C5D7B97F1B390D5E00823343 /* SelfTableViewController.swift in Sources */,
+				C5F44EAD1B9712D9001AF995 /* TextTableViewCell.swift in Sources */,
 				C5374A8B1B69C05300A80625 /* UIImageView+WebCache.m in Sources */,
+				C5D9F3C51B96D40800C2630E /* LeafTableViewCell.swift in Sources */,
 				C5D7B9751B390AC800823343 /* HistoryTableViewController.swift in Sources */,
 				C5479E711B70E2AD00A48227 /* BranchItem.swift in Sources */,
 				C5DC25841B4EBFA800BF188A /* TabBarViewController.swift in Sources */,
@@ -1034,7 +1044,6 @@
 				C5374A7D1B69BFB500A80625 /* ZLPhotoPickerCollectionViewCell.m in Sources */,
 				C5374A431B69BF2400A80625 /* ZLCamera.m in Sources */,
 				C5D7B9131B3909BE00823343 /* AppDelegate.swift in Sources */,
-				C5D7B9B81B3A77EA00823343 /* BaseTableViewCell.swift in Sources */,
 				C5374A661B69BF9F00A80625 /* ZLPhotoPickerDatas.m in Sources */,
 				C5374AB91B69C0F100A80625 /* MKAnnotationView+WebCache.m in Sources */,
 				C5374ABB1B69C0F100A80625 /* SDImageCache.m in Sources */,
@@ -1044,7 +1053,6 @@
 				C5DBEC201B664F8E003F5749 /* PicJsonItemInfo.swift in Sources */,
 				C5D7B9AF1B39562800823343 /* PopoverMenuView.m in Sources */,
 				C5D7B9BA1B3A7BD700823343 /* DetailTableViewCell.swift in Sources */,
-				C58A00E91B589B7200C90FE6 /* ParticularsTableViewCell.swift in Sources */,
 				C5374ABE1B69C0F100A80625 /* SDWebImageDownloader.m in Sources */,
 				C5B9DA0D1B50C64300468BFE /* LewPopupViewAnimationDrop.m in Sources */,
 				C5374A6E1B69BFAB00A80625 /* ZLPhotoPickerAssetsViewController.m in Sources */,

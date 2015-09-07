@@ -33,7 +33,8 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     let kMutableCell = "mutableCell"
     let kSingleCell = "singleCell"
     let kMutablePhotoesCell = "mutablePhotoesCell"
-    var pro_id = "";var editable = false
+    //var pro_id = "";
+    var editable = false
     var selectedIndexPath:NSIndexPath = NSIndexPath()
     var hudProgress:MBProgressHUD!
 
@@ -150,7 +151,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
         }else if self.tableArray[indexPath.row].isKindOfClass(NSArray) {
             if let cell = tableView.dequeueReusableCellWithIdentifier(kMutablePhotoesCell, forIndexPath: indexPath) as? PopMutableTableViewCell {
                 cell.setupMutableCollection(self)
-                cell.pro_id = self.pro_id;cell.editable = self.editable
+                //cell.pro_id = self.pro_id;cell.editable = self.editable
                 if let item = self.tableArray[indexPath.row - 1] as? PicJsonItemInfo {
                     cell.tbName = item.tbName
                 }
@@ -279,7 +280,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
         
         if var item:PicJsonItemInfo = self.tableArray[self.selectedIndexPath.row] as? PicJsonItemInfo { var index = 0
             if item.multipage == "1" {index = item.imageurl.count + 1}
-            let str = "pro_id=\(self.pro_id)&filename=\(item.tbName)&page=\(index)&nsdata="
+            let str = "pro_id=\(AppDelegate.app().pro_id)&filename=\(item.tbName)&page=\(index)&nsdata="
             var uploadData:NSMutableData = NSMutableData()
             uploadData.appendString(str)
             uploadData.appendData(UIImagePNGRepresentation(image))
@@ -449,7 +450,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                     let image = asset.originImage()
                     let imageData:NSData = UIImagePNGRepresentation(image)
                     dispatch_group_async(group, queue, {
-                        let str = "pro_id=\(self.pro_id)&filename=\(item.tbName)&page=0&nsdata="
+                        let str = "pro_id=\(AppDelegate.app().pro_id)&filename=\(item.tbName)&page=0&nsdata="
                         let url = "\(AppDelegate.app().ipUrl)" + config + uploadUrl
                         var uploadData:NSMutableData = NSMutableData()
                         uploadData.appendString(str)
@@ -500,7 +501,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                         total += Float(imageData.length) * 0.000977
                         dispatch_async(serialQueue, {
                         //dispatch_group_async(group, queue, {
-                            let str = "pro_id=\(self.pro_id)&filename=\(item.tbName)&page=\(currentIndex++)&nsdata="
+                            let str = "pro_id=\(AppDelegate.app().pro_id)&filename=\(item.tbName)&page=\(currentIndex++)&nsdata="
                             var uploadData:NSMutableData = NSMutableData()
                             uploadData.appendString(str);uploadData.appendData(imageData)
                             NetworkRequest.AlamofireUploadImage("\(AppDelegate.app().ipUrl)" + config + uploadUrl, data: uploadData, progress: {

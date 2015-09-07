@@ -30,6 +30,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         var progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
         self.navigationController?.view.addSubview(progressHud)
         progressHud.show(true)
+        
         let url = AppDelegate.app().ipUrl + config + "app/service"
         NetworkRequest.AlamofireGetJSON(url, success: { (data) in
             if data != nil {
@@ -72,7 +73,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         addView.url = AppDelegate.app().ipUrl + config + typeURL + type
         addView.typeOp.type = type
         addView.typeOp.typeName = self.typeDic.objectForKey(type) as! String
-        addView.pro_id = "速评表"
+        //addView.pro_id = "速评表"
         let nav:UINavigationController = UINavigationController(rootViewController: addView)
         self.navigationController?.presentViewController(nav, animated: true, completion: nil)
     }
@@ -193,10 +194,12 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
                     browseView.typeOp.typeName = text!.description
                 }
             }
-            browseView.pro_id = key as! String
+            //browseView.pro_id = key as! String
+            AppDelegate.app().pro_id = key as! String
             browseView.isAdd = false
             browseView.url = AppDelegate.app().ipUrl + config + readTableURL + "\(key)" + "&remark=" + UserHelper.readRecentID(recentID)!
             let nav:UINavigationController = UINavigationController(rootViewController: browseView)
+            nav.navigationBar.backItem?.title = "返回"
             self.navigationController?.presentViewController(nav, animated: true, completion: nil)
         }
     }

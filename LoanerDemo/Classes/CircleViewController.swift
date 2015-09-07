@@ -19,7 +19,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
     
     var json:JSON = JSON.nullJSON
     var menuView : PopoverMenuView!
-    var pro_id:String = ""
+    //var pro_id:String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +59,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
         
         var submitDic:NSMutableDictionary = NSMutableDictionary()
         submitDic.setValue(user_id, forKey: "user_id")
-        submitDic.setValue(self.pro_id, forKey: "pro_id")
+        submitDic.setValue(AppDelegate.app().pro_id, forKey: "pro_id")
         submitDic.setValue(self.sumTextField.text, forKey: "suggest_money")
         submitDic.setValue(self.msgTextView.text, forKey: "remark")
         var request: Alamofire.Request?
@@ -143,7 +143,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
         
         var submitDic:NSMutableDictionary = NSMutableDictionary()
         submitDic.setValue(user_id, forKey: "user_id")
-        submitDic.setValue(self.pro_id, forKey: "pro_id")
+        submitDic.setValue(AppDelegate.app().pro_id, forKey: "pro_id")
         var footerURL:String = ""
         self.menuView.dismissMenuPopover()
         switch selectedIndex {
@@ -156,7 +156,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
                 return
             }
             let feedbackVC:CircleViewController = CircleViewController()
-            feedbackVC.pro_id = self.pro_id
+            //feedbackVC.pro_id = self.pro_id
             self.navigationController?.pushViewController(feedbackVC, animated: true)
             return
         case 2:
@@ -198,7 +198,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
             let user_id:NSString = UserHelper.readRecentID(recentID)!
             var submitDic:NSMutableDictionary = NSMutableDictionary()
             submitDic.setValue(user_id, forKey: "user_id")
-            submitDic.setValue(self.pro_id, forKey: "pro_id")
+            submitDic.setValue(AppDelegate.app().pro_id, forKey: "pro_id")
             self.menuView.dismissMenuPopover()
             let progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
             self.navigationController?.view.addSubview(progressHud)

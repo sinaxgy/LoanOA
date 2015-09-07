@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="TextTableViewCell" customModule="车融资OA" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6fD-92-AsC">
+                        <rect key="frame" x="8" y="11" width="0.0" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="42" id="ISY-wa-cTs"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="ISY-wa-cTs"/>
+                            </mask>
+                        </variation>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AjX-FG-bE2">
+                        <rect key="frame" x="262" y="11" width="58" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="58" id="4uI-mF-aAW"/>
+                            <constraint firstAttribute="width" constant="58" id="lve-NT-bN2"/>
+                        </constraints>
+                        <state key="normal" image="delete">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="4uI-mF-aAW"/>
+                            </mask>
+                        </variation>
+                        <connections>
+                            <action selector="deleteAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="jDd-xX-85O"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailingMargin" secondItem="AjX-FG-bE2" secondAttribute="trailing" constant="-8" id="2HG-xO-ozp"/>
+                    <constraint firstItem="6fD-92-AsC" firstAttribute="top" secondItem="AjX-FG-bE2" secondAttribute="top" id="41I-5a-PMd"/>
+                    <constraint firstItem="6fD-92-AsC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="3" id="9Tc-FJ-ymc"/>
+                    <constraint firstItem="6fD-92-AsC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="N6e-sc-ii5"/>
+                    <constraint firstItem="6fD-92-AsC" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="UYL-4M-cCv"/>
+                    <constraint firstItem="AjX-FG-bE2" firstAttribute="leading" secondItem="6fD-92-AsC" secondAttribute="trailing" constant="10" id="dTW-85-f88"/>
+                    <constraint firstItem="6fD-92-AsC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="lIs-Ip-O2U"/>
+                    <constraint firstAttribute="trailing" secondItem="AjX-FG-bE2" secondAttribute="trailing" id="tEQ-EO-iOO"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="N6e-sc-ii5"/>
+                        <exclude reference="2HG-xO-ozp"/>
+                        <exclude reference="dTW-85-f88"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="titleLabel" destination="6fD-92-AsC" id="EtV-5P-dQT"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="delete" width="16" height="16"/>
+    </resources>
+</document>

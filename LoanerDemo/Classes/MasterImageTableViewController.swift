@@ -15,7 +15,7 @@ struct requestURL {
         }
     }
     var URL:String
-    var pro_id:String
+    //var pro_id:String
 }
 
 let ipurl = "http://\(AppDelegate.app().IP)/"
@@ -23,12 +23,12 @@ let placeholderImageName = "defaultimage"
 
 class MasterImageTableViewController: UITableViewController {
 
-    var picURL:requestURL = requestURL(footer: "", URL: "", pro_id: "");
+    var picURL:requestURL = requestURL(footer: "", URL: "");//, pro_id: "");
     var masterJson:JSON = JSON.nullJSON
     var masterSubURL:NSMutableArray = []
     var titleArray:NSMutableArray = []
     let kSingleCell = "singleCell";var editable = false
-    var pro_id = ""
+    //var pro_id = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,7 +102,7 @@ class MasterImageTableViewController: UITableViewController {
                         let url = AppDelegate.app().ipUrl + (v as! String) + "?\(arc4random() % 100)"
                         cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                     }else if k.description == "url" {
-                        var imgU:requestURL = requestURL(footer: "", URL: "", pro_id: "")
+                        var imgU:requestURL = requestURL(footer: "", URL: "")//, pro_id: "")
                         imgU.footer = v as! String
                         self.masterSubURL.addObject(imgU.URL)
                     }else if k.description == "date" {
@@ -120,7 +120,7 @@ class MasterImageTableViewController: UITableViewController {
         subPicVC.title = self.titleArray[indexPath.row] as? String
         subPicVC.subURL = self.masterSubURL[indexPath.row] as! String
         subPicVC.editable = self.editable
-        subPicVC.pro_id = self.pro_id
+        //subPicVC.pro_id = self.pro_id
         self.navigationController?.pushViewController(subPicVC, animated: true)
     }
 }
