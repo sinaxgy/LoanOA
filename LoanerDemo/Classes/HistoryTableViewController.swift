@@ -13,6 +13,7 @@ let isIphone = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.Phone ? true:f
 let detailFontSize:CGFloat = (isIphone ? 12 : 24)
 let textFontSize:CGFloat = (isIphone ? 15 : 34)
 let cellHeight:CGFloat = (isIphone ? 55 : 100)
+let mainColor = 0x4282e3//0x25b6ed
 
 class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate{
     

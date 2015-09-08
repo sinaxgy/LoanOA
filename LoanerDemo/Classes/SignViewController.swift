@@ -32,9 +32,15 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
         textField.layer.borderWidth = 2;textField.layer.cornerRadius = 6
         textField.clearButtonMode = UITextFieldViewMode.Always
         textField.delegate = self;textField.placeholder = "请输入\(self.title!)"
+        let leftView:UIView = UIView(frame: CGRectMake(0, 0, 30, 30))
+        let imgV:UIImageView = UIImageView(image: UIImage(named: "textFieldInput"))
+        imgV.frame = CGRectMake(0, 0, 20, 20);imgV.center = leftView.center
+        leftView.addSubview(imgV)
+        textField.leftView = leftView
+        textField.leftViewMode = UITextFieldViewMode.Always
         textField.keyboardType = LoanerHelper.keyboardTypeWithType(verify)!
         textField.autocorrectionType = UITextAutocorrectionType.No
-        textField.layer.borderColor = UIColor(hex: 0x25b6ed)?.CGColor
+        textField.layer.borderColor = UIColor(hex: mainColor)?.CGColor
         self.view.addSubview(textField)
         textField.becomeFirstResponder()
         textField.addTarget(self, action: "textFieldDidChanged:", forControlEvents: UIControlEvents.EditingChanged)

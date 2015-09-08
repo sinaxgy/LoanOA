@@ -258,7 +258,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
         if cell.itemInfo.options.count > 0 {
             for item in cell.itemInfo.options {
                 if item as! String == "must" {
-                    cell.titleLabel.textColor = UIColor(hex: 0x25b6ed)
+                    cell.titleLabel.textColor = UIColor(hex: mainColor)
                     break
                 }
             }

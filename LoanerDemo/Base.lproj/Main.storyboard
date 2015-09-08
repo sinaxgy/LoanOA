@@ -285,7 +285,8 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" id="9aF-jV-RAI">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.25882352941176467" green="0.50980392156862742" blue="0.8901960784313725" alpha="1" colorSpace="calibratedRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="daK-7b-yYX" kind="relationship" relationship="viewControllers" id="Lb3-Mq-rLz"/>
@@ -299,7 +300,7 @@
     </scenes>
     <resources>
         <image name="background" width="640" height="1136"/>
-        <image name="history.png" width="24" height="24"/>
+        <image name="history.png" width="20" height="17"/>
         <image name="loginrect" width="453" height="212"/>
         <image name="logo" width="118" height="135"/>
         <image name="person.png" width="20" height="20"/>

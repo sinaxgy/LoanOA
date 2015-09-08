@@ -31,6 +31,8 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
         self.showActivityIndicatorViewInNavigationItem()
         //self.loadJSONOfView()
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "cancel:")
+        
+        self.tableView.registerNib(UINib(nibName: "BranchTableViewCell", bundle: nil), forCellReuseIdentifier: "branchCell")
     }
     
     func showActivityIndicatorViewInNavigationItem() {
@@ -149,18 +151,27 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "cell")
+//        let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "cell")
+//        if let branch = self.branchItems[indexPath.row] as? BranchItem {
+//            if branch.isComplete == "true" {
+//                cell.textLabel?.textColor = UIColor.redColor()
+//                var textAttach:NSTextAttachment = NSTextAttachment()
+//                textAttach.image = UIImage(named: "mustMark")
+//                var str:NSAttributedString = NSAttributedString(attachment: textAttach)
+//                cell.textLabel?.attributedText = str
+//                
+//            }
+//            cell.textLabel?.text = branch.tag_name
+//            cell.textLabel?.font = UIFont.systemFontOfSize(textFontSize)
+//        }
+        let cell = tableView.dequeueReusableCellWithIdentifier("branchCell", forIndexPath: indexPath) as! BranchTableViewCell
         if let branch = self.branchItems[indexPath.row] as? BranchItem {
             if branch.isComplete == "false" {
-                cell.textLabel?.textColor = UIColor.redColor()
-                var textAttach:NSTextAttachment = NSTextAttachment()
-                textAttach.image = UIImage(named: "mustMark")
-                var str:NSAttributedString = NSAttributedString(attachment: textAttach)
-                cell.textLabel?.attributedText = str
-                
+                cell.titleLabel.textColor = UIColor(hex: mainColor)
             }
-            cell.textLabel?.text = branch.tag_name
-            cell.textLabel?.font = UIFont.systemFontOfSize(textFontSize)
+            cell.title = branch.tag_name
+            cell.titleImage = UIImage(named: branch.fileName)
+            cell.titleLabel?.font = UIFont.systemFontOfSize(textFontSize)
         }
         return cell
     }

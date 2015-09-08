@@ -638,7 +638,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		CGContextSetFillColorWithColor(context, self.color.CGColor);
 	} else {
 		//CGContextSetGrayFillColor(context, 0.0f, self.opacity);
-        CGContextSetFillColorWithColor(context, [[UIColor alloc] initWithRed:37.0/255.0 green:182.0/255.0 blue:237.0/255.0 alpha:1.f].CGColor);
+        CGContextSetFillColorWithColor(context, [[UIColor alloc] initWithRed:66.0/255.0 green:130.0/255.0 blue:227.0/255.0 alpha:1.f].CGColor);
 	}
 
 	
