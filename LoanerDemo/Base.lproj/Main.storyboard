@@ -71,7 +71,7 @@
         <!--个人信息-->
         <scene sceneID="0uA-Y1-RYr">
             <objects>
-                <navigationController id="BxC-hn-15a" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="personNav" id="BxC-hn-15a" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="个人信息" image="person.png" id="WeY-Qh-Cws"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="oqq-Iw-KXF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -88,7 +88,7 @@
         <!--速评表-->
         <scene sceneID="vzL-eI-3nE">
             <objects>
-                <navigationController id="daK-7b-yYX" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="historyNav" id="daK-7b-yYX" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="速评表" image="history.png" id="te7-DV-EV3"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="z6C-fU-e8P">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -277,16 +277,25 @@
             </objects>
             <point key="canvasLocation" x="-1358" y="939"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab Bar View Controller-->
         <scene sceneID="UGq-mv-ytt">
             <objects>
-                <tabBarController storyboardIdentifier="tab" id="tKV-pb-yNK" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="tab" id="tKV-pb-yNK" customClass="TabBarViewController" customModule="车融资OA" customModuleProvider="target" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="9aF-jV-RAI">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="barTintColor" red="0.25882352941176467" green="0.50980392156862742" blue="0.8901960784313725" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="barTintColor" red="0.25882352939999997" green="0.50980392159999999" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="selectedImageTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="selectedImageTintColor">
+                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="itemWidth">
+                                <integer key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </tabBar>
                     <connections>
                         <segue destination="daK-7b-yYX" kind="relationship" relationship="viewControllers" id="Lb3-Mq-rLz"/>

@@ -44,16 +44,17 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
         self.tableView.registerNib(UINib(nibName: "SingleTableViewCell", bundle: nil), forCellReuseIdentifier: kSingleCell)
         self.tableView.registerNib(UINib(nibName: "PopMutableTableViewCell", bundle: nil), forCellReuseIdentifier: kMutablePhotoesCell)
         self.reload()
+        
     }
     
     func reload(){
         self.showActivityIndicatorViewInNavigationItem()
-        var progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
-        self.navigationController?.view.addSubview(progressHud)
-        progressHud.show(true)
+        //var progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
+        //self.navigationController?.view.addSubview(progressHud)
+        //progressHud.show(true)
         NetworkRequest.AlamofireGetJSON(self.subURL, success: {
             (data) in
-            progressHud.hide(true)
+            //progressHud.hide(true)
             let js:JSON = JSON(data!)
             if js.type == .Array {
                 for var i:Int = 0; i < js.count ; i++ {
@@ -67,10 +68,14 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             self.tableView.reloadData()
             self.hiddenActivityIndicatorViewInNavigationItem()
             }, failed: {
-                progressHud.labelText = "连接异常"
-                progressHud.hide(true, afterDelay: 1)}, outTime: {
-                    progressHud.labelText = "请求超时"
-                    progressHud.hide(true, afterDelay: 1)})
+//                progressHud.labelText = "连接异常"
+                //                progressHud.hide(true, afterDelay: 1)
+                self.hiddenActivityIndicatorViewInNavigationItem()
+            }, outTime: {
+                self.hiddenActivityIndicatorViewInNavigationItem()
+//                    progressHud.labelText = "请求超时"
+//                    progressHud.hide(true, afterDelay: 1)
+        })
     }
     
     func showActivityIndicatorViewInNavigationItem() {
@@ -110,6 +115,28 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
         return cellHeight
     }
     
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+        var deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "删除") { (rowAction, index) -> Void in
+            println("delete")
+        }
+        deleteRowAction.backgroundColor = UIColor.redColor()
+        
+        var replaceRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "替换") { (rowAction, index) -> Void in
+            println("replace")
+        }
+        replaceRowAction.backgroundColor = UIColor(hex: mainColor)
+        
+        return [deleteRowAction,replaceRowAction]
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if self.tableArray[indexPath.row].isKindOfClass(PicJsonItemInfo) {
             let item:PicJsonItemInfo = self.tableArray[indexPath.row] as! PicJsonItemInfo
@@ -122,7 +149,6 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                     }
                     cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                     cell.subTextLabel?.text = item.date
-                    //cell.selectionStyle = UITableViewCellSelectionStyle.None
                     
                     var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
                     cell.addGestureRecognizer(longPress)

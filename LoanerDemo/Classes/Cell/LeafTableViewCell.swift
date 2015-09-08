@@ -29,8 +29,10 @@ class LeafTableViewCell: UITableViewCell ,UIActionSheetDelegate{
         detailLabel.text = self.itemInfo.value as String
         if !itemInfo.editable {
             detailLabel.textColor = UIColor.grayColor()
+            self.accessoryType = UITableViewCellAccessoryType.None
         }else {
             detailLabel.textColor = UIColor.blackColor()
+            self.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         }
     }
     

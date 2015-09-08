@@ -23,6 +23,8 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     var json:JSON = JSON.nullJSON
     var sortJsonArray:NSArray = []
     
+    
+    
     var headers: [String: String] = [:]
     var body: String?
     var elapsedTime: NSTimeInterval?
@@ -81,6 +83,8 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        //self.navigationController?.tabBarItem.badgeValue = "12"
+        
         self.refreshControl = UIRefreshControl(frame: CGRectMake(0, 0, self.tableView.frame.size.width, 100))
         self.refreshControl?.addTarget(self, action: "reload:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.tableHeaderView?.addSubview(self.refreshControl!)
@@ -132,10 +136,19 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     }
     
     func hiddenActivityIndicatorViewInNavigationItem() {
-        self.navigationItem.titleView = UIImageView(image: UIImage(named: "mainTitle"))
+        //self.navigationItem.titleView = UIImageView(image: UIImage(named: "mainTitle"))
+        self.navigationItem.title = "所有项目"
+        self.navigationItem.titleView = nil
+        //UIApplication.sharedApplication().applicationIconBadgeNumber = 233
         self.navigationItem.prompt = nil
         self.refreshControl?.endRefreshing()
         self.activityView.stopAnimating()
+    }
+    
+    func setTabBarBadge(value:String) {
+        if let tab:UITabBarController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("tab") as? UITabBarController {
+            tab.tabBar.selectedItem?.badgeValue = value
+        }
     }
 
     override func didReceiveMemoryWarning() {
