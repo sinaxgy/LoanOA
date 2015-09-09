@@ -27,6 +27,8 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
     }
     
     func initView() {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "submit"), style: UIBarButtonItemStyle.Bordered, target: self, action: "complete:")
+        
         self.view.backgroundColor = UIColor.whiteColor()
         textField = UITextField(frame: CGRectMake(5, 69, self.view.bounds.width - 10, 35))
         textField.layer.borderWidth = 2;textField.layer.cornerRadius = 6
@@ -118,6 +120,14 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
     }
     
     func datePickerDidCancel() {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    func complete(sender:AnyObject){
+        if !self.defaultTexts.containsObject(textField.text) {
+            self.defaultTexts.addObject(textField.text)
+        }
+        self.delegate.signTextDidBeDone(textField.text, texts: defaultTexts)
         self.navigationController?.popViewControllerAnimated(true)
     }
 

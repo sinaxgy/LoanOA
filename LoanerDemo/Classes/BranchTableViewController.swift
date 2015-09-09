@@ -322,7 +322,8 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                 }
             }
             self.menuItems = items
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Bookmarks, target: self, action: "showMenu:")
+            //self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Bookmarks, target: self, action: "showMenu:")
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "more"), style: UIBarButtonItemStyle.Bordered, target: self, action: "showMenu:")
         }
     }
     

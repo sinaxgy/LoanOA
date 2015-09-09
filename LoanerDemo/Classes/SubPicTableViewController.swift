@@ -112,7 +112,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             let k = item.count %+ Int(UIScreen.mainScreen().bounds.width / 90)
             return CGFloat(k) * 100
         }
-        return cellHeight
+        return 70
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -124,6 +124,9 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     }
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+//        if let item = self.tableArray[indexPath.row] as? PicJsonItemInfo {
+//            if item.imageurl.count == 0 {return[]}
+//        }
         var deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "删除") { (rowAction, index) -> Void in
             println("delete")
         }
@@ -131,6 +134,9 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
         
         var replaceRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "替换") { (rowAction, index) -> Void in
             println("replace")
+            var sheetAction:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "从相册中选取","打开照相机")
+            sheetAction.tag = 201
+            sheetAction.showInView(self.view)
         }
         replaceRowAction.backgroundColor = UIColor(hex: mainColor)
         
@@ -140,6 +146,16 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if self.tableArray[indexPath.row].isKindOfClass(PicJsonItemInfo) {
             let item:PicJsonItemInfo = self.tableArray[indexPath.row] as! PicJsonItemInfo
+            if var cell:SingleTableViewCell = tableView.dequeueReusableCellWithIdentifier(kSingleCell, forIndexPath: indexPath) as? SingleTableViewCell {
+                cell.titleLabel.text = item.pic_explain;var url = ""
+                if item.imageurl.count == 1 {
+                    url = "\(AppDelegate.app().ipUrl)" + (item.imageurl.firstObject as! String) + "?\(arc4random() % 100)"
+                }
+                cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
+                cell.subTextLabel?.text = item.date
+                cell.isMutable = NSString(string: item.multipage).boolValue
+                return cell
+            }
             if item.multipage == "0" {
                 if var cell:SingleTableViewCell = tableView.dequeueReusableCellWithIdentifier(kSingleCell, forIndexPath: indexPath) as? SingleTableViewCell {
                     cell.titleLabel?.text = item.pic_explain
@@ -149,10 +165,6 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                     }
                     cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                     cell.subTextLabel?.text = item.date
-                    
-                    var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
-                    cell.addGestureRecognizer(longPress)
-                    
                     return cell
                 }
             }else if item.multipage == "1" {
@@ -166,11 +178,6 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                     cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                     cell.subTextLabel.text = item.date
                     cell.delagate = self
-                    
-                    var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
-                    cell.addGestureRecognizer(longPress)
-                    
-                    //cell.selectionStyle = UITableViewCellSelectionStyle.None
                     return cell
                 }
             }
@@ -454,6 +461,35 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             default:
                 break
             }
+        }
+    }
+    
+    func delete() {
+        if var item = self.tableArray[self.selectedIndexPath.row] as? PicJsonItemInfo {
+            let url = AppDelegate.app().ipUrl + config + "app/delete"
+            NetworkRequest.AlamofirePostParameters(url, parameters: ["path":"\(JSON(item.imageurl))"], success: {
+                (data) in
+                if data == nil {println("empty return");return}
+                if data as! String == "success" {
+                    if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
+                        cell.imageV.image = UIImage(named: placeholderImageName)
+                        item.imageurl = NSMutableArray()
+                    }else if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? MutableTableViewCell {
+                        cell.imageV.image = UIImage(named: placeholderImageName)
+                        item.imageurl = NSMutableArray()
+                    }
+                    
+                    if let ar = self.tableArray[self.selectedIndexPath.row + 1] as? NSArray {
+                        self.tableArray.removeObjectAtIndex(self.selectedIndexPath.row + 1)
+                        self.tableView.beginUpdates()
+                        let index:NSIndexPath = NSIndexPath(forRow: self.selectedIndexPath.row + 1, inSection: self.selectedIndexPath.section)
+                        self.tableView.deleteRowsAtIndexPaths([index], withRowAnimation: UITableViewRowAnimation.Middle)
+                        self.tableView.endUpdates()
+                    }
+                }
+                }, failed: {
+                    //失败处理
+                },outTime:{})
         }
     }
     

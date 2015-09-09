@@ -17,14 +17,22 @@ class SingleTableViewCell: UITableViewCell {
     @IBOutlet weak var imageV: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTextLabel: UILabel!
+    @IBOutlet weak var mutableView: UIImageView!
     
     var singleDelegate:singleTableViewCellDelegate!
+    var isMutable:Bool! = true {
+        didSet{
+            self.mutableView.hidden = !self.isMutable
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleSingleTap:")
         self.imageV.addGestureRecognizer(tap)
+        //self.mutableView.hidden = !self.isMutable
+        //self.isMutable = true
     }
     
     func handleSingleTap(gesture:UITapGestureRecognizer) {

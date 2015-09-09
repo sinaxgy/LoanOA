@@ -34,12 +34,12 @@ class MasterImageTableViewController: UITableViewController {
         super.viewDidLoad()
         self.showActivityIndicatorViewInNavigationItem()
         self.tableView.registerNib(UINib(nibName: "SingleTableViewCell", bundle: nil), forCellReuseIdentifier: kSingleCell)
-        var progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
-        self.navigationController?.view.addSubview(progressHud)
-        progressHud.show(true)
+//        var progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
+//        self.navigationController?.view.addSubview(progressHud)
+//        progressHud.show(true)
         NetworkRequest.AlamofireGetJSON(self.picURL.URL, success: {
             (data) in
-            progressHud.hide(true)
+            //progressHud.hide(true)
             self.masterJson = JSON(data!)
             if self.masterJson != nil {
                 self.tableView.reloadData()
@@ -47,11 +47,13 @@ class MasterImageTableViewController: UITableViewController {
             self.hiddenActivityIndicatorViewInNavigationItem()
             }, failed: {
                 self.hiddenActivityIndicatorViewInNavigationItem()
-                progressHud.labelText = "连接异常"
-                progressHud.hide(true, afterDelay: 1)}, outTime: {
+//                progressHud.labelText = "连接异常"
+//                progressHud.hide(true, afterDelay: 1)
+            }, outTime: {
                     self.hiddenActivityIndicatorViewInNavigationItem()
-                    progressHud.labelText = "请求超时"
-                    progressHud.hide(true, afterDelay: 1)})
+//                    progressHud.labelText = "请求超时"
+//                    progressHud.hide(true, afterDelay: 1)
+        })
     }
     
     func showActivityIndicatorViewInNavigationItem() {
@@ -86,11 +88,12 @@ class MasterImageTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 55
+        return 70
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:SingleTableViewCell = tableView.dequeueReusableCellWithIdentifier(kSingleCell, forIndexPath: indexPath) as! SingleTableViewCell
+        cell.isMutable = false
         let js = self.masterJson[indexPath.row];
         if js.type == .Dictionary {
             let dic:NSDictionary = js.object as! NSDictionary
