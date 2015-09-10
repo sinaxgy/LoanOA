@@ -23,8 +23,6 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     var json:JSON = JSON.nullJSON
     var sortJsonArray:NSArray = []
     
-    
-    
     var headers: [String: String] = [:]
     var body: String?
     var elapsedTime: NSTimeInterval?
@@ -98,6 +96,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         self.activityView.startAnimating()
         self.showActivityIndicatorViewInNavigationItem()
         
+        self.navigationController?.tabBarItem.selectedImage = UIImage(named: "spbSelected")
     }
     
     func reload(sender:AnyObject) {
@@ -123,9 +122,27 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
                     })
                 }
                 self.tableView.reloadData()
+                self.navigationItem.title = "所有项目"
             }
-            }, failed: {self.hiddenActivityIndicatorViewInNavigationItem()
-            }, outTime: {self.hiddenActivityIndicatorViewInNavigationItem()})
+            }, failed: {
+                self.hiddenActivityIndicatorViewInNavigationItem()
+                var bk:UIImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
+                bk.image = UIImage(named: "noAnnounce")
+                self.view.addSubview(bk)
+            }, outTime: {self.hiddenActivityIndicatorViewInNavigationItem()
+                self.navigationItem.title = "所有项目（未连接）"
+                self.connectFailed()
+        })
+    }
+    
+    func connectFailed() {
+        var vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
+        self.view.addSubview(vaildHud)
+        vaildHud.show(true)
+        vaildHud.mode = MBProgressHUDMode.Text
+        vaildHud.detailsLabelText = "请求超时"
+        vaildHud.detailsLabelFont = UIFont.systemFontOfSize(17)
+        vaildHud.hide(true, afterDelay: 1)
     }
     
     func showActivityIndicatorViewInNavigationItem() {

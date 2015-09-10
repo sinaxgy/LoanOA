@@ -38,10 +38,11 @@ class UserHelper: NSObject {
         return false
     }
    
-    static func readCurrentUserInfo(user_id:String) -> NSDictionary? {
+    static func readCurrentUserInfo(user_id:String?) -> NSDictionary? {
+        if user_id == nil {return NSDictionary()}
         var user:NSUserDefaults? = NSUserDefaults.standardUserDefaults()
         if (user != nil) {
-            if let dic =  user?.objectForKey(user_id) as? NSDictionary {
+            if let dic =  user?.objectForKey(user_id!) as? NSDictionary {
                 return dic
             }
         }
@@ -59,7 +60,9 @@ class UserHelper: NSObject {
     static func readRecentID(recentId:String) -> String? {
         var user:NSUserDefaults? = NSUserDefaults.standardUserDefaults()
         if (user != nil) {
+            if NSUserDefaults.standardUserDefaults().objectForKey(recentID) != nil {
             return user!.stringForKey(recentID)!
+            }
         }
         return nil
     }

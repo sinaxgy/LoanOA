@@ -25,6 +25,9 @@
 		C52BD9D51B4CC54F000316A8 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C52BD9D41B4CC54F000316A8 /* MBProgressHUD.m */; };
 		C52BD9DA1B4CCE8E000316A8 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = C52BD9D81B4CCE8E000316A8 /* 37x-Checkmark.png */; };
 		C52BD9DB1B4CCE8E000316A8 /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C52BD9D91B4CCE8E000316A8 /* 37x-Checkmark@2x.png */; };
+		C53048721BA0106E0057D59A /* AnnounceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53048711BA0106E0057D59A /* AnnounceItem.swift */; };
+		C53048751BA021AF0057D59A /* AnnouncementTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53048741BA021AF0057D59A /* AnnouncementTBVC.swift */; };
+		C530487B1BA050930057D59A /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C530487A1BA050930057D59A /* NewsViewController.swift */; };
 		C5374A431B69BF2400A80625 /* ZLCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = C5374A3C1B69BF2400A80625 /* ZLCamera.m */; };
 		C5374A441B69BF2400A80625 /* ZLCameraImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5374A3E1B69BF2400A80625 /* ZLCameraImageView.m */; };
 		C5374A451B69BF2400A80625 /* ZLCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5374A401B69BF2400A80625 /* ZLCameraView.m */; };
@@ -128,8 +131,6 @@
 		C5F218EC1B4AA8350072D445 /* options_pointer.png in Resources */ = {isa = PBXBuildFile; fileRef = C5F218E71B4AA8350072D445 /* options_pointer.png */; };
 		C5F218ED1B4AA8350072D445 /* options_pointer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5F218E81B4AA8350072D445 /* options_pointer@2x.png */; };
 		C5F218EF1B4AA9250072D445 /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F218EE1B4AA9250072D445 /* NetworkRequest.swift */; };
-		C5F218F11B4AC8ED0072D445 /* history@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5F218F01B4AC8ED0072D445 /* history@2x.png */; };
-		C5F218F31B4AC97A0072D445 /* person@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5F218F21B4AC97A0072D445 /* person@2x.png */; };
 		C5F44EA91B970DBD001AF995 /* SignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F44EA81B970DBD001AF995 /* SignViewController.swift */; };
 		C5F44EAD1B9712D9001AF995 /* TextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F44EAB1B9712D9001AF995 /* TextTableViewCell.swift */; };
 		C5F44EAE1B9712D9001AF995 /* TextTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5F44EAC1B9712D9001AF995 /* TextTableViewCell.xib */; };
@@ -208,6 +209,9 @@
 		C52BD9D41B4CC54F000316A8 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = Classes/OCFile/MBProgressHUD.m; sourceTree = "<group>"; };
 		C52BD9D81B4CCE8E000316A8 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37x-Checkmark.png"; path = "Resources/Image/37x-Checkmark.png"; sourceTree = "<group>"; };
 		C52BD9D91B4CCE8E000316A8 /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37x-Checkmark@2x.png"; path = "Resources/Image/37x-Checkmark@2x.png"; sourceTree = "<group>"; };
+		C53048711BA0106E0057D59A /* AnnounceItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AnnounceItem.swift; path = Classes/Model/AnnounceItem.swift; sourceTree = "<group>"; };
+		C53048741BA021AF0057D59A /* AnnouncementTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AnnouncementTBVC.swift; path = Classes/VC/AnnouncementTBVC.swift; sourceTree = "<group>"; };
+		C530487A1BA050930057D59A /* NewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewsViewController.swift; path = Classes/VC/NewsViewController.swift; sourceTree = "<group>"; };
 		C5374A391B69BF1800A80625 /* ZLPhoto.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ZLPhoto.h; path = Classes/OCFile/ZLPhotoLib/ZLPhoto.h; sourceTree = "<group>"; };
 		C5374A3A1B69BF1800A80625 /* ZLPhotoPickerCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ZLPhotoPickerCommon.h; path = Classes/OCFile/ZLPhotoLib/ZLPhotoPickerCommon.h; sourceTree = "<group>"; };
 		C5374A3B1B69BF2400A80625 /* ZLCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZLCamera.h; path = Classes/OCFile/ZLPhotoLib/ZLCamera/ZLCamera.h; sourceTree = "<group>"; };
@@ -370,8 +374,6 @@
 		C5F218E71B4AA8350072D445 /* options_pointer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = options_pointer.png; path = Resources/popview/options_pointer.png; sourceTree = "<group>"; };
 		C5F218E81B4AA8350072D445 /* options_pointer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "options_pointer@2x.png"; path = "Resources/popview/options_pointer@2x.png"; sourceTree = "<group>"; };
 		C5F218EE1B4AA9250072D445 /* NetworkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkRequest.swift; path = Classes/NetworkRequest.swift; sourceTree = "<group>"; };
-		C5F218F01B4AC8ED0072D445 /* history@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "history@2x.png"; path = "Resources/history@2x.png"; sourceTree = "<group>"; };
-		C5F218F21B4AC97A0072D445 /* person@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "person@2x.png"; path = "Resources/person@2x.png"; sourceTree = "<group>"; };
 		C5F44EA81B970DBD001AF995 /* SignViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignViewController.swift; path = Classes/SignViewController.swift; sourceTree = "<group>"; };
 		C5F44EAB1B9712D9001AF995 /* TextTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextTableViewCell.swift; path = Classes/Cell/TextTableViewCell.swift; sourceTree = "<group>"; };
 		C5F44EAC1B9712D9001AF995 /* TextTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TextTableViewCell.xib; path = Classes/Cell/TextTableViewCell.xib; sourceTree = "<group>"; };
@@ -404,6 +406,8 @@
 				C5DC25831B4EBFA800BF188A /* TabBarViewController.swift */,
 				C5A0B2011B5A81F4000C00AD /* LoginsViewController.swift */,
 				C5D7B97E1B390D5E00823343 /* SelfTableViewController.swift */,
+				C53048741BA021AF0057D59A /* AnnouncementTBVC.swift */,
+				C530487A1BA050930057D59A /* NewsViewController.swift */,
 				C5D7B9741B390AC800823343 /* HistoryTableViewController.swift */,
 				C5D7B9BB1B3A7E0F00823343 /* BranchTableViewController.swift */,
 				C5D7B9B41B3A5AA000823343 /* DetailTableViewController.swift */,
@@ -423,6 +427,7 @@
 			children = (
 				C5DE16FA1B67633300498C10 /* CameraManagerCenter.swift */,
 				C5479E701B70E2AD00A48227 /* BranchItem.swift */,
+				C53048711BA0106E0057D59A /* AnnounceItem.swift */,
 				C5F218EE1B4AA9250072D445 /* NetworkRequest.swift */,
 				C5D245981B94531A0022E61D /* SwiftColors.swift */,
 				C5D245951B9440120022E61D /* UserHelper.swift */,
@@ -684,8 +689,6 @@
 				C55D298C1B4BD134003F714A /* savepwn.png */,
 				C55D298D1B4BD134003F714A /* savepws.png */,
 				C55D298A1B4BC5BF003F714A /* login_input_rect.png */,
-				C5F218F01B4AC8ED0072D445 /* history@2x.png */,
-				C5F218F21B4AC97A0072D445 /* person@2x.png */,
 				C503A98C1B4B72C10081200D /* Icon */,
 				C503A9A31B4B761B0081200D /* PopMenuIcon */,
 			);
@@ -948,7 +951,6 @@
 				C503A9961B4B72C90081200D /* Icon-60@3x.png in Resources */,
 				C5374A9A1B69C08900A80625 /* shanguangdeng2.imageset in Resources */,
 				C52BD9DB1B4CCE8E000316A8 /* 37x-Checkmark@2x.png in Resources */,
-				C5F218F11B4AC8ED0072D445 /* history@2x.png in Resources */,
 				C52BD9DA1B4CCE8E000316A8 /* 37x-Checkmark.png in Resources */,
 				C5E71B6C1B6B04BA00FCE0A2 /* SubPopCollectionViewCell.xib in Resources */,
 				C55D298F1B4BD134003F714A /* savepws.png in Resources */,
@@ -973,7 +975,6 @@
 				C503A99A1B4B72C90081200D /* Icon-76@2x.png in Resources */,
 				C5374A801B69BFB500A80625 /* ZLPhotoPickerGroupTableViewCell.xib in Resources */,
 				C5DBEC2C1B666676003F5749 /* SingleTableViewCell.xib in Resources */,
-				C5F218F31B4AC97A0072D445 /* person@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1000,6 +1001,7 @@
 				C5D9CC731B661E0900F603F0 /* AFURLConnectionOperation.m in Sources */,
 				C5F44EA91B970DBD001AF995 /* SignViewController.swift in Sources */,
 				C5374A5B1B69BF7600A80625 /* ZLPhotoPickerBrowserPhoto.m in Sources */,
+				C53048721BA0106E0057D59A /* AnnounceItem.swift in Sources */,
 				C5DBEC271B665EE1003F5749 /* MutableTableViewCell.swift in Sources */,
 				C5374A551B69BF6400A80625 /* ZLPhotoPickerCustomToolBarView.m in Sources */,
 				C5E2422E1B4A7586006CD3D2 /* CircleViewController.swift in Sources */,
@@ -1029,6 +1031,7 @@
 				C5374A811B69BFB500A80625 /* ZLPhotoPickerImageView.m in Sources */,
 				C5374A8A1B69C05300A80625 /* UIButton+WebCache.m in Sources */,
 				C5D9CC721B661E0900F603F0 /* AFSecurityPolicy.m in Sources */,
+				C53048751BA021AF0057D59A /* AnnouncementTBVC.swift in Sources */,
 				C5374AC51B69C0F100A80625 /* UIImageView+HighlightedWebCache.m in Sources */,
 				C5F218EF1B4AA9250072D445 /* NetworkRequest.swift in Sources */,
 				C5E71B661B6B03E900FCE0A2 /* PopMutableTableViewCell.swift in Sources */,
@@ -1051,6 +1054,7 @@
 				C5374A7D1B69BFB500A80625 /* ZLPhotoPickerCollectionViewCell.m in Sources */,
 				C5374A431B69BF2400A80625 /* ZLCamera.m in Sources */,
 				C5D7B9131B3909BE00823343 /* AppDelegate.swift in Sources */,
+				C530487B1BA050930057D59A /* NewsViewController.swift in Sources */,
 				C5374A661B69BF9F00A80625 /* ZLPhotoPickerDatas.m in Sources */,
 				C5374AB91B69C0F100A80625 /* MKAnnotationView+WebCache.m in Sources */,
 				C5374ABB1B69C0F100A80625 /* SDImageCache.m in Sources */,

@@ -125,7 +125,9 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
             }, failed: {
                 self.title = self.typeOp.typeName
                 self.hiddenActivityIndicatorViewInNavigationItem()}, outTime: {
-                    self.hiddenActivityIndicatorViewInNavigationItem()})
+                    self.hiddenActivityIndicatorViewInNavigationItem()
+                    self.connectFailed()
+        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -351,5 +353,15 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
     
     override func viewWillAppear(animated: Bool) {
         self.loadJSONOfView()
+    }
+    
+    func connectFailed() {
+        var vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
+        self.view.addSubview(vaildHud)
+        vaildHud.show(true)
+        vaildHud.mode = MBProgressHUDMode.Text
+        vaildHud.detailsLabelText = "请求超时"
+        vaildHud.detailsLabelFont = UIFont.systemFontOfSize(17)
+        vaildHud.hide(true, afterDelay: 1)
     }
 }

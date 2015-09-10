@@ -17,6 +17,26 @@ class NetworkRequest: NSObject {
         }
     }
     
+    static func AlamofireGetString(url:String,success:(AnyObject?)->Void,failed:()->Void,outTime:()->Void) {
+        var request: Alamofire.Request!
+        request = Alamofire.request(.GET, url)
+        request.responseString() {
+            (_,_,data,error) in
+            request = nil
+            if error != nil {
+                failed()
+                return
+            }
+            success(data)
+        }
+        let gcdTimer:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(15 * NSEC_PER_SEC))
+        dispatch_after(gcdTimer, dispatch_get_main_queue(), {
+            if request != nil {
+                outTime()
+            }
+        })
+    }
+    
     static func AlamofireGetJSON(url:String,success:(AnyObject?)->Void,failed:()->Void,outTime:()->Void) {
         var request: Alamofire.Request!
         request = Alamofire.request(.GET, url)

@@ -21,6 +21,7 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
         self.readSelfINfo()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "注销", style: UIBarButtonItemStyle.Plain, target: self, action:"logout:")
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "配置IP", style: UIBarButtonItemStyle.Plain, target: self, action:"settingIP:")
+        self.navigationController?.tabBarItem.selectedImage = UIImage(named: "perSelected")
     }
     
     func settingIP(sender:UIBarButtonItem) {

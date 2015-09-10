@@ -28,11 +28,14 @@ class SingleTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-        var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleSingleTap:")
-        self.imageV.addGestureRecognizer(tap)
-        //self.mutableView.hidden = !self.isMutable
-        //self.isMutable = true
+    }
+    
+    func setupCell(title:String,date:String,isRead:Bool) {
+        self.titleLabel.text = title
+        self.subTextLabel.text = date
+        self.isMutable = false
+        self.imageV.frame = CGRectMake(0, 0, 36, 36)
+        self.imageV.image = UIImage(named: (isRead ? "ancReaded" : "announce"))
     }
     
     func handleSingleTap(gesture:UITapGestureRecognizer) {

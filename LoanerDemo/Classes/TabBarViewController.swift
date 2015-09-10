@@ -16,9 +16,31 @@ class TabBarViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let bar = self.tabBar.items![1] as! UITabBarItem
-        //bar.badgeValue = "{"
+        self.getAnnouncemetMessageNum()
         // Do any additional setup after loading the view.
+        UITabBarItem.appearance().setTitleTextAttributes(
+            [NSFontAttributeName:UIFont.systemFontOfSize(12),
+                NSForegroundColorAttributeName:UIColor(red: 186.0/255.0, green: 205.0/255.0, blue: 255.0/205.0, alpha: 1)], forState: UIControlState.Normal)
+        UITabBarItem.appearance().setTitleTextAttributes(
+            [NSFontAttributeName:UIFont.systemFontOfSize(10),
+                NSForegroundColorAttributeName:UIColor.whiteColor()], forState: UIControlState.Selected)
+        for it in self.tabBar.items! {
+            if let item = it as? UITabBarItem {
+                item.image = item.image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+            }
+        }
+    }
+    
+    func getAnnouncemetMessageNum() {
+        let url = AppDelegate.app().ipUrl + config + "app/count?id=\(AppDelegate.app().offline_id)"
+        NetworkRequest.AlamofireGetJSON(url, success: {
+            (data) in
+            let num = String(stringInterpolationSegment: data!)
+            if num != "0" {
+                let bar = self.tabBar.items![1] as! UITabBarItem
+                bar.badgeValue = num
+            }
+            }, failed: {println("error")}, outTime: {println("error")})
     }
 
     override func didReceiveMemoryWarning() {

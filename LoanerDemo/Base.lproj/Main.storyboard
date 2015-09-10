@@ -6,6 +6,33 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
+        <!--公告-->
+        <scene sceneID="XjT-nm-nb2">
+            <objects>
+                <tableViewController id="nSN-0X-9qY" customClass="AnnouncementTBVC" customModule="车融资OA" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="TSe-cX-HXP">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="DBG-Y6-C1S">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DBG-Y6-C1S" id="Unv-au-jEZ">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="nSN-0X-9qY" id="2XI-Za-TXY"/>
+                            <outlet property="delegate" destination="nSN-0X-9qY" id="MJ8-w8-uCl"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="公告" id="oq7-UT-hWm"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wkM-uJ-CRN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1067" y="-545"/>
+        </scene>
         <!--历史-->
         <scene sceneID="KjT-yy-WKG">
             <objects>
@@ -39,7 +66,24 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qjg-LV-g3Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1067" y="-199"/>
+            <point key="canvasLocation" x="1067" y="209"/>
+        </scene>
+        <!--公告-->
+        <scene sceneID="VkJ-SQ-Sja">
+            <objects>
+                <navigationController id="mHH-rE-jez" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="公告" image="announcement" id="L6O-pc-Kq9"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xjS-3t-Ern">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="nSN-0X-9qY" kind="relationship" relationship="rootViewController" id="0Yz-iC-kDE"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JeU-XF-GON" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="301" y="-545"/>
         </scene>
         <!--我-->
         <scene sceneID="CB6-mI-A1C">
@@ -66,13 +110,13 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="98u-AA-lW8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1075" y="625"/>
+            <point key="canvasLocation" x="1083" y="921"/>
         </scene>
         <!--个人信息-->
         <scene sceneID="0uA-Y1-RYr">
             <objects>
                 <navigationController storyboardIdentifier="personNav" id="BxC-hn-15a" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="个人信息" image="person.png" id="WeY-Qh-Cws"/>
+                    <tabBarItem key="tabBarItem" title="个人信息" image="personal" id="WeY-Qh-Cws"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="oqq-Iw-KXF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -83,13 +127,13 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jDS-it-iel" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="301" y="625"/>
+            <point key="canvasLocation" x="309" y="921"/>
         </scene>
         <!--速评表-->
         <scene sceneID="vzL-eI-3nE">
             <objects>
                 <navigationController storyboardIdentifier="historyNav" id="daK-7b-yYX" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="速评表" image="history.png" id="te7-DV-EV3"/>
+                    <tabBarItem key="tabBarItem" title="速评表" image="spbTable" id="te7-DV-EV3"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="z6C-fU-e8P">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -100,7 +144,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="glG-O6-Hcy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="301" y="-205"/>
+            <point key="canvasLocation" x="301" y="203"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="5Ui-em-7Iw">
@@ -277,14 +321,78 @@
             </objects>
             <point key="canvasLocation" x="-1358" y="939"/>
         </scene>
+        <!--News View Controller-->
+        <scene sceneID="0gf-60-url">
+            <objects>
+                <viewController storyboardIdentifier="NewsViewController" id="JBT-7e-QyX" customClass="NewsViewController" customModule="车融资OA" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="SWq-Zu-fRN"/>
+                        <viewControllerLayoutGuide type="bottom" id="6j0-NH-WXb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="00m-OE-65h">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WVr-RE-UVl">
+                                <rect key="frame" x="66" y="92" width="468" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="29" id="Lv1-Fm-Fhq"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ww-6g-HZM">
+                                <rect key="frame" x="66" y="60" width="468" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="detail" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u7n-EN-5VL">
+                                <rect key="frame" x="282" y="151" width="36" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="WVr-RE-UVl" firstAttribute="top" secondItem="9ww-6g-HZM" secondAttribute="bottom" constant="8" id="6SB-nC-ffZ"/>
+                            <constraint firstItem="WVr-RE-UVl" firstAttribute="trailing" secondItem="9ww-6g-HZM" secondAttribute="trailing" id="HoG-6H-Jyv"/>
+                            <constraint firstItem="WVr-RE-UVl" firstAttribute="leading" secondItem="00m-OE-65h" secondAttribute="leadingMargin" constant="50" id="ORM-WE-aba"/>
+                            <constraint firstItem="u7n-EN-5VL" firstAttribute="top" secondItem="WVr-RE-UVl" secondAttribute="bottom" constant="44" id="RpQ-G8-uAh"/>
+                            <constraint firstItem="u7n-EN-5VL" firstAttribute="top" secondItem="WVr-RE-UVl" secondAttribute="bottom" constant="30" id="VWB-xK-3UU"/>
+                            <constraint firstItem="u7n-EN-5VL" firstAttribute="centerX" secondItem="WVr-RE-UVl" secondAttribute="centerX" id="fed-qS-TNh"/>
+                            <constraint firstItem="WVr-RE-UVl" firstAttribute="centerX" secondItem="00m-OE-65h" secondAttribute="centerX" id="iNB-z1-QEN"/>
+                            <constraint firstItem="9ww-6g-HZM" firstAttribute="top" secondItem="SWq-Zu-fRN" secondAttribute="bottom" constant="40" id="kB2-6m-bGF"/>
+                            <constraint firstItem="WVr-RE-UVl" firstAttribute="leading" secondItem="9ww-6g-HZM" secondAttribute="leading" id="x6A-eG-vDV"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="RpQ-G8-uAh"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="dateLabel" destination="WVr-RE-UVl" id="xDi-rv-E8x"/>
+                        <outlet property="detailText" destination="u7n-EN-5VL" id="xW5-ZE-Uwd"/>
+                        <outlet property="titleLabel" destination="9ww-6g-HZM" id="uuH-BB-boC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VZI-62-hWS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1754" y="-545"/>
+        </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="UGq-mv-ytt">
             <objects>
                 <tabBarController storyboardIdentifier="tab" id="tKV-pb-yNK" customClass="TabBarViewController" customModule="车融资OA" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="SCp-g8-FFF"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="9aF-jV-RAI">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="0.72257915296052633" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <color key="barTintColor" red="0.25882352939999997" green="0.50980392159999999" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="selectedImageTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -299,6 +407,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="daK-7b-yYX" kind="relationship" relationship="viewControllers" id="Lb3-Mq-rLz"/>
+                        <segue destination="mHH-rE-jez" kind="relationship" relationship="viewControllers" id="e4n-rR-Gfh"/>
                         <segue destination="BxC-hn-15a" kind="relationship" relationship="viewControllers" id="hwx-6T-u2c"/>
                     </connections>
                 </tabBarController>
@@ -308,11 +417,12 @@
         </scene>
     </scenes>
     <resources>
+        <image name="announcement" width="24" height="24"/>
         <image name="background" width="640" height="1136"/>
-        <image name="history.png" width="20" height="17"/>
         <image name="loginrect" width="453" height="212"/>
         <image name="logo" width="118" height="135"/>
-        <image name="person.png" width="20" height="20"/>
+        <image name="personal" width="24" height="25"/>
         <image name="savepwno" width="25" height="25"/>
+        <image name="spbTable" width="24" height="21"/>
     </resources>
 </document>

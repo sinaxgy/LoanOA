@@ -14,8 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var user_id:String = "a";var pro_id:String = ""
     var offline_id:String = ""
-    var ipUrl = "http://123.57.219.112/loanOA/"
-    var IP = "123.57.219.112/loanOA/"//10.104.5.16"//"
+    var ipUrl = "http://123.57.219.112/"//"http://10.104.7.241/"
+    var IP = "123.57.219.112"//10.104.5.16"//"
         {
         didSet{
             self.ipUrl = "http://\(self.IP)/"
@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         navigationBarAppearace.tintColor = UIColor.whiteColor()
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
-        
+        self.offline_id = self.getoffline_id()
         if !UserHelper.readValueOfPWIsSaved() {
             let loginStory:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let loginedView:LoginsViewController = (loginStory.instantiateViewControllerWithIdentifier("LoginsViewController") as? LoginsViewController)!
@@ -45,7 +45,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func getoffline_id() -> String {
-        let dicInfo:NSDictionary = UserHelper.readCurrentUserInfo(UserHelper.readRecentID(recentID)!)!
+        let userid = UserHelper.readRecentID(recentID)
+        let dicInfo:NSDictionary = UserHelper.readCurrentUserInfo(userid)!
+        if dicInfo.count == 0 {return ""}
         return dicInfo.objectForKey("offline_id") as! String
     }
     

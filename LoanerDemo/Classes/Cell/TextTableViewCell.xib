@@ -21,7 +21,7 @@
                             <constraint firstAttribute="width" constant="42" id="ISY-wa-cTs"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                         <variation key="default">
                             <mask key="constraints">
@@ -33,7 +33,7 @@
                         <rect key="frame" x="262" y="11" width="58" height="22"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="58" id="4uI-mF-aAW"/>
-                            <constraint firstAttribute="width" constant="58" id="lve-NT-bN2"/>
+                            <constraint firstAttribute="width" constant="58" id="YpU-7n-xIN"/>
                         </constraints>
                         <state key="normal" image="delete">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -50,13 +50,13 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailingMargin" secondItem="AjX-FG-bE2" secondAttribute="trailing" constant="-8" id="2HG-xO-ozp"/>
-                    <constraint firstItem="6fD-92-AsC" firstAttribute="top" secondItem="AjX-FG-bE2" secondAttribute="top" id="41I-5a-PMd"/>
                     <constraint firstItem="6fD-92-AsC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="3" id="9Tc-FJ-ymc"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="AjX-FG-bE2" secondAttribute="trailing" constant="-8" id="FF1-p9-8mB"/>
                     <constraint firstItem="6fD-92-AsC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="N6e-sc-ii5"/>
                     <constraint firstItem="6fD-92-AsC" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="UYL-4M-cCv"/>
+                    <constraint firstItem="AjX-FG-bE2" firstAttribute="top" secondItem="6fD-92-AsC" secondAttribute="top" id="Zd5-T7-Cyl"/>
                     <constraint firstItem="AjX-FG-bE2" firstAttribute="leading" secondItem="6fD-92-AsC" secondAttribute="trailing" constant="10" id="dTW-85-f88"/>
                     <constraint firstItem="6fD-92-AsC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="lIs-Ip-O2U"/>
-                    <constraint firstAttribute="trailing" secondItem="AjX-FG-bE2" secondAttribute="trailing" id="tEQ-EO-iOO"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
@@ -72,6 +72,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="delete" width="16" height="16"/>
+        <image name="delete" width="15" height="15"/>
     </resources>
 </document>

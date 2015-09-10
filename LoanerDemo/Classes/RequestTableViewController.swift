@@ -89,6 +89,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
                 progressHud.hide(true, afterDelay: 1)
             self.hideActivityIndicatorViewInNavigationItem()
             }, outTime: {
+                progressHud.mode = MBProgressHUDMode.Text
                 progressHud.labelText = "请求超时"
                 progressHud.hide(true, afterDelay: 1)
                 self.hideActivityIndicatorViewInNavigationItem()})
@@ -136,11 +137,12 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
                 let dic:NSDictionary = (self.tag_Message.tableJson.dictionary?[key as! String]?.object as? NSDictionary)!
                 for (k,v) in dic {
                     if k as! String == "value" {
-                        if v as? String == "" {
-                            isEditable = true
-                        }else {
-                            isEditable = false
-                        }
+                        isEditable = ((v as? String == "") ? true : false)
+//                        if v as? String == "" {
+//                            isEditable = true
+//                        }else {
+//                            isEditable = false
+//                        }
                         break
                     }
                 }
@@ -328,11 +330,12 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
             let index = self.tag_Message.arraysort.indexOfObject("repay_method")
             if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? LeafTableViewCell {
                 let strValue = text as NSString
-                if strValue.intValue < 31 {
-                    cell.detailLabel.text = "融满付息，到期还本"
-                }else {
-                    cell.detailLabel.text = "融满按月付息，到期还本"
-                }
+                cell.detailLabel.text = (strValue.intValue < 31 ? "融满付息，到期还本" : "融满按月付息，到期还本")
+//                if strValue.intValue < 31 {
+//                    cell.detailLabel.text = "融满付息，到期还本"
+//                }else {
+//                    cell.detailLabel.text = "融满按月付息，到期还本"
+//                }
             }
         }
     }
