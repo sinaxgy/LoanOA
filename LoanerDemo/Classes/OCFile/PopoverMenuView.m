@@ -16,7 +16,7 @@
 #define CELL_IDENTIGIER         @"MenuPopoverCell"
 #define MENU_TABLE_VIEW_FRAME   CGRectMake(0, 0, frame.size.width, frame.size.height)
 #define SEPERATOR_LINE_RECT     CGRectMake(10, MENU_ITEM_HEIGHT - 1, self.frame.size.width - 20, 1)
-#define MENU_POINTER_RECT       CGRectMake(frame.origin.x + 110, frame.origin.y, 23, 11)
+#define MENU_POINTER_RECT       CGRectMake(frame.origin.x + 70, frame.origin.y, 23, 11)
 
 #define CONTAINER_BG_COLOR      RGBA(0, 0, 0, 0.1f)
 

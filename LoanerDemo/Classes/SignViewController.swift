@@ -18,7 +18,8 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
     var tableView:UITableView!
     var defaultTexts:NSMutableArray = [];var text:String = ""
     let textCell = "textCell";var delegate:SignTextDelegate!
-    var verify:String = "";var isDateType = false;var validText = ""
+    var verify:String = "";var isDateType = false;var validText = ""    //输入校验预存储，以备恢复
+    var comparedInfo:NSDictionary = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()

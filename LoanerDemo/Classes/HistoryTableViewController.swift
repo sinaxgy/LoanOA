@@ -13,7 +13,10 @@ let isIphone = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.Phone ? true:f
 let detailFontSize:CGFloat = (isIphone ? 12 : 24)
 let textFontSize:CGFloat = (isIphone ? 15 : 34)
 let cellHeight:CGFloat = (isIphone ? 55 : 100)
-let mainColor = 0x4282e3//0x25b6ed
+let mainColor = 0x4282e3//0x4282e3//0x25b6ed
+let navColor = 0x1960e3
+let originalX:CGFloat = UIScreen.mainScreen().bounds.width - 110.0
+let popverMenuX:CGFloat = 100.0
 
 class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate{
     
@@ -53,7 +56,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
                         self.typeMenu.dismissMenuPopover()
                     }
                     let hight = self.typeDic.count * 44
-                    self.typeMenu = PopoverMenuView(frame: CGRectMake(self.view.bounds.width - 150, 70, 140.0, CGFloat(hight)), menuItems: typeArray as [AnyObject])
+                    self.typeMenu = PopoverMenuView(frame: CGRectMake(originalX, 70, popverMenuX, CGFloat(hight)), menuItems: typeArray as [AnyObject])
                     self.typeMenu.menuPopoverDelegate = self
                     self.typeMenu.showInView(self.view)
                 }

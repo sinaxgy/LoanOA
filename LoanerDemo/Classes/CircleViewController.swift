@@ -92,7 +92,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
         if self.title == "业务部反馈" {
             menuItem = ["同意","不同意"]
         }
-        self.menuView = PopoverMenuView(frame: CGRectMake(self.view.bounds.width - 150, 70, 140.0, CGFloat(menuItem.count) * 44.0), menuItems: menuItem)
+        self.menuView = PopoverMenuView(frame: CGRectMake(originalX, 70, popverMenuX, CGFloat(menuItem.count) * 44.0), menuItems: menuItem)
         self.menuView.tag = menuItem.count
         self.menuView.menuPopoverDelegate = self
         self.menuView.showInView(self.view)

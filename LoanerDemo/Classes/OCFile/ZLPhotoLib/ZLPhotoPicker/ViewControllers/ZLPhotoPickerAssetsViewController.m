@@ -377,7 +377,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             [self.collectionView.selectsIndexPath removeObject:@(selectAssetsCurrentPage)];
 
             [self.toolBarThumbCollectionView reloadData];
-            self.makeView.text = [NSString stringWithFormat:@"%ld",(unsigned long)self.selectAssets.count];
+            self.makeView.text = [NSString stringWithFormat:@"%ld",self.selectAssets.count];
         }
         // 刷新下最小的页数
         self.minCount = self.selectAssets.count + (_privateTempMinCount - self.selectAssets.count);
@@ -478,7 +478,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     [self.toolBarThumbCollectionView reloadData];
     [self.collectionView reloadData];
     
-    self.makeView.text = [NSString stringWithFormat:@"%ld",(unsigned long)self.selectAssets.count];
+    self.makeView.text = [NSString stringWithFormat:@"%ld",self.selectAssets.count];
 }
 
 #pragma mark -<Navigation Actions>

@@ -80,12 +80,12 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
             selectSheet.showInView(self.view)
         }else {
             var signView = SignViewController()
-            if cell.itemInfo.options.count > 0 {
+            if cell.itemInfo.options.count > 0 {    //传入校验方式
                 for item in cell.itemInfo.options {
                     if item.description != "must" {signView.verify = item as! String}
                 }
             }
-            if self.defaultText.dicTexts.count > 0 {
+            if self.defaultText.dicTexts.count > 0 {    //读取并传入对应输入历史
                 if (self.defaultText.dicTexts.allKeys as NSArray).containsObject(cell.itemInfo.title) {
                     if let dt = defaultText.dicTexts.objectForKey(cell.itemInfo.title) as? NSArray {
                         signView.defaultTexts = NSMutableArray(array: dt)
@@ -228,8 +228,21 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
     
     //MARK:--SignTextDelegate
     func signTextDidBeDone(text: String, texts: NSArray?) {
-        
         let cell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow()!) as! LeafTableViewCell
+        let conditions:NSArray = ["mg_price","mg_assessprice","mg_adviceprice"]
+        if conditions.containsObject(cell.itemInfo.title) {
+            let message = self.stringWithCheckInputValue(cell.itemInfo.title as String, value: NSString(string: text).floatValue)
+            if  message != "" {
+                let progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
+                progressHud.mode = MBProgressHUDMode.Text
+                progressHud.detailsLabelText = message as String
+                progressHud.detailsLabelFont = UIFont.systemFontOfSize(17)
+                progressHud.show(true)
+                progressHud.hide(true, afterDelay: 2)
+                self.view.addSubview(progressHud)
+                return
+            }
+        }
         cell.detailLabel.text = text
         cell.itemInfo.value = text
         self.postDic.setObject(cell.detailLabel.text!, forKey: cell.itemInfo.title as String)
@@ -239,6 +252,48 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
                 LoanerHelper.infoWriteToFile(self.fileName, info: self.defaultText.dicTexts)
             }
         }
+    }
+    
+    func stringWithCheckInputValue(key:String,value:Float) -> NSString {
+        var message:NSMutableString = ""
+        switch key {                //远》估》建议金额
+        case "mg_price":            //原价：不能小于估价
+            if (self.postDic.allKeys as NSArray).containsObject("mg_assessprice") {
+                let mg_assessprice: Float = NSString(string: self.postDic["mg_assessprice"] as! String).floatValue
+                if value < mg_assessprice {
+                    message = "抵押物原价不能小于其估价！"
+                }
+            }
+        case "mg_adviceprice":      //建议金额：不能大于估价
+            if (self.postDic.allKeys as NSArray).containsObject("mg_assessprice") {
+                let mg_assessprice: Float = NSString(string: self.postDic["mg_assessprice"] as! String).floatValue
+                if value > mg_assessprice {
+                    message = "建议金额不能大于抵押物估价！"
+                }
+            }
+        case "mg_assessprice":      //估价：不能大于原价，不能小于建议金额
+            var flog = 0
+            if (self.postDic.allKeys as NSArray).containsObject("mg_price") {
+                let mg_price: Float = NSString(string: self.postDic["mg_price"] as! String).floatValue
+                if value > mg_price {
+                    flog++
+                    message = "抵押物估价不能大于其原价！"
+                }
+            }
+            if (self.postDic.allKeys as NSArray).containsObject("mg_adviceprice") {
+                let mg_adviceprice: Float = NSString(string: self.postDic["mg_adviceprice"] as! String).floatValue
+                if value < mg_adviceprice {
+                    flog++
+                    message = "抵押物估价不能小于建议金额，请重新输入！"
+                }
+            }
+            if flog == 2 {
+                message = "抵押物估价必须小于其原价且大于建议金额"
+            }
+        default:
+            break
+        }
+        return message
     }
     
     //MARK:--DatePickerViewDateDelegate

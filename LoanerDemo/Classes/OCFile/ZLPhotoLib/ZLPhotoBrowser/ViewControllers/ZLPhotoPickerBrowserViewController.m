@@ -24,6 +24,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (weak,nonatomic) UIButton         *deleleBtn;
 @property (weak,nonatomic) UIButton         *backBtn;
 @property (weak,nonatomic) UICollectionView *collectionView;
+@property (strong,nonatomic) PopoverMenuView *popMenu;
 
 // 数据相关
 // 单击时执行销毁的block
@@ -176,8 +177,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }else{
             imageView.image = thumbImage;
         }
-    }
-    
+    }    
     if (self.status == UIViewAnimationAnimationStatusFade){
         imageView.alpha = 0.0;
         imageView.frame = [self setMaxMinZoomScalesForCurrentBounds:imageView.image];
@@ -298,6 +298,33 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
+    //self.navigationItem.title = @"图";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"more"] style:UIBarButtonItemStyleBordered target:self action:@selector(more)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleBordered target:self action:@selector(back)];
+}
+
+- (void)more{
+    if (!self.popMenu) {
+        [self.popMenu dismissMenuPopover];
+    }
+    NSArray *menus = ((self.currentPage == self.photos.count - 1)? @[@"查看原图",@"替换此图",@"删除此图"] : @[@"查看原图",@"替换此图"]);
+    self.popMenu = [[PopoverMenuView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 110, 70, 100.0, 44 * menus.count) menuItems:menus];
+    self.popMenu.menuPopoverDelegate = self;
+    [self.popMenu showInView:self.view];
+}
+
+- (void)back{
+    if (self.disMissBlock) {
+        NSLog(@"count:%lu,currentpage:%ld",(unsigned long)self.photos.count,(long)self.currentPage);
+        if (self.photos.count == 1) {
+            self.currentPage = 0;
+        }
+        self.disMissBlock(self.currentPage);
+    }else{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Get
@@ -381,14 +408,15 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section];
+    return self.photos.count;
+    //[self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section];
 }
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_cellIdentifier forIndexPath:indexPath];
     
-    if (self.photos.count) {
+    if (self.photos.count && self.photos.count > indexPath.item) {
         cell.backgroundColor = [UIColor clearColor];
         ZLPhotoPickerBrowserPhoto *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
         
@@ -512,9 +540,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         [self.photos removeObjectAtIndex:page];
         
-        if (page >= self.photos.count) {
-            self.currentPage--;
-        }
+//        if (page >= self.photos.count) {
+//            self.currentPage--;
+//        }
         
         UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
         if (cell) {
@@ -539,17 +567,23 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 #pragma mark - <PickerPhotoScrollViewDelegate>
 - (void)pickerPhotoScrollViewDidSingleClick:(ZLPhotoPickerBrowserPhotoScrollView *)photoScrollView{
-    if (self.disMissBlock) {
-        
-        if (self.photos.count == 1) {
-            self.currentPage = 0;
-        }
-        self.disMissBlock(self.currentPage);
-    }else{
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if ([self.photos[self.currentPage] isKindOfClass:[ZLPhotoPickerBrowserPhoto class]]) {
+        ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
+        [self showImage:photo.thumbImage];
+        NSLog(@"%@",photo.photoImage);
+    }
+//    if (self.disMissBlock) {
+//        
+//        if (self.photos.count == 1) {
+//            self.currentPage = 0;
+//        }
+//        self.disMissBlock(self.currentPage);
+//    }else{
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//    }
+//    
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - showHeadPortrait 放大缩小一张图片的情况下（查看头像）
@@ -598,6 +632,76 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         scrollView.frame = [UIScreen mainScreen].bounds;
         scrollView.photo = photo;
         [mainView addSubview:scrollView];
+    }];
+}
+
+
+#pragma mark --PopoverMenuViewDelegate
+
+- (void) menuPopover:(PopoverMenuView*)menuView didSelectMenuItemAtIndex:(NSInteger)selectedIndex {
+    switch (selectedIndex) {
+        case 0:
+            NSLog(@"0");
+            break;
+        case 1:
+            NSLog(@"1");
+            break;
+        case 2:
+            NSLog(@"2");
+            UIAlertView *removeAlert = [[UIAlertView alloc]
+                                        initWithTitle:@"确定要删除此图片？"
+                                        message:nil
+                                        delegate:self
+                                        cancelButtonTitle:@"取消"
+                                        otherButtonTitles:@"确定", nil];
+            [removeAlert show];
+            break;
+//        default:
+//            break;
+    }
+}
+
+#pragma mark additional
+CGRect rect;
+- (void)showImage:(UIImage*)image {
+    if (image) {
+        NSLog(@"showImage:%@",image);
+    }else{
+        return;
+    }
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    UIImageView *toImageView = nil;
+    if(self.status == UIViewAnimationAnimationStatusZoom){
+        toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
+    }
+    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    rect = [backView convertRect:toImageView.frame toView:window];
+    backView.backgroundColor = [UIColor blackColor];
+    backView.alpha = 0;
+    toImageView.tag = 1;
+    [backView addSubview:toImageView];
+    //[self.view addSubview:backView];
+    [window addSubview:backView];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideImage:)];
+    [backView addGestureRecognizer:tap];
+    
+    [UIView animateWithDuration:1.6f animations:^{
+        toImageView.frame=[UIScreen mainScreen].bounds;//CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+        backView.alpha=1;
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+- (void) hideImage:(UITapGestureRecognizer*)tap {
+    UIView *backgroundView=tap.view;
+    UIImageView *imageView=(UIImageView*)[tap.view viewWithTag:1];
+    [UIView animateWithDuration:0.3 animations:^{
+        imageView.frame=[UIScreen mainScreen].bounds;
+        backgroundView.alpha=0;
+    } completion:^(BOOL finished) {
+        [backgroundView removeFromSuperview];
     }];
 }
 

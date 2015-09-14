@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 改变 navigation bar 的背景色
         var navigationBarAppearace = UINavigationBar.appearance()
         //        navigationBarAppearace.translucent = false
-        navigationBarAppearace.barTintColor = UIColor(hex: mainColor)
+        navigationBarAppearace.barTintColor = UIColor(hex: navColor)
         
         navigationBarAppearace.tintColor = UIColor.whiteColor()
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]

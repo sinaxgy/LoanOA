@@ -20,7 +20,7 @@ class SingleTableViewCell: UITableViewCell {
     @IBOutlet weak var mutableView: UIImageView!
     
     var singleDelegate:singleTableViewCellDelegate!
-    var isMutable:Bool! = true {
+    var isMutable:Bool = true {
         didSet{
             self.mutableView.hidden = !self.isMutable
         }

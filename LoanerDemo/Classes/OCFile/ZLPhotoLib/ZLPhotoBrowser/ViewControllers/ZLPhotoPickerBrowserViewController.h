@@ -10,6 +10,7 @@
 #import "ZLPhotoPickerBrowserPhoto.h"
 #import "ZLPhotoPickerCommon.h"
 #import "ZLPhotoPickerCustomToolBarView.h"
+#import "PopoverMenuView.h"
 
 @class ZLPhotoPickerBrowserViewController;
 @protocol ZLPhotoPickerBrowserViewControllerDataSource <NSObject>
@@ -72,9 +73,11 @@
  */
 - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser willCurrentPage:(NSUInteger)page;
 
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser didRemoveLastOne:(BOOL)isRemoved;
+
 @end
 
-@interface ZLPhotoPickerBrowserViewController : UIViewController
+@interface ZLPhotoPickerBrowserViewController : UIViewController<PopoverMenuViewDelegate>
 
 // @require
 // 数据源/代理
@@ -84,6 +87,10 @@
 //@property (nonatomic , strong) UIView *toView;
 // 当前提供的组
 @property (strong,nonatomic) NSIndexPath *currentIndexPath;
+
+/**additional
+ */
+@property(nonatomic,strong) NSString* navTitle;
 
 // @optional
 // 是否可以编辑（删除照片）

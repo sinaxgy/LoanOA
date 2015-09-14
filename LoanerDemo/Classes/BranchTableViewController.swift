@@ -346,7 +346,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
     
     func showMenu(sender:UIBarButtonItem) {
         let hight = self.menuItems.count * 44
-        var menu:PopoverMenuView = PopoverMenuView(frame: CGRectMake(self.view.bounds.width - 150, 70, 140.0, CGFloat(hight)), menuItems: self.menuItems as [AnyObject])
+        var menu:PopoverMenuView = PopoverMenuView(frame: CGRectMake(originalX, 70, popverMenuX, CGFloat(hight)), menuItems: self.menuItems as [AnyObject])
         menu.menuPopoverDelegate = self
         menu.showInView(self.view)
     }
