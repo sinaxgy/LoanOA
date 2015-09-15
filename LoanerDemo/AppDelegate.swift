@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         navigationBarAppearace.tintColor = UIColor.whiteColor()
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
+        self.user_id = UserHelper.readRecentID()
         self.offline_id = self.getoffline_id()
         if !UserHelper.readValueOfPWIsSaved() {
             let loginStory:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -40,13 +41,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return true
         }
         //self.IP = KeyChain.getIPItem(UserHelper.readRecentID(recentID)!) as String
-        
         return true
     }
     
     func getoffline_id() -> String {
-        let userid = UserHelper.readRecentID(recentID)
-        let dicInfo:NSDictionary = UserHelper.readCurrentUserInfo(userid)!
+        let dicInfo:NSDictionary = UserHelper.readCurrentUserInfo(self.user_id)
         if dicInfo.count == 0 {return ""}
         return dicInfo.objectForKey("offline_id") as! String
     }

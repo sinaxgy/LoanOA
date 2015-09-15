@@ -671,6 +671,37 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		C543ACDF1BA6674F00F4566B /* popoverView */ = {
+			isa = PBXGroup;
+			children = (
+				C5B9DA121B50C66600468BFE /* UIViewController+DropViewController.m */,
+				C5B9DA111B50C66600468BFE /* UIViewController+DropViewController.h */,
+				C5B9DA091B50C64300468BFE /* LewPopupViewAnimationDrop.h */,
+				C5B9DA0A1B50C64300468BFE /* LewPopupViewAnimationDrop.m */,
+				C5B9DA0B1B50C64300468BFE /* PopupAnimationView.h */,
+				C5B9DA0C1B50C64300468BFE /* PopupAnimationView.m */,
+				C5D7B9AD1B39562800823343 /* PopoverMenuView.h */,
+				C5D7B9AE1B39562800823343 /* PopoverMenuView.m */,
+				C52BD9D31B4CC54F000316A8 /* MBProgressHUD.h */,
+				C52BD9D41B4CC54F000316A8 /* MBProgressHUD.m */,
+			);
+			name = popoverView;
+			sourceTree = "<group>";
+		};
+		C543ACE11BA6721100F4566B /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = AFNetworking;
+			sourceTree = "<group>";
+		};
+		C543ACFE1BA6723800F4566B /* UIKit+AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "UIKit+AFNetworking";
+			sourceTree = "<group>";
+		};
 		C55D29781B4BB620003F714A /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -771,16 +802,7 @@
 			children = (
 				C5D9CC631B661DF400F603F0 /* AFNetworking */,
 				C5374A341B69BEC200A80625 /* ZLPhotoLib */,
-				C5B9DA121B50C66600468BFE /* UIViewController+DropViewController.m */,
-				C5B9DA111B50C66600468BFE /* UIViewController+DropViewController.h */,
-				C5B9DA091B50C64300468BFE /* LewPopupViewAnimationDrop.h */,
-				C5B9DA0A1B50C64300468BFE /* LewPopupViewAnimationDrop.m */,
-				C5B9DA0B1B50C64300468BFE /* PopupAnimationView.h */,
-				C5B9DA0C1B50C64300468BFE /* PopupAnimationView.m */,
-				C5D7B9AD1B39562800823343 /* PopoverMenuView.h */,
-				C5D7B9AE1B39562800823343 /* PopoverMenuView.m */,
-				C52BD9D31B4CC54F000316A8 /* MBProgressHUD.h */,
-				C52BD9D41B4CC54F000316A8 /* MBProgressHUD.m */,
+				C543ACDF1BA6674F00F4566B /* popoverView */,
 			);
 			name = OCFile;
 			sourceTree = "<group>";
@@ -810,6 +832,8 @@
 		C5D9CC631B661DF400F603F0 /* AFNetworking */ = {
 			isa = PBXGroup;
 			children = (
+				C543ACFE1BA6723800F4566B /* UIKit+AFNetworking */,
+				C543ACE11BA6721100F4566B /* AFNetworking */,
 				C5D9CC651B661E0900F603F0 /* AFHTTPRequestOperation.h */,
 				C5D9CC661B661E0900F603F0 /* AFHTTPRequestOperation.m */,
 				C5D9CC671B661E0900F603F0 /* AFSecurityPolicy.h */,

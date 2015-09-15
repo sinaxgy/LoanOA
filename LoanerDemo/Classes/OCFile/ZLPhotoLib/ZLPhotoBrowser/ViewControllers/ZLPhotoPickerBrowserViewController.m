@@ -25,7 +25,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (weak,nonatomic) UIButton         *backBtn;
 @property (weak,nonatomic) UICollectionView *collectionView;
 @property (strong,nonatomic) PopoverMenuView *popMenu;
-
+@property (nonatomic) BOOL isUpload;
 // 数据相关
 // 单击时执行销毁的block
 @property (nonatomic , copy) ZLPickerBrowserViewControllerTapDisMissBlock disMissBlock;
@@ -56,7 +56,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         flowLayout.itemSize = self.view.size;
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
-        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.width + ZLPickerColletionViewPadding,self.view.height) collectionViewLayout:flowLayout];
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 64, self.view.width + ZLPickerColletionViewPadding,self.view.height - 64) collectionViewLayout:flowLayout];
         collectionView.showsHorizontalScrollIndicator = NO;
         collectionView.showsVerticalScrollIndicator = NO;
         collectionView.pagingEnabled = YES;
@@ -141,7 +141,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [super viewDidAppear:animated];
     NSAssert(self.dataSource, @"你没成为数据源代理");
     // 初始化动画
-    [self showToView];
 }
 
 - (void)showToView{
@@ -149,7 +148,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     mainView.backgroundColor = [UIColor blackColor];
     mainView.frame = [UIScreen mainScreen].bounds;
     [[UIApplication sharedApplication].keyWindow addSubview:mainView];
-    
+    self.automaticallyAdjustsScrollViewInsets = NO;
     UIImageView *toImageView = nil;
     
     if(self.status == UIViewAnimationAnimationStatusZoom){
@@ -298,9 +297,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    //self.navigationItem.title = @"图";
+    self.isUpload = false;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"more"] style:UIBarButtonItemStyleBordered target:self action:@selector(more)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleBordered target:self action:@selector(back)];
+    [self showToView];
 }
 
 - (void)more{
@@ -359,7 +359,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     if (self.currentPage <= 0){
         self.currentPage = self.currentIndexPath.item;
     }else{
-        --self.currentPage;
+        //--self.currentPage;
     }
     
     if (self.currentPage >= self.photos.count) {
@@ -412,6 +412,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     //[self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section];
 }
 
+- (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return CGSizeMake(self.view.frame.size.width, self.view.frame.size.height - 64);
+}
+
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_cellIdentifier forIndexPath:indexPath];
@@ -425,7 +429,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }
         
         UIView *scrollBoxView = [[UIView alloc] init];
-        scrollBoxView.frame = [UIScreen mainScreen].bounds;
+        scrollBoxView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64);//[UIScreen mainScreen].bounds;
         scrollBoxView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         [cell.contentView addSubview:scrollBoxView];
         
@@ -433,7 +437,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         scrollView.sheet = self.sheet;
         scrollView.backgroundColor = [UIColor clearColor];
         // 为了监听单击photoView事件
-        scrollView.frame = [UIScreen mainScreen].bounds;
+        scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 64);//[UIScreen mainScreen].bounds;
         scrollView.photoScrollViewDelegate = self;
         scrollView.photo = photo;
         __weak typeof(scrollBoxView)weakScrollBoxView = scrollBoxView;
@@ -492,8 +496,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     if (currentPage == self.photos.count - 2) {
         currentPage = roundf((scrollView.contentOffset.x) / (scrollView.frame.size.width));
     }
-    
-    if (currentPage == self.photos.count - 1 && currentPage != self.currentPage && [[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0) {
+    NSLog(@"\ncontentOffset.x:%f\ncontentOffset.y:%f",self.collectionView.contentOffset.x,self.collectionView.contentOffset.y);
+//    if (currentPage == self.photos.count - 1) {
+//        self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x - ZLPickerColletionViewPadding, 0);
+//    }
+
+        if (currentPage == self.photos.count - 1 && currentPage != self.currentPage && [[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0) {
         self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x + ZLPickerColletionViewPadding, 0);
     }
     
@@ -639,6 +647,27 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 #pragma mark --PopoverMenuViewDelegate
 
 - (void) menuPopover:(PopoverMenuView*)menuView didSelectMenuItemAtIndex:(NSInteger)selectedIndex {
+    if (selectedIndex == 0) {
+        if ([self.photos[self.currentPage] isKindOfClass:[ZLPhotoPickerBrowserPhoto class]]) {
+            ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:self.imageUrls[self.currentPage]];
+            ZLPhotoPickerBrowserPhoto *originalPhoto = self.photos[self.currentPage];
+            photo.toView = originalPhoto.toView;
+            photo.thumbImage = originalPhoto.thumbImage;
+            [self.photos replaceObjectAtIndex:self.currentPage withObject:photo];
+            [self.collectionView reloadData];
+        }
+    }else if (selectedIndex == 1) {
+        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"从相册中选取",@"打开照相机",nil];
+        [sheet showInView:self.view];
+    }else if (selectedIndex == 2) {
+        UIAlertView *removeAlert = [[UIAlertView alloc]
+                                    initWithTitle:@"确定要删除此图片？"
+                                    message:nil
+                                    delegate:self
+                                    cancelButtonTitle:@"取消"
+                                    otherButtonTitles:@"确定", nil];
+        [removeAlert show];
+    }
     switch (selectedIndex) {
         case 0:
             NSLog(@"0");
@@ -648,15 +677,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             break;
         case 2:
             NSLog(@"2");
-            UIAlertView *removeAlert = [[UIAlertView alloc]
-                                        initWithTitle:@"确定要删除此图片？"
-                                        message:nil
-                                        delegate:self
-                                        cancelButtonTitle:@"取消"
-                                        otherButtonTitles:@"确定", nil];
-            [removeAlert show];
             break;
-//        default:
+
+        //        default:
 //            break;
     }
 }
@@ -705,4 +728,118 @@ CGRect rect;
     }];
 }
 
+#pragma mark --UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:             //相册
+            NSLog(@"zl");
+            [self openZLPhotoPicker];
+            break;
+        case 1:
+            NSLog(@"zl1");
+            [self takePhoto];
+            break;
+        case 2:             //取消
+            NSLog(@"zl2");
+            break;
+            
+        default:
+            break;
+    }
+}
+
+#pragma mark take and pick photos
+- (void) takePhoto {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerController* picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:picker animated:true completion:nil];
+    } else {
+        
+    }
+}
+
+- (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [self dismissViewControllerAnimated:true completion:nil];
+}
+
+- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+    if (image.imageOrientation != UIImageOrientationUp) {   //重绘image
+        UIGraphicsBeginImageContext(image.size);
+        [image drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+    
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [hud show:YES];
+    [self.view addSubview:hud];
+    hud.mode = MBProgressHUDModeDeterminateHorizontalBar;
+    
+    if ([self.delegate respondsToSelector:@selector(photoBrowser:didUploadImage:index:progress:success:failed:)]) {
+        [self.delegate photoBrowser:self didUploadImage:image index:self.currentPage progress:^(float written, float total) {
+            NSLog(@"written:%f\ntotal:%f",written,total);
+            hud.progress = written / total;
+        } success:^(NSString *str) {
+            NSLog(@"str:%@",str);
+            hud.hidden = YES;
+            [self.imageUrls replaceObjectAtIndex:self.currentPage withObject:str];
+            ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:str];
+            photo.thumbImage = [UIImage imageNamed:@"defaultimage"];
+            [self.photos replaceObjectAtIndex:self.currentPage withObject:photo];
+            [self.collectionView reloadData];
+        } failed:^{
+            NSLog(@"failed!!!OC");
+            hud.mode = MBProgressHUDModeText;
+            hud.labelText = @"上传失败";
+            [hud hide:YES afterDelay:2];
+        }];
+    }
+}
+
+- (void) openZLPhotoPicker {
+    ZLPhotoPickerViewController *pickerVC = [[ZLPhotoPickerViewController alloc] init];
+    pickerVC.status = PickerViewShowStatusCameraRoll;
+    pickerVC.minCount = 1;
+    [pickerVC showPickerVc:self];
+    NSInteger index = self.currentPage;
+    pickerVC.callBack = ^(NSArray *status){
+        NSLog(@"currentPage:%ld",(long)self.currentPage);
+        if (status.count == 0) {
+            return ;
+        }
+        MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+        [hud show:YES];
+        [self.view addSubview:hud];
+        hud.mode = MBProgressHUDModeDeterminateHorizontalBar;
+        
+        if ([self.delegate respondsToSelector:@selector(photoBrowser:didUploadImage:index:progress:success:failed:)]) {
+            if ([status.firstObject isKindOfClass:[ZLPhotoAssets class]]) {
+                ZLPhotoAssets *asset = status.firstObject;
+                [self.delegate photoBrowser:self didUploadImage:asset.originImage index:index progress:^(float written, float total) {
+                    NSLog(@"written:%f\ntotal:%f",written,total);
+                    hud.progress = written / total;
+                    NSLog(@"currentPage:%ld",(long)self.currentPage);
+                } success:^(NSString *str) {
+                    NSLog(@"str:%@",str);
+                    NSLog(@"currentPage:%ld",(long)self.currentPage);
+                    hud.hidden = YES;
+                    [self.imageUrls replaceObjectAtIndex:index withObject:str];
+                    ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:str];
+                    photo.thumbImage = [UIImage imageNamed:@"defaultimage"];
+                    [self.photos replaceObjectAtIndex:index withObject:photo];
+                    [self.collectionView reloadData];
+                } failed:^{
+                    NSLog(@"failed!!!OC");
+                    hud.mode = MBProgressHUDModeText;
+                    hud.labelText = @"上传失败";
+                    [hud hide:YES afterDelay:2];
+                }];
+            }
+        }
+    };
+}
 @end

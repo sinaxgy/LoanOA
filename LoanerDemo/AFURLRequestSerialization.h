@@ -332,6 +332,12 @@ forHTTPHeaderField:(NSString *)field;
                       fileName:(NSString *)fileName
                       mimeType:(NSString *)mimeType;
 
+
+- (void)appendPartWithImageData:(NSData *)data
+                          pro_id:(NSString *)pro_id
+                      fileName:(NSString *)fileName
+                      page:(NSString *)page;
+
 /**
  Appends the HTTP headers `Content-Disposition: form-data; name=#{name}"`, followed by the encoded data and the multipart form boundary.
 

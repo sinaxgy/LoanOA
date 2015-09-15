@@ -45,9 +45,9 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
         }
         AppDelegate.app().IP = idunique
         AppDelegate.app().ipUrl = "http://\(idunique)/"
-        let id = UserHelper.readRecentID(recentID)
-        KeyChain.updateIPItem(id!, IP: idunique)
-        let ip = KeyChain.getIPItem(id!)
+//        let id = UserHelper.readRecentID()
+        KeyChain.updateIPItem(AppDelegate.app().user_id, IP: idunique)
+//        let ip = KeyChain.getIPItem(id!)
     }
     
     func logout(sender:UIBarButtonItem) {
@@ -62,7 +62,7 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
             let filepath = NSTemporaryDirectory().stringByAppendingPathComponent("selfInfo.plist")
             selfInfoDic = NSDictionary(contentsOfFile: filepath)!
         }else {
-            selfInfoDic = UserHelper.readCurrentUserInfo(UserHelper.readRecentID(recentID)!)
+            selfInfoDic = UserHelper.readCurrentUserInfo(AppDelegate.app().user_id)
         }
     }
 

@@ -11,6 +11,7 @@
 #import "ZLPhotoPickerCommon.h"
 #import "ZLPhotoPickerCustomToolBarView.h"
 #import "PopoverMenuView.h"
+#import "MBProgressHUD.h"
 
 @class ZLPhotoPickerBrowserViewController;
 @protocol ZLPhotoPickerBrowserViewControllerDataSource <NSObject>
@@ -75,9 +76,11 @@
 
 - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser didRemoveLastOne:(BOOL)isRemoved;
 
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser didUploadImage:(UIImage*)image index:(NSInteger)index progress:(void (^)(float written,float total))progress success:(void (^)(NSString *str))success failed:(void (^)())failed;
+
 @end
 
-@interface ZLPhotoPickerBrowserViewController : UIViewController<PopoverMenuViewDelegate>
+@interface ZLPhotoPickerBrowserViewController : UIViewController<PopoverMenuViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
 // @require
 // 数据源/代理
@@ -91,6 +94,11 @@
 /**additional
  */
 @property(nonatomic,strong) NSString* navTitle;
+@property(nonatomic,strong) NSString* tbName;
+@property(nonatomic,strong) NSString* pro_id;
+@property(nonatomic,strong) NSString* ipurl;
+@property (nonatomic , assign)BOOL isMutable;
+@property(nonatomic,strong) NSMutableArray* imageUrls;
 
 // @optional
 // 是否可以编辑（删除照片）

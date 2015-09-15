@@ -257,7 +257,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
     //MARK: --UIAlertViewDelegate
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex == 1 {
-            let user_id:NSString = UserHelper.readRecentID(recentID)!
+            let user_id:NSString = AppDelegate.app().user_id
             var submitDic:NSMutableDictionary = NSMutableDictionary()
             submitDic.setValue(user_id, forKey: "user_id")
             submitDic.setValue(AppDelegate.app().pro_id, forKey: "pro_id");var footer = ""

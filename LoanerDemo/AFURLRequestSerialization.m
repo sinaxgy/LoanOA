@@ -776,6 +776,17 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
     [self appendPartWithHeaders:mutableHeaders body:data];
 }
 
+- (void)appendPartWithImageData:(NSData *)data
+                         pro_id:(NSString *)pro_id
+                       fileName:(NSString *)fileName
+                           page:(NSString *)page
+{
+    NSMutableDictionary *mutableHeaders = [NSMutableDictionary dictionary];
+    [mutableHeaders setValue:[NSString stringWithFormat:@"pro_id=%@&filename=%@&page=%@&nsdata=", pro_id, fileName,page] forKey:@"Content-Disposition"];
+    
+    [self appendPartWithHeaders:mutableHeaders body:data];
+}
+
 - (void)appendPartWithFormData:(NSData *)data
                           name:(NSString *)name
 {

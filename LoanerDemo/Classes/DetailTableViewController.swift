@@ -181,7 +181,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
             progressHud.show(true)
             progressHud.labelText = "正在提交表单"
             
-            let user_id: NSString = UserHelper.readRecentID(recentID)!
+            let user_id: NSString = AppDelegate.app().user_id
             self.postDic.setObject(AppDelegate.app().getoffline_id(), forKey: "offline_id")
             let pjs = JSON(self.postDic)
             let url = AppDelegate.app().ipUrl + config + "assess/app-add"

@@ -38,15 +38,18 @@ class UserHelper: NSObject {
         return false
     }
    
-    static func readCurrentUserInfo(user_id:String?) -> NSDictionary? {
+    static func readCurrentUserInfo(user_id:String?) -> NSDictionary {
         if user_id == nil {return NSDictionary()}
         var user:NSUserDefaults? = NSUserDefaults.standardUserDefaults()
         if (user != nil) {
+            if !user!.objectIsForcedForKey(recentID) {
+                return [:]
+            }
             if let dic =  user?.objectForKey(user_id!) as? NSDictionary {
                 return dic
             }
         }
-        return nil
+        return [:]
     }
     
     static func readValueOfPWIsSaved() -> Bool {
@@ -57,13 +60,16 @@ class UserHelper: NSObject {
         return false
     }
     
-    static func readRecentID(recentId:String) -> String? {
+    static func readRecentID() -> String {
         var user:NSUserDefaults? = NSUserDefaults.standardUserDefaults()
         if (user != nil) {
+            if !user!.objectIsForcedForKey(recentID) {
+                return ""
+            }
             if NSUserDefaults.standardUserDefaults().objectForKey(recentID) != nil {
             return user!.stringForKey(recentID)!
             }
         }
-        return nil
+        return ""
     }
 }

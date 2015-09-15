@@ -107,7 +107,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
             self.refreshControl?.attributedTitle = NSAttributedString(string: "加载中...")
         }
         
-        let user_id:String = UserHelper.readRecentID(recentID)!
+        let user_id:String = AppDelegate.app().user_id
         let url = "http://\(AppDelegate.app().IP)/" + config + readHisURL + "\(user_id)"
         NetworkRequest.AlamofireGetJSON(url, success: { (data) in
             self.hiddenActivityIndicatorViewInNavigationItem()
@@ -231,7 +231,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
             //browseView.pro_id = key as! String
             AppDelegate.app().pro_id = key as! String
             browseView.isAdd = false
-            browseView.url = AppDelegate.app().ipUrl + config + readTableURL + "\(key)" + "&remark=" + UserHelper.readRecentID(recentID)!
+            browseView.url = AppDelegate.app().ipUrl + config + readTableURL + "\(key)" + "&remark=" + AppDelegate.app().user_id
             let nav:UINavigationController = UINavigationController(rootViewController: browseView)
             nav.navigationBar.backItem?.title = "返回"
             self.navigationController?.presentViewController(nav, animated: true, completion: nil)

@@ -22,8 +22,21 @@ class LoanerHelper: NSObject {
         })
         return array
     }
+    
     static func OriginalImageURLStrWithSmallURLStr(small:NSString)->String {
         return small.stringByReplacingCharactersInRange(NSMakeRange(small.length - 10, 10), withString: ".jpg")
+    }
+    
+    static func OriginalUrlArraywith(imageUrl:NSMutableArray) -> NSMutableArray {
+        var original:NSMutableArray = []
+        if imageUrl.count <= 9 {
+            for item in imageUrl {
+                original.addObject(AppDelegate.app().ipUrl + LoanerHelper.OriginalImageURLStrWithSmallURLStr(item as! NSString) + "?\(arc4random() % 100)")
+            }
+        }else {
+            
+        }
+        return original
     }
     
     static func isvaildIP(targetString:String) -> Bool {

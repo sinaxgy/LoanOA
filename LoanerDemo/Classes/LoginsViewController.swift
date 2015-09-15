@@ -18,7 +18,6 @@ let readHisURL = "app/getprojects?user_id="
 let typeURL = "app/index?type="
 let readTableURL = "app/proinfo?pro_id="
 let uploadUrl = "app/upload"
-
 class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessageEditDelegete{
     
     @IBOutlet weak var user_idText: UITextField!
@@ -127,6 +126,7 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
                 progressHud.mode = MBProgressHUDMode.CustomView
                 progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
                 progressHud.hide(true, afterDelay: 1)
+                AppDelegate.app().user_id = user_id as String
                 var gcdT:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC))
                 dispatch_after(gcdT, dispatch_get_main_queue(), {
                     var loginStory:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
