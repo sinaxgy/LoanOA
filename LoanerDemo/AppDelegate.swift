@@ -32,14 +32,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         navigationBarAppearace.tintColor = UIColor.whiteColor()
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
-        self.user_id = UserHelper.readRecentID()
-        self.offline_id = self.getoffline_id()
         if !UserHelper.readValueOfPWIsSaved() {
             let loginStory:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let loginedView:LoginsViewController = (loginStory.instantiateViewControllerWithIdentifier("LoginsViewController") as? LoginsViewController)!
             self.window?.rootViewController = loginedView
             return true
         }
+        self.user_id = UserHelper.readRecentID()
+        self.offline_id = self.getoffline_id()
         //self.IP = KeyChain.getIPItem(UserHelper.readRecentID(recentID)!) as String
         return true
     }

@@ -26,7 +26,7 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
     @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var settingBtn: UIButton!
     
-    var selfData:NSMutableDictionary = NSMutableDictionary()
+    var personalInfomation:NSMutableDictionary = NSMutableDictionary()
     var request: Alamofire.Request? {
         didSet {
             oldValue?.cancel()
@@ -94,13 +94,13 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
                 return
             }
             if json.type == .Dictionary {
-                self.selfData.setDictionary(json.object as! [NSObject : AnyObject])
+                self.personalInfomation.setDictionary(json.object as! [NSObject : AnyObject])
             }else {println("返回数据有误")}   //预加载返回用户数据，以备保存
             var isSaveSuccess = false
             if self.savePasswordBtn.selected {
-                UserHelper.setValueOfPWIsSaved(self.savePasswordBtn.selected)
+                UserHelper.setValueOfPWIsSaved(true)
                 UserHelper.setRecentID(self.user_idText.text)
-                isSaveSuccess = UserHelper.setCurrentUserInfo(self.selfData, user_id: self.user_idText.text)
+                isSaveSuccess = UserHelper.setCurrentUserInfo(self.personalInfomation, user_id: self.user_idText.text)
                 
                 if !KeyChain.addKeyChainItem(self.user_idText.text, user_password: self.passwordText.text, IP: AppDelegate.app().IP) {
                     KeyChain.updateKeyChainItem(self.user_idText.text, user_password: self.passwordText.text)
@@ -110,15 +110,15 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
                 }
                 
             }else {
-                for key in self.selfData.allKeys {
+                for key in self.personalInfomation.allKeys {
                     if key as! String == "offline_id" {
-                        AppDelegate.app().offline_id = self.selfData.objectForKey(key as! NSString)!.description
+                        AppDelegate.app().offline_id = self.personalInfomation.objectForKey(key as! NSString)!.description
                         AppDelegate.app().user_id = self.user_idText.text
                         break
                     }
                 }
                 let filepath = NSTemporaryDirectory().stringByAppendingPathComponent("selfInfo.plist")
-                isSaveSuccess = self.selfData.writeToFile(filepath, atomically: true)
+                isSaveSuccess = self.personalInfomation.writeToFile(filepath, atomically: true)
             }
             
             if isSaveSuccess {
@@ -127,6 +127,7 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
                 progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
                 progressHud.hide(true, afterDelay: 1)
                 AppDelegate.app().user_id = user_id as String
+                AppDelegate.app().offline_id = self.personalInfomation.objectForKey("offline_id") as! String
                 var gcdT:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC))
                 dispatch_after(gcdT, dispatch_get_main_queue(), {
                     var loginStory:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)

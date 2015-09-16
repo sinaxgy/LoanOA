@@ -74,9 +74,11 @@
  */
 - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser willCurrentPage:(NSUInteger)page;
 
-- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser didRemoveLastOne:(BOOL)isRemoved;
+//- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser didRemoveLastOne:(BOOL)isRemoved;
 
 - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser didUploadImage:(UIImage*)image index:(NSInteger)index progress:(void (^)(float written,float total))progress success:(void (^)(NSString *str))success failed:(void (^)())failed;
+
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser didRemoveLastOneSuccess:(void (^)(NSString *str))success failed:(void (^)())failed;
 
 @end
 
@@ -94,9 +96,6 @@
 /**additional
  */
 @property(nonatomic,strong) NSString* navTitle;
-@property(nonatomic,strong) NSString* tbName;
-@property(nonatomic,strong) NSString* pro_id;
-@property(nonatomic,strong) NSString* ipurl;
 @property (nonatomic , assign)BOOL isMutable;
 @property(nonatomic,strong) NSMutableArray* imageUrls;
 

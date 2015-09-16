@@ -114,6 +114,7 @@ class AnnouncementTBVC: UITableViewController {
             if !item.isReaded {
                 item.isReaded = true
                 self.numOfUnread--
+                self.tableView.reloadData()
             }
             NetworkRequest.AlamofireGetString(item.url, success: {
                 (data) in

@@ -38,37 +38,24 @@ class UserHelper: NSObject {
         return false
     }
    
-    static func readCurrentUserInfo(user_id:String?) -> NSDictionary {
-        if user_id == nil {return NSDictionary()}
-        var user:NSUserDefaults? = NSUserDefaults.standardUserDefaults()
-        if (user != nil) {
-            if !user!.objectIsForcedForKey(recentID) {
-                return [:]
-            }
-            if let dic =  user?.objectForKey(user_id!) as? NSDictionary {
-                return dic
-            }
+    static func readCurrentUserInfo(user_id:String) -> NSDictionary {
+        let value = NSUserDefaults.standardUserDefaults().dictionaryForKey(user_id)
+        if value != nil {
+            return value!
         }
         return [:]
     }
     
     static func readValueOfPWIsSaved() -> Bool {
-        var user:NSUserDefaults? = NSUserDefaults.standardUserDefaults()
-        if (user != nil) {
-            return user!.boolForKey(PWIsSaved)
-        }
-        return false
+        let value = NSUserDefaults.standardUserDefaults().boolForKey(PWIsSaved)
+        
+        return value
     }
     
     static func readRecentID() -> String {
-        var user:NSUserDefaults? = NSUserDefaults.standardUserDefaults()
-        if (user != nil) {
-            if !user!.objectIsForcedForKey(recentID) {
-                return ""
-            }
-            if NSUserDefaults.standardUserDefaults().objectForKey(recentID) != nil {
-            return user!.stringForKey(recentID)!
-            }
+        let value = NSUserDefaults.standardUserDefaults().stringForKey(recentID)
+        if value != nil {
+            return value!
         }
         return ""
     }

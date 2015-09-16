@@ -116,17 +116,19 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
+        println("_____________________")
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        println(">>>>>>>>>>>>>>>")
+        let item = self.tableArray[indexPath.row] as! PicJsonItemInfo
+        if item.imageurl.count == 0 {
+            return false
+        }
         return true
     }
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-//        if let item = self.tableArray[indexPath.row] as? PicJsonItemInfo {
-//            if item.imageurl.count == 0 {return[]}
-//        }
         self.selectedIndexPath = indexPath
         if let cell = tableView.cellForRowAtIndexPath(indexPath) as? SingleTableViewCell {
             var deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "删除") { (rowAction, index) -> Void in
@@ -183,9 +185,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 var photoBrowser:ZLPhotoPickerBrowserViewController = ZLPhotoPickerBrowserViewController()
                 let nav:UINavigationController = UINavigationController(rootViewController: photoBrowser)
                 photoBrowser.delegate = self
-                photoBrowser.dataSource = self;photoBrowser.tbName = item.tbName
-                photoBrowser.ipurl = AppDelegate.app().ipUrl
-                photoBrowser.pro_id = AppDelegate.app().pro_id
+                photoBrowser.dataSource = self
                 photoBrowser.isMutable = NSString(string: item.multipage).boolValue
                 photoBrowser.imageUrls = LoanerHelper.OriginalUrlArraywith(item.imageurl)
                 photoBrowser.navigationItem.title = item.pic_explain
@@ -496,15 +496,6 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
         let item = self.tableArray[self.selectedIndexPath.row] as! PicJsonItemInfo
         let str: String = AppDelegate.app().ipUrl + (item.imageurl[indexPath.row] as! String) + "?\(arc4random() % 1000)"
         var ar:NSArray = NSArray(array: [NSString(string: str)])
-        //let str: String = AppDelegate.app().ipUrl + LoanerHelper.OriginalImageURLStrWithSmallURLStr(item.imageurl[indexPath.row] as! String) + "?\(arc4random() % 100)"
-        var _assets = NSArray(array: [
-            "http://www.qqaiqin.com/uploads/allimg/130520/4-13052022531U60.gif",
-            "http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg",
-            "http://imgsrc.baidu.com/forum/pic/item/c59ca2ef76c6a7ef603e17c7fcfaaf51f2de6640.jpg",
-            "http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg",
-            ])
-        
-        //var imageObj:ZLPhotoAssets = _assets.objectAtIndex(indexPath.row) as! ZLPhotoAssets
         var photo:ZLPhotoPickerBrowserPhoto = ZLPhotoPickerBrowserPhoto(anyImageObjWith: str)
         if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
             photo.toView = cell.imageV
@@ -515,8 +506,26 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     
     func photoBrowser(photoBrowser: ZLPhotoPickerBrowserViewController!, removePhotoAtIndexPath indexPath: NSIndexPath!) {
         println(indexPath.row)
+    }
+    
+    func photoBrowser(photoBrowser: ZLPhotoPickerBrowserViewController!, didRemoveLastOneSuccess success: ((String!) -> Void)!, failed: (() -> Void)!) {
         if let item = self.tableArray[self.selectedIndexPath.row] as? PicJsonItemInfo {
-            item.imageurl.removeLastObject()
+            let url = AppDelegate.app().ipUrl + config + "app/delete"
+            let path:JSON = JSON(NSArray(object: item.imageurl.lastObject!))
+            NetworkRequest.AlamofirePostParameters(url, parameters: ["path":"\(path)"], success: {
+                (data) in
+                success(data! as! String)
+                item.imageurl.removeLastObject()
+                if item.imageurl.count == 0 {
+                    if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
+                        cell.imageV.image = UIImage(named: placeholderImageName)
+                    }
+                }
+                self.tableView.reloadRowsAtIndexPaths([self.selectedIndexPath], withRowAnimation: UITableViewRowAnimation.Middle)
+                }, failed: {
+                    //失败处理
+                    failed()
+                },outTime:{failed()})
         }
     }
     
@@ -539,6 +548,11 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                     if data == nil {println("empty return");return}
                     let str = AppDelegate.app().ipUrl + (data! as! String) + "?\(arc4random() % 1000)"
                     success(str)
+                    
+                    if index == 0 {
+                        self.tableView.reloadRowsAtIndexPaths([self.selectedIndexPath], withRowAnimation: UITableViewRowAnimation.Middle)
+                    }
+                    
                 }, failed: { () -> Void in
                     failed()
                 }, outTime: { () -> Void in

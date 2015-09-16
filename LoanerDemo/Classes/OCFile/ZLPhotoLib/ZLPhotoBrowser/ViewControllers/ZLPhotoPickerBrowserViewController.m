@@ -546,6 +546,16 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             [self.delegate photoBrowser:self removePhotoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
         }
         
+        if ([self.delegate respondsToSelector:@selector(photoBrowser:didRemoveLastOneSuccess:failed:)]) {
+            [self.delegate photoBrowser:self didRemoveLastOneSuccess:^(NSString *str) {
+                if (![str isEqual:@"success"]) {
+                    return ;
+                }
+            } failed:^{
+                NSLog(@"delete failed!!!");
+            }];
+        }
+        
         [self.photos removeObjectAtIndex:page];
         
 //        if (page >= self.photos.count) {
