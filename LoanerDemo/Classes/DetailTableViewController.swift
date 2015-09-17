@@ -34,6 +34,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = self.typeTitle.typeName
+        self.defaultText.dicTexts = LoanerHelper.infoWithFileName(self.defaultText.fileName)
         if self.isAdd {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "完成", style: UIBarButtonItemStyle.Plain, target: self, action:"postJson")
         }
@@ -229,9 +230,9 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
     //MARK:--SignTextDelegate
     func signTextDidBeDone(text: String, texts: NSArray?) {
         let cell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow()!) as! LeafTableViewCell
-        let conditions:NSArray = ["mg_price","mg_assessprice","mg_adviceprice"]
+        let conditions:NSArray = ["mg_price","mg_assessprice","mg_adviceprice","car_bdate","car_ldate"]
         if conditions.containsObject(cell.itemInfo.title) {
-            let message = self.stringWithCheckInputValue(cell.itemInfo.title as String, value: NSString(string: text).floatValue)
+            let message = self.checkInputPriceValue(cell.itemInfo.title as String, text: text)
             if  message != "" {
                 let progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
                 progressHud.mode = MBProgressHUDMode.Text
@@ -239,56 +240,81 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
                 progressHud.detailsLabelFont = UIFont.systemFontOfSize(17)
                 progressHud.show(true)
                 progressHud.hide(true, afterDelay: 2)
+                progressHud.yOffset = Float(progressHud.frame.origin.y)
                 self.view.addSubview(progressHud)
                 return
             }
         }
         cell.detailLabel.text = text
         cell.itemInfo.value = text
-        self.postDic.setObject(cell.detailLabel.text!, forKey: cell.itemInfo.title as String)
+        if text != "" {
+            self.postDic.setObject(cell.detailLabel.text!, forKey: cell.itemInfo.title as String)
+        }
         if texts != nil{
             if texts?.count > 0 {
                 self.defaultText.dicTexts.setObject(texts!, forKey: cell.itemInfo.title as String)
-                LoanerHelper.infoWriteToFile(self.fileName, info: self.defaultText.dicTexts)
+                LoanerHelper.infoWriteToFile(self.defaultText.fileName, info: self.defaultText.dicTexts)
             }
         }
     }
     
-    func stringWithCheckInputValue(key:String,value:Float) -> NSString {
+    func checkInputPriceValue(key:String,text:String) -> NSString {
         var message:NSMutableString = ""
         switch key {                //远》估》建议金额
         case "mg_price":            //原价：不能小于估价
             if (self.postDic.allKeys as NSArray).containsObject("mg_assessprice") {
                 let mg_assessprice: Float = NSString(string: self.postDic["mg_assessprice"] as! String).floatValue
+                let value = NSString(string: text).floatValue
                 if value < mg_assessprice {
-                    message = "抵押物原价不能小于其估价！"
-                }
-            }
-        case "mg_adviceprice":      //建议金额：不能大于估价
-            if (self.postDic.allKeys as NSArray).containsObject("mg_assessprice") {
-                let mg_assessprice: Float = NSString(string: self.postDic["mg_assessprice"] as! String).floatValue
-                if value > mg_assessprice {
-                    message = "建议金额不能大于抵押物估价！"
-                }
-            }
-        case "mg_assessprice":      //估价：不能大于原价，不能小于建议金额
-            var flog = 0
-            if (self.postDic.allKeys as NSArray).containsObject("mg_price") {
-                let mg_price: Float = NSString(string: self.postDic["mg_price"] as! String).floatValue
-                if value > mg_price {
-                    flog++
-                    message = "抵押物估价不能大于其原价！"
+                    message.appendString("抵押物原价不能小于其估价！")
                 }
             }
             if (self.postDic.allKeys as NSArray).containsObject("mg_adviceprice") {
                 let mg_adviceprice: Float = NSString(string: self.postDic["mg_adviceprice"] as! String).floatValue
+                let value = NSString(string: text).floatValue
                 if value < mg_adviceprice {
-                    flog++
-                    message = "抵押物估价不能小于建议金额，请重新输入！"
+                    message.appendString("\n抵押物原价不能小于建议金额！")
                 }
             }
-            if flog == 2 {
-                message = "抵押物估价必须小于其原价且大于建议金额"
+        case "mg_assessprice":      //估价：不能大于原价，不能小于建议金额
+            if (self.postDic.allKeys as NSArray).containsObject("mg_price") {
+                let mg_price: Float = NSString(string: self.postDic["mg_price"] as! String).floatValue
+                if NSString(string: text).floatValue > mg_price {
+                    message.appendString("抵押物估价不能大于其原价！")
+                }
+            }
+            if (self.postDic.allKeys as NSArray).containsObject("mg_adviceprice") {
+                let mg_adviceprice: Float = NSString(string: self.postDic["mg_adviceprice"] as! String).floatValue
+                if NSString(string: text).floatValue < mg_adviceprice {
+                    message.appendString("抵押物估价不能小于建议金额！")
+                }
+            }
+        case "mg_adviceprice":      //建议金额：不能大于估价
+            if (self.postDic.allKeys as NSArray).containsObject("mg_price") {
+                let mg_price: Float = NSString(string: self.postDic["mg_price"] as! String).floatValue
+                if NSString(string: text).floatValue > mg_price {
+                    message.appendString("建议金额不能大于抵押物原价！")
+                }
+            }
+            if (self.postDic.allKeys as NSArray).containsObject("mg_assessprice") {
+                let mg_assessprice: Float = NSString(string: self.postDic["mg_assessprice"] as! String).floatValue
+                if NSString(string: text).floatValue > mg_assessprice {
+                    message.appendString("\n建议金额不能大于抵押物估价！")
+                }
+            }
+        case "car_bdate":      //出厂日期早于初登日期
+            if (self.postDic.allKeys as NSArray).containsObject("car_ldate") {
+                let car_ldate: String = self.postDic["car_ldate"] as! String
+                if text > car_ldate {
+                    message.appendString("出厂日期不能晚于初登日期！")
+                }
+            }
+        case "car_ldate":       //初登日期晚于出厂日期
+            if (self.postDic.allKeys as NSArray).containsObject("car_bdate") {
+                let car_ldate: String = self.postDic["car_bdate"] as! String
+                if text < car_ldate {
+                    message.appendString("初登日期不能早于出厂日期！")
+                }
             }
         default:
             break

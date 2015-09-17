@@ -19,8 +19,11 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
     override func viewDidLoad() {
         super.viewDidLoad()
         self.readSelfINfo()
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "注销", style: UIBarButtonItemStyle.Plain, target: self, action:"logout:")
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "配置IP", style: UIBarButtonItemStyle.Plain, target: self, action:"settingIP:")
+        self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([
+            NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.hashValue,
+            NSFontAttributeName:UIFont.systemFontOfSize(14, weight: 5)],
+            forState: UIControlState.Normal)
         self.navigationController?.tabBarItem.selectedImage = UIImage(named: "perSelected")
     }
     
@@ -45,9 +48,7 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
         }
         AppDelegate.app().IP = idunique
         AppDelegate.app().ipUrl = "http://\(idunique)/"
-//        let id = UserHelper.readRecentID()
         KeyChain.updateIPItem(AppDelegate.app().user_id, IP: idunique)
-//        let ip = KeyChain.getIPItem(id!)
     }
     
     func logout(sender:UIBarButtonItem) {
@@ -74,17 +75,52 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 3
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.selfInfoDic == nil {
+        if self.selfInfoDic == nil || section == 2{
             return 0
+        }
+        if section >= 1 {
+            return 1
         }
         return (self.infoArray.count)
     }
     
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section > 1 {
+            return self.view.height - 490
+        }
+        return 35
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
+        headerView.backgroundColor = UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 225.0/205.0, alpha: 1)
+        return headerView
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        switch indexPath.section {
+        case 0:
+            return setPersonalCell(indexPath)
+        case 1:
+            let cell:UITableViewCell = UITableViewCell(frame: CGRectMake(0, 0, self.view.width, 40))
+            var btn:UIButton = UIButton(frame: CGRectMake(0, 0, self.view.width, 40))
+            btn.titleLabel?.textAlignment = NSTextAlignment.Center
+            btn.setTitle("退出登录", forState: UIControlState.Normal)
+            btn.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
+            btn.setTitleColor(UIColor.lightGrayColor(), forState: UIControlState.Selected)
+            btn.addTarget(self, action: "logout:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.contentView.addSubview(btn)
+            return cell
+        default:
+            return UITableViewCell()
+        }
+    }
+    
+    func setPersonalCell(indexPath:NSIndexPath) -> UITableViewCell {
         var cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "selfCell")
         var key: NSString = self.infoArray[indexPath.row] as! NSString
         switch key {

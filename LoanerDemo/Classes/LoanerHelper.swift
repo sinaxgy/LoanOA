@@ -95,7 +95,7 @@ class LoanerHelper: NSObject {
     }
     
     static func infoWithFileName(fileName:String) -> NSMutableDictionary {
-        let filePath = NSHomeDirectory().stringByAppendingPathComponent("Documents").stringByAppendingPathComponent("\(fileName).plist")
+        let filePath = NSHomeDirectory().stringByAppendingPathComponent("Documents/\(fileName).plist")//.stringByAppendingPathComponent("\(fileName).plist")
         if NSFileManager.defaultManager().fileExistsAtPath(filePath) {
             return NSMutableDictionary(contentsOfFile: filePath)!
         }
@@ -103,7 +103,9 @@ class LoanerHelper: NSObject {
     }
     
     static func infoWriteToFile(fileName:String,info:NSMutableDictionary) {
-        let filePath = NSHomeDirectory().stringByAppendingPathComponent("Documents").stringByAppendingPathComponent("\(fileName).plist")
-        info.writeToFile(filePath, atomically: true)
+        let filePath = NSHomeDirectory().stringByAppendingPathComponent("Documents/\(fileName).plist")//.stringByAppendingPathComponent("\(fileName).plist")
+        let k = info.writeToFile(filePath, atomically: false)
+        println(k)
+        println(NSFileManager.defaultManager().fileExistsAtPath(filePath))
     }
 }

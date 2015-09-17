@@ -74,6 +74,8 @@
 		C5374AC41B69C0F100A80625 /* UIImage+WebP.m in Sources */ = {isa = PBXBuildFile; fileRef = C5374AB41B69C0F100A80625 /* UIImage+WebP.m */; };
 		C5374AC51B69C0F100A80625 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C5374AB61B69C0F100A80625 /* UIImageView+HighlightedWebCache.m */; };
 		C5374AC61B69C0F100A80625 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C5374AB81B69C0F100A80625 /* UIView+WebCacheOperation.m */; };
+		C54643171BA9888800A92756 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54643151BA9888800A92756 /* NewsTableViewCell.swift */; };
+		C54643181BA9888800A92756 /* NewsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C54643161BA9888800A92756 /* NewsTableViewCell.xib */; };
 		C5479E711B70E2AD00A48227 /* BranchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5479E701B70E2AD00A48227 /* BranchItem.swift */; };
 		C55D298B1B4BC5BF003F714A /* login_input_rect.png in Resources */ = {isa = PBXBuildFile; fileRef = C55D298A1B4BC5BF003F714A /* login_input_rect.png */; };
 		C55D298E1B4BD134003F714A /* savepwn.png in Resources */ = {isa = PBXBuildFile; fileRef = C55D298C1B4BD134003F714A /* savepwn.png */; };
@@ -300,6 +302,8 @@
 		C5374AB61B69C0F100A80625 /* UIImageView+HighlightedWebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+HighlightedWebCache.m"; path = "Classes/OCFile/ZLPhotoLib/Utils/Lib/SDWebImage/UIImageView+HighlightedWebCache.m"; sourceTree = "<group>"; };
 		C5374AB71B69C0F100A80625 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+WebCacheOperation.h"; path = "Classes/OCFile/ZLPhotoLib/Utils/Lib/SDWebImage/UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		C5374AB81B69C0F100A80625 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+WebCacheOperation.m"; path = "Classes/OCFile/ZLPhotoLib/Utils/Lib/SDWebImage/UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
+		C54643151BA9888800A92756 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewsTableViewCell.swift; path = Classes/Cell/NewsTableViewCell.swift; sourceTree = "<group>"; };
+		C54643161BA9888800A92756 /* NewsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewsTableViewCell.xib; path = Classes/Cell/NewsTableViewCell.xib; sourceTree = "<group>"; };
 		C5479E701B70E2AD00A48227 /* BranchItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BranchItem.swift; path = Classes/BranchItem.swift; sourceTree = "<group>"; };
 		C55D29771B4BB620003F714A /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		C55D298A1B4BC5BF003F714A /* login_input_rect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = login_input_rect.png; path = Resources/login_input_rect.png; sourceTree = "<group>"; };
@@ -819,6 +823,8 @@
 				C5D7B9B91B3A7BD700823343 /* DetailTableViewCell.swift */,
 				C5DBEC291B666676003F5749 /* SingleTableViewCell.swift */,
 				C5DBEC2A1B666676003F5749 /* SingleTableViewCell.xib */,
+				C54643151BA9888800A92756 /* NewsTableViewCell.swift */,
+				C54643161BA9888800A92756 /* NewsTableViewCell.xib */,
 				C5DBEC251B665EE1003F5749 /* MutableTableViewCell.swift */,
 				C5DBEC261B665EE1003F5749 /* MutableTableViewCell.xib */,
 				C5E71B641B6B03E900FCE0A2 /* PopMutableTableViewCell.swift */,
@@ -989,6 +995,7 @@
 				C5DBEC281B665EE1003F5749 /* MutableTableViewCell.xib in Resources */,
 				C5F218EB1B4AA8350072D445 /* Menu_PopOver_BG@2x.png in Resources */,
 				C503A9971B4B72C90081200D /* Icon-72.png in Resources */,
+				C54643181BA9888800A92756 /* NewsTableViewCell.xib in Resources */,
 				C503A9A21B4B75F30081200D /* Icon-40@3x.png in Resources */,
 				C503A9991B4B72C90081200D /* Icon-76.png in Resources */,
 				C5374A961B69C08900A80625 /* AssetsPickerChecked.imageset in Resources */,
@@ -1098,6 +1105,7 @@
 				C5374AC21B69C0F100A80625 /* UIImage+GIF.m in Sources */,
 				C52BD9D51B4CC54F000316A8 /* MBProgressHUD.m in Sources */,
 				C5374A451B69BF2400A80625 /* ZLCameraView.m in Sources */,
+				C54643171BA9888800A92756 /* NewsTableViewCell.swift in Sources */,
 				C5374A6F1B69BFAB00A80625 /* ZLPhotoPickerGroupViewController.m in Sources */,
 				C5F5596B1B9D36A3003538CB /* BranchTableViewCell.swift in Sources */,
 			);

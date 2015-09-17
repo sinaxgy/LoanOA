@@ -205,7 +205,6 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                     }else if branch.editable == "false" {
                         requestVC.tag_Message.editable = false
                     }
-                    //requestVC.pro_id = self.pro_id
                     self.navigationController?.pushViewController(requestVC, animated: true)
                 }
             case 2:

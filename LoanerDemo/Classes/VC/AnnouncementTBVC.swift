@@ -19,12 +19,13 @@ class AnnouncementTBVC: UITableViewController {
             }
         }
     }
+    var unConnectedView:UIImageView!
     var announcements:NSMutableArray = []
     let reuserCell = "anCell"
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.registerNib(UINib(nibName: "SingleTableViewCell", bundle: nil), forCellReuseIdentifier: reuserCell)
+        self.tableView.registerNib(UINib(nibName: "NewsTableViewCell", bundle: nil), forCellReuseIdentifier: reuserCell)
         self.navigationController?.tabBarItem.selectedImage = UIImage(named: "ancSelected")
         self.getAnnouncement()
         
@@ -47,10 +48,19 @@ class AnnouncementTBVC: UITableViewController {
                     self.numOfUnread++
                 }
             }
+            if self.unConnectedView != nil {
+                self.unConnectedView.removeFromSuperview()
+                self.unConnectedView = nil
+            }
             self.tableView.reloadData()
             self.hiddenActivityIndicatorViewInNavigationItem()
+            self.navigationItem.title = "公告"
             }, failed: {
                 self.hiddenActivityIndicatorViewInNavigationItem()
+                self.unConnectedView = UIImageView(frame: UIScreen.mainScreen().bounds)
+                self.unConnectedView.image = UIImage(named: "noAnnounce")
+                self.view.addSubview(self.unConnectedView)
+                self.navigationItem.title = "公告（未连接）"
             }, outTime: {
                 self.hiddenActivityIndicatorViewInNavigationItem()
                 self.navigationItem.title = "公告（未连接）"
@@ -72,8 +82,8 @@ class AnnouncementTBVC: UITableViewController {
     
     func hiddenActivityIndicatorViewInNavigationItem() {
         self.navigationItem.titleView = nil
-        //UIApplication.sharedApplication().applicationIconBadgeNumber = 233
         self.navigationItem.prompt = nil
+        self.refreshControl?.endRefreshing()
     }
 
     override func didReceiveMemoryWarning() {
@@ -101,7 +111,7 @@ class AnnouncementTBVC: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let item = self.announcements[indexPath.row] as? AnnounceItem {
-            if var cell = tableView.dequeueReusableCellWithIdentifier(reuserCell, forIndexPath: indexPath) as? SingleTableViewCell {
+            if var cell = tableView.dequeueReusableCellWithIdentifier(reuserCell, forIndexPath: indexPath) as? NewsTableViewCell {
                 cell.setupCell(item.title, date: item.date, isRead: item.isReaded)
                 return cell
             }

@@ -31,8 +31,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        var tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
-//        self.view.addGestureRecognizer(tapGesture)
+        self.defaultText.dicTexts = LoanerHelper.infoWithFileName(self.defaultText.fileName)
         self.tableView.registerNib(UINib(nibName: "LeafTableViewCell", bundle: nil), forCellReuseIdentifier: "requestCell")
         self.reload()
         self.showActivityIndicatorViewInNavigationItem()
@@ -41,7 +40,6 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
     func keyboardHide() {
         if self.resigntf != nil {
             self.resigntf.resignFirstResponder()
-            //self.resigntf = nil
         }
     }
     
@@ -138,11 +136,6 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
                 for (k,v) in dic {
                     if k as! String == "value" {
                         isEditable = ((v as? String == "") ? true : false)
-//                        if v as? String == "" {
-//                            isEditable = true
-//                        }else {
-//                            isEditable = false
-//                        }
                         break
                     }
                 }
@@ -331,11 +324,6 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
             if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? LeafTableViewCell {
                 let strValue = text as NSString
                 cell.detailLabel.text = (strValue.intValue < 31 ? "融满付息，到期还本" : "融满按月付息，到期还本")
-//                if strValue.intValue < 31 {
-//                    cell.detailLabel.text = "融满付息，到期还本"
-//                }else {
-//                    cell.detailLabel.text = "融满按月付息，到期还本"
-//                }
             }
         }
     }

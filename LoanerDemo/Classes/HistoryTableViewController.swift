@@ -8,17 +8,20 @@
 
 import UIKit
 import Foundation
-
-let isIphone = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.Phone ? true:false)
+//UIDevice userInterfaceIdiom]
+let isIphone = (UIDevice.currentDevice().userInterfaceIdiom  == UIUserInterfaceIdiom.Phone ? true:false)
 let detailFontSize:CGFloat = (isIphone ? 12 : 24)
 let textFontSize:CGFloat = (isIphone ? 15 : 34)
 let cellHeight:CGFloat = (isIphone ? 55 : 100)
+//let cellHeight:CGFloat = 55
 let mainColor = 0x4282e3//0x4282e3//0x25b6ed
 let navColor = 0x1960e3
 let originalX:CGFloat = UIScreen.mainScreen().bounds.width - 110.0
 let popverMenuX:CGFloat = 100.0
 
 class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate{
+    
+    var unConnectedView:UIImageView!
     
     var activityView:UIActivityIndicatorView!
     var typeMenu:PopoverMenuView!
@@ -77,7 +80,6 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         addView.url = AppDelegate.app().ipUrl + config + typeURL + type
         addView.typeOp.type = type
         addView.typeOp.typeName = self.typeDic.objectForKey(type) as! String
-        //addView.pro_id = "速评表"
         let nav:UINavigationController = UINavigationController(rootViewController: addView)
         self.navigationController?.presentViewController(nav, animated: true, completion: nil)
     }
@@ -85,11 +87,9 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         //self.navigationController?.tabBarItem.badgeValue = "12"
-        
         self.refreshControl = UIRefreshControl(frame: CGRectMake(0, 0, self.tableView.frame.size.width, 100))
         self.refreshControl?.addTarget(self, action: "reload:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.tableHeaderView?.addSubview(self.refreshControl!)
-        //self.reload(self.refreshControl!)
         
         self.activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
         self.activityView.frame = self.navigationController!.view.bounds
@@ -124,14 +124,19 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
                         return NSComparisonResult.OrderedDescending
                     })
                 }
+                if self.unConnectedView != nil {
+                    self.unConnectedView.removeFromSuperview()
+                    self.unConnectedView = nil
+                }
                 self.tableView.reloadData()
                 self.navigationItem.title = "所有项目"
             }
             }, failed: {
                 self.hiddenActivityIndicatorViewInNavigationItem()
-                var bk:UIImageView = UIImageView(frame: UIScreen.mainScreen().bounds)
-                bk.image = UIImage(named: "noAnnounce")
-                self.view.addSubview(bk)
+                self.unConnectedView = UIImageView(frame: UIScreen.mainScreen().bounds)
+                self.unConnectedView.image = UIImage(named: "noAnnounce")
+                self.view.addSubview(self.unConnectedView)
+                self.navigationItem.title = "所有项目（未连接）"
             }, outTime: {self.hiddenActivityIndicatorViewInNavigationItem()
                 self.navigationItem.title = "所有项目（未连接）"
                 self.connectFailed()
@@ -191,15 +196,19 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
+        if self.json == nil {
+            return 0
+        }
         return self.json.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        //var cell = tableView.dequeueReusableCellWithIdentifier("historyCell") as! UITableViewCell
         let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "historyCell")
+        if self.json == nil {
+            return cell
+        }
         if self.json.type == .Dictionary {
             var keys:NSArray = (self.json.object as! NSDictionary).allKeys
-            //cell.selectionStyle = UITableViewCellSelectionStyle.None
             let key: AnyObject = self.sortJsonArray[indexPath.row]
             let js = self.json[key as! String]
             if js.type == .Dictionary {

@@ -51,6 +51,14 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
             var datePicker:DatepickerView = DatepickerView(width: self.view.bounds.width)
             datePicker.dateDelegate = self
             textField.inputView = datePicker
+        }else {
+            var toolBar:UIToolbar = UIToolbar(frame: CGRectMake(0, 0, self.view.frame.width, 35))
+            var btn:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+            btn.frame = CGRectMake(0, 5, 35, 35)
+            btn.addTarget(self, action: "hideKeyboard", forControlEvents: UIControlEvents.TouchUpInside)
+            btn.setImage(UIImage(named: "hideKeyboard"), forState: UIControlState.Normal)
+            toolBar.setItems([UIBarButtonItem(customView: btn)], animated: false)
+            textField.inputAccessoryView = toolBar
         }
         if text != "" {textField.text = text}
         
@@ -60,6 +68,10 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
         tableView.delegate = self
         tableView.registerNib(UINib(nibName: "TextTableViewCell", bundle: nil), forCellReuseIdentifier: textCell)
         self.view.addSubview(tableView)
+    }
+    
+    func hideKeyboard() {
+        textField.resignFirstResponder()
     }
     
     //MARK:--UITableViewDelegate
@@ -76,6 +88,16 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
         cell.delegate = self
         cell.titleText = (self.defaultTexts[indexPath.row] as? String)!
         return cell
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 35
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
+        headerView.backgroundColor = UIColor(red: 205.0/255.0, green: 205.0/255.0, blue: 205.0/205.0, alpha: 1)
+        return headerView
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

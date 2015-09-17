@@ -29,9 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var navigationBarAppearace = UINavigationBar.appearance()
         //        navigationBarAppearace.translucent = false
         navigationBarAppearace.barTintColor = UIColor(hex: navColor)
-        
         navigationBarAppearace.tintColor = UIColor.whiteColor()
-        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
+        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(),NSFontAttributeName:UIFont.systemFontOfSize(20, weight: 10)]
         if !UserHelper.readValueOfPWIsSaved() {
             let loginStory:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let loginedView:LoginsViewController = (loginStory.instantiateViewControllerWithIdentifier("LoginsViewController") as? LoginsViewController)!
