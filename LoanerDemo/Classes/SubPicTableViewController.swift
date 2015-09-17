@@ -120,7 +120,6 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        println(">>>>>>>>>>>>>>>")
         let item = self.tableArray[indexPath.row] as! PicJsonItemInfo
         if item.imageurl.count == 0 {
             return false
@@ -312,16 +311,12 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
                 if !cell.isMutable {
                     self.openZLPhotoSinglePicker()
-                    //self.openPictureLibrary()
-                    //self.openZLPhotoMutablePicker(1)
                 }else {
-                    //self.openQBImagePicker()
                     self.openZLPhotoMutablePicker(9)
                 }
                 if cell.editing {
                     cell.editing = false
                 }
-                //self.tableView.reloadRowsAtIndexPaths([self.selectedIndexPath], withRowAnimation: UITableViewRowAnimation.Middle)
             }
         case 2:             //打开照相机
             self.takePhoto()

@@ -133,9 +133,11 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
             }
             }, failed: {
                 self.hiddenActivityIndicatorViewInNavigationItem()
-                self.unConnectedView = UIImageView(frame: UIScreen.mainScreen().bounds)
-                self.unConnectedView.image = UIImage(named: "noAnnounce")
-                self.view.addSubview(self.unConnectedView)
+                if self.unConnectedView == nil {
+                    self.unConnectedView = UIImageView(frame: UIScreen.mainScreen().bounds)
+                    self.unConnectedView.image = UIImage(named: "noAnnounce")
+                    self.view.addSubview(self.unConnectedView)
+                }
                 self.navigationItem.title = "所有项目（未连接）"
             }, outTime: {self.hiddenActivityIndicatorViewInNavigationItem()
                 self.navigationItem.title = "所有项目（未连接）"
@@ -164,7 +166,6 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         //self.navigationItem.titleView = UIImageView(image: UIImage(named: "mainTitle"))
         self.navigationItem.title = "所有项目"
         self.navigationItem.titleView = nil
-        //UIApplication.sharedApplication().applicationIconBadgeNumber = 233
         self.navigationItem.prompt = nil
         self.refreshControl?.endRefreshing()
         self.activityView.stopAnimating()

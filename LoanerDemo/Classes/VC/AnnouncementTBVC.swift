@@ -27,11 +27,13 @@ class AnnouncementTBVC: UITableViewController {
         
         self.tableView.registerNib(UINib(nibName: "NewsTableViewCell", bundle: nil), forCellReuseIdentifier: reuserCell)
         self.navigationController?.tabBarItem.selectedImage = UIImage(named: "ancSelected")
-        self.getAnnouncement()
         
         self.refreshControl = UIRefreshControl(frame: CGRectMake(0, 0, self.tableView.frame.size.width, 100))
         self.refreshControl?.addTarget(self, action: "getAnnouncement", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.tableHeaderView?.addSubview(self.refreshControl!)
+    }
+    override func viewWillAppear(animated: Bool) {
+        self.getAnnouncement()
     }
     
     func getAnnouncement() {
@@ -41,6 +43,7 @@ class AnnouncementTBVC: UITableViewController {
             (data) in
             let json:JSON = JSON(data!)
             if json.count == 0 {self.thereisNoAnnouncement()}
+            self.announcements = []
             for (f,it) in json {
                 let item:AnnounceItem = AnnounceItem(json: it)
                 self.announcements.addObject(item)
@@ -75,9 +78,9 @@ class AnnouncementTBVC: UITableViewController {
     
     func showActivityIndicatorViewInNavigationItem() {
         var actView:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-        self.navigationItem.titleView = actView
-        actView.startAnimating()
-        self.navigationItem.prompt = "数据加载中..."
+        //self.navigationItem.titleView = actView
+        //actView.startAnimating()
+        //self.navigationItem.prompt = "数据加载中..."
     }
     
     func hiddenActivityIndicatorViewInNavigationItem() {
@@ -133,7 +136,6 @@ class AnnouncementTBVC: UITableViewController {
                 detailAnc.title = "公告"
                 detailAnc.date = item.date
                 detailAnc.detail = data! as! String
-                //detailAnc.setupMessage(item.title, date: item.date, text: data! as! String)
                 let nav:UINavigationController = UINavigationController(rootViewController: detailAnc)
                 self.navigationController?.presentViewController(nav, animated: true, completion: nil)
                 }, failed: {

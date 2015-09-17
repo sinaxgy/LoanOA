@@ -21,9 +21,15 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
         self.readSelfINfo()
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "配置IP", style: UIBarButtonItemStyle.Plain, target: self, action:"settingIP:")
         self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([
-            NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.hashValue,
-            NSFontAttributeName:UIFont.systemFontOfSize(14, weight: 5)],
+            NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.rawValue,
+            NSFontAttributeName:UIFont.systemFontOfSize(14, weight: 3)],
             forState: UIControlState.Normal)
+        
+        var str:NSMutableAttributedString = NSMutableAttributedString(string: "配置IP")
+        str.addAttributes([NSForegroundColorAttributeName:UIColor.whiteColor(),NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.rawValue,
+            NSFontAttributeName:UIFont.systemFontOfSize(15, weight: 2)], range: NSMakeRange(0, str.length))
+        
+        
         self.navigationController?.tabBarItem.selectedImage = UIImage(named: "perSelected")
     }
     
@@ -53,9 +59,9 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
     
     func logout(sender:UIBarButtonItem) {
         UserHelper.setValueOfPWIsSaved(false)
-        let loginView = UIStoryboard(name: "Main", bundle: nil)
+        //let loginView = UIStoryboard(name: "Main", bundle: nil)
         self.navigationController?.presentViewController(
-            (loginView.instantiateViewControllerWithIdentifier("LoginsViewController") as? UIViewController)!, animated: true, completion: nil)
+            LoginsViewController(), animated: true, completion: nil)
     }
     
     func readSelfINfo() {

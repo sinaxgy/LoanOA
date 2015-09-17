@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 
 //let ip = "http://112.126.64.235:8843/"
 //let ip = "http://123.57.219.112/loanOA/"  http://10.104.4.153/web/index.php/app/proinfo?pro_id=
@@ -20,44 +19,87 @@ let readTableURL = "app/proinfo?pro_id="
 let uploadUrl = "app/upload"
 class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessageEditDelegete{
     
-    @IBOutlet weak var user_idText: UITextField!
-    @IBOutlet weak var passwordText: UITextField!
-    @IBOutlet weak var savePasswordBtn: UIButton!
-    @IBOutlet weak var loginBtn: UIButton!
-    @IBOutlet weak var settingBtn: UIButton!
+    var user_idText: UITextField!
+    var passwordText: UITextField!
+    var savePasswordBtn: UIButton!
+    var loginBtn: UIButton!
+    var settingBtn: UIButton!
     
     var personalInfomation:NSMutableDictionary = NSMutableDictionary()
-    var request: Alamofire.Request? {
-        didSet {
-            oldValue?.cancel()
-        }
-    }
-    
     func initView() {
+        user_idText = UITextField(frame: CGRectMake(20, 90, self.view.width - 40, 30))
         user_idText.delegate = self
         user_idText.autocapitalizationType = UITextAutocapitalizationType.None
         user_idText.autocorrectionType = UITextAutocorrectionType.No
+        user_idText.placeholder = "用户名"
+        user_idText.textColor = UIColor.whiteColor()
+        user_idText.font = UIFont.systemFontOfSize(14)
+        user_idText.setValue(UIColor(red: 186.0/255.0, green: 185.0/255.0, blue: 155.0/205.0, alpha: 1)
+            , forKeyPath: "_placeholderLabel.textColor")
+        self.view.addSubview(user_idText)
         
-        passwordText.delegate = self
+        var line:UIImageView = UIImageView(frame: CGRectMake(15, 125, self.view.width - 30, 1))
+        line.image = UIImage(named: "line")
+        self.view.addSubview(line)
+        
+        passwordText = UITextField(frame: CGRectMake(20, 135, self.view.width - 40, 30))
+        passwordText.delegate = self;passwordText.textColor = UIColor.whiteColor()
         passwordText.autocorrectionType = UITextAutocorrectionType.No
+        passwordText.placeholder = "密码"
+        passwordText.font = UIFont.systemFontOfSize(14)
+        passwordText.setValue(UIColor(red: 186.0/255.0, green: 185.0/255.0, blue: 155.0/205.0, alpha: 1)
+            , forKeyPath: "_placeholderLabel.textColor")
+        self.view.addSubview(passwordText)
         
-        savePasswordBtn.setBackgroundImage(UIImage(named: "savepwn"), forState: UIControlState.Normal)
-        savePasswordBtn.setBackgroundImage(UIImage(named: "savepws"), forState: UIControlState.Selected)
+        var line1:UIImageView = UIImageView(frame: CGRectMake(15, 165, self.view.width - 30, 1))
+        line1.image = UIImage(named: "line")
+        self.view.addSubview(line1)
         
-        loginBtn.layer.cornerRadius = 6
-                
-        settingBtn.layer.cornerRadius = 3
+        savePasswordBtn = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        savePasswordBtn.frame = CGRectMake(15, 180, 15, 15)
+        savePasswordBtn.setBackgroundImage(UIImage(named: "pwunselected"), forState: UIControlState.Normal)
+        savePasswordBtn.setBackgroundImage(UIImage(named: "pwselected"), forState: UIControlState.Selected)
+        savePasswordBtn.addTarget(self, action: "savePasswordAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(savePasswordBtn)
+        
+        UITextField.appearance().tintColor = UIColor.whiteColor()
+        
+        var label:UILabel = UILabel(frame: CGRectMake(36, 178, 80, 20))
+        label.text = "记住密码";label.font = UIFont.systemFontOfSize(15)
+        label.textColor = UIColor.whiteColor()
+        self.view.addSubview(label)
+        
+        settingBtn = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        settingBtn.frame = CGRectMake(self.view.width - 80, 178, 65, 20)
+        var str:NSMutableAttributedString = NSMutableAttributedString(string: "配置IP")
+        str.addAttributes([NSForegroundColorAttributeName:UIColor.whiteColor(),NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.rawValue,
+            NSFontAttributeName:UIFont.systemFontOfSize(15, weight: 2)], range: NSMakeRange(0, str.length))
+        settingBtn.setAttributedTitle(str, forState: UIControlState.Normal)
+        settingBtn.addTarget(self, action: "settingAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(settingBtn)
+        
+        
+        loginBtn = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        loginBtn.frame = CGRectMake(15, 220, self.view.width - 30, 40)
+        loginBtn.backgroundColor = UIColor.whiteColor()
+        loginBtn.setTitle("登录", forState: UIControlState.Normal)
+        loginBtn.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal)
+        loginBtn.addTarget(self, action: "loginToServiceAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(loginBtn)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let bk:UIImageView = UIImageView(frame: self.view.frame)
+        bk.image = UIImage(named: "background")
+        self.view.addSubview(bk)
         self.initView()
         var tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
         self.view.addGestureRecognizer(tapGesture)
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func settingAction(sender: UIButton) {
+    func settingAction(sender: UIButton) {
         let pvView:PopupAnimationView = PopupAnimationView.defaultPopupView()
         pvView.setTextField(AppDelegate.app().IP)
         pvView.popupDelegete = self
@@ -65,11 +107,11 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
         self.lew_presentPopupView(pvView, animation: LewPopupViewAnimationDrop.new(), dismissed: nil)
     }
     
-    @IBAction func savePasswordAction(sender: UIButton) {
+    func savePasswordAction(sender: UIButton) {
         savePasswordBtn.selected = !savePasswordBtn.selected
     }
     
-    @IBAction func loginToServiceAction(sender: UIButton) {
+    func loginToServiceAction(sender: UIButton) {
         if self.user_idText.text == "" || self.passwordText.text == "" {
             let alert:UIAlertView = UIAlertView(title: "错误", message: "用户名和密码不能为空", delegate: nil, cancelButtonTitle: "确定")
             alert.show()
@@ -87,7 +129,6 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
         
         NetworkRequest.AlamofirePostParametersResponseJSON(url, parameters: ["user_id":"\(user_id)","user_password":"\(password)"], success: {(json) in
             if (json.count < 7) {
-                self.request = nil
                 progressHud.hide(true)
                 let alert:UIAlertView = UIAlertView(title: "错误", message: "用户名密码错误", delegate: nil, cancelButtonTitle: "确定")
                 alert.show()
