@@ -11,7 +11,7 @@ import Alamofire
 
 struct operationType {
     var type:String
-    var typeName:String
+    var proNum:String
 }
 
 class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UIAlertViewDelegate,PopoverMenuViewDelegate{
@@ -19,7 +19,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
     var isAdd:Bool = true
     //var pro_id:String = ""{didSet{AppDelegate.app().pro_id = self.pro_id}}
     var isShowNoti = false
-    var typeOp = operationType(type: "", typeName: "")
+    var typeOp = operationType(type: "", proNum: "")
     var dbjson:JSON = JSON.nullJSON
     var detailKeyArray:NSArray = []
     var url = "";var menuItems:NSArray = []
@@ -27,7 +27,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = self.typeOp.typeName
+        self.navigationItem.title = self.typeOp.proNum
         self.showActivityIndicatorViewInNavigationItem()
         //self.loadJSONOfView()
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"), style: UIBarButtonItemStyle.Bordered, target: self, action: "cancel:")
@@ -123,7 +123,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
             self.tableView.reloadData()
             self.hiddenActivityIndicatorViewInNavigationItem()
             }, failed: {
-                self.title = self.typeOp.typeName
+                self.title = self.typeOp.proNum
                 self.hiddenActivityIndicatorViewInNavigationItem()}, outTime: {
                     self.hiddenActivityIndicatorViewInNavigationItem()
                     self.connectFailed()
@@ -218,7 +218,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                 detailView.json = branch.data;detailView.isAdd = self.isAdd
                 detailView.defaultText.fileName = branch.fileName
                 detailView.detailKeyArray = branch.arraysort
-                detailView.typeTitle.typeName = branch.tag_name
+                detailView.typeTitle.proNum = branch.tag_name
                 detailView.typeTitle.type = self.typeOp.type
                 detailView.dbjson = self.dbjson
                 self.navigationController?.pushViewController(detailView, animated: true)

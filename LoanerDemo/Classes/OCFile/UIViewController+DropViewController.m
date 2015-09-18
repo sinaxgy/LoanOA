@@ -114,7 +114,7 @@
     [self.lewOverlayView addSubview:popupView];
     [sourceView addSubview:self.lewOverlayView];
     
-    self.lewOverlayView.alpha = .9f;
+    self.lewOverlayView.alpha = 1.0f;
     popupView.center = self.lewOverlayView.center;
     if (animationDelegete) {
         [animationDelegete showView:popupView overlayView:self.lewOverlayView];

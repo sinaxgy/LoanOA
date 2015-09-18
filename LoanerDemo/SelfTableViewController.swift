@@ -11,26 +11,28 @@ import Alamofire
 
 class SelfTableViewController: UITableViewController ,personalMessageEditDelegete{
     
-    var selfInfoDic:NSDictionary!
+    var tableDataDic:NSDictionary!
+    var actionString = "settingIP:"
+    var buttonTitle = "退出登录"
     
-    let infoArray:NSArray = ["user_name","user_sex","user_id","user_tel","user_email","offline_name"]
+    var infoArray:NSArray = ["user_name","user_sex","user_id","user_tel","user_email","offline_name"]
     //,"role_id","dep_id","offline_id"
+    var height:CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.readSelfINfo()
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "配置IP", style: UIBarButtonItemStyle.Plain, target: self, action:"settingIP:")
-        self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([
-            NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.rawValue,
-            NSFontAttributeName:UIFont.systemFontOfSize(14, weight: 3)],
-            forState: UIControlState.Normal)
-        
-        var str:NSMutableAttributedString = NSMutableAttributedString(string: "配置IP")
-        str.addAttributes([NSForegroundColorAttributeName:UIColor.whiteColor(),NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.rawValue,
-            NSFontAttributeName:UIFont.systemFontOfSize(15, weight: 2)], range: NSMakeRange(0, str.length))
-        
-        
-        self.navigationController?.tabBarItem.selectedImage = UIImage(named: "perSelected")
+        if actionString == "settingIP:" && buttonTitle == "退出登录" {
+            tableDataDic = self.getPersonalInfo()
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "配置IP", style: UIBarButtonItemStyle.Plain, target: self, action:"settingIP:")
+            self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([
+                NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.rawValue,
+                NSFontAttributeName:UIFont.systemFontOfSize(14, weight: 3)],
+                forState: UIControlState.Normal)
+            self.height = 6
+            self.navigationController?.tabBarItem.selectedImage = UIImage(named: "perSelected")
+        }else {
+            self.height = 5
+        }
     }
     
     func settingIP(sender:UIBarButtonItem) {
@@ -57,19 +59,48 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
         KeyChain.updateIPItem(AppDelegate.app().user_id, IP: idunique)
     }
     
+    func payFinance(sender:UIButton) {
+        sender.selected = !sender.selected
+        let dic = self.getPersonalInfo()
+        var hud:MBProgressHUD = MBProgressHUD(view: self.view)
+        hud.show(true);self.view.addSubview(hud)
+        hud.labelText = "确认中..."
+        if (dic.allKeys as NSArray).containsObject("role_id") {
+            let role_id:String = (dic.objectForKey("role_id") as? String)!
+            let aid:String = self.tableDataDic.objectForKey("aid") as! String
+            let url = AppDelegate.app().ipUrl + config + "app/pay"
+            NetworkRequest.AlamofirePostParameters(url, parameters:
+                ["user_id":"\(AppDelegate.app().user_id)",
+                    "role_id":"\(role_id)","aid":"\(aid)"],
+                success: {
+                        (data) -> Void in
+                        if data as! String == "success" {
+                            println("ads")
+                            hud.labelText = "确认成功"
+                            hud.mode = MBProgressHUDMode.CustomView
+                            hud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
+                            hud.hide(true, afterDelay: 1)
+                        }
+            }, failed: { () -> Void in
+                hud.hide(true, afterDelay: 1)
+            }, outTime: { () -> Void in
+                hud.hide(true, afterDelay: 1)
+            })
+        }
+    }
+    
     func logout(sender:UIBarButtonItem) {
         UserHelper.setValueOfPWIsSaved(false)
-        //let loginView = UIStoryboard(name: "Main", bundle: nil)
         self.navigationController?.presentViewController(
             LoginsViewController(), animated: true, completion: nil)
     }
     
-    func readSelfINfo() {
+    func getPersonalInfo() -> NSDictionary {
         if !UserHelper.readValueOfPWIsSaved() {
             let filepath = NSTemporaryDirectory().stringByAppendingPathComponent("selfInfo.plist")
-            selfInfoDic = NSDictionary(contentsOfFile: filepath)!
+            return NSDictionary(contentsOfFile: filepath)!
         }else {
-            selfInfoDic = UserHelper.readCurrentUserInfo(AppDelegate.app().user_id)
+            return UserHelper.readCurrentUserInfo(AppDelegate.app().user_id)
         }
     }
 
@@ -85,10 +116,10 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.selfInfoDic == nil || section == 2{
+        if self.tableDataDic == nil || section == 2 {
             return 0
         }
-        if section >= 1 {
+        if section == 1 {
             return 1
         }
         return (self.infoArray.count)
@@ -96,7 +127,8 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section > 1 {
-            return self.view.height - 490
+            let heigh = self.view.height - 226 - CGFloat(self.height * 44)
+            return heigh
         }
         return 35
     }
@@ -115,10 +147,11 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
             let cell:UITableViewCell = UITableViewCell(frame: CGRectMake(0, 0, self.view.width, 40))
             var btn:UIButton = UIButton(frame: CGRectMake(0, 0, self.view.width, 40))
             btn.titleLabel?.textAlignment = NSTextAlignment.Center
-            btn.setTitle("退出登录", forState: UIControlState.Normal)
+            btn.setTitle(self.buttonTitle, forState: UIControlState.Normal)
             btn.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
+            btn.setTitleColor(UIColor.blueColor(), forState: UIControlState.Selected)
             btn.setTitleColor(UIColor.lightGrayColor(), forState: UIControlState.Selected)
-            btn.addTarget(self, action: "logout:", forControlEvents: UIControlEvents.TouchUpInside)
+            btn.addTarget(self, action: Selector("\(actionString)"), forControlEvents: UIControlEvents.TouchUpInside)
             cell.contentView.addSubview(btn)
             return cell
         default:
@@ -132,10 +165,10 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
         switch key {
         case "dep_id":
             cell.textLabel?.text = "部门编号"
-            cell.detailTextLabel?.text = self.selfInfoDic.objectForKey(key as NSString)  as? String
+            cell.detailTextLabel?.text = self.tableDataDic.objectForKey(key as NSString)  as? String
         case "user_sex":
             cell.textLabel?.text = "性别"
-            let value:String = self.selfInfoDic.objectForKey(key as NSString) as! String
+            let value:String = self.tableDataDic.objectForKey(key as NSString) as! String
             if value == "1" {
                 cell.detailTextLabel?.text = "男"
             }else if value == "0" {
@@ -143,28 +176,40 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
             }
         case "user_tel":
             cell.textLabel?.text = "电话"
-            cell.detailTextLabel?.text = self.selfInfoDic.objectForKey(key as NSString)  as? String
+            cell.detailTextLabel?.text = self.tableDataDic.objectForKey(key as NSString)  as? String
         case "user_name":
             cell.textLabel?.text = "姓名"
-            //println(self.selfInfoDic.objectForKey(key as NSString))
-            cell.detailTextLabel?.text = self.selfInfoDic.objectForKey(key as NSString)  as? String
+            cell.detailTextLabel?.text = self.tableDataDic.objectForKey(key as NSString)  as? String
         case "user_id":
             cell.textLabel?.text = "编号"
-            cell.detailTextLabel?.text = self.selfInfoDic.objectForKey(key as NSString)  as? String
+            cell.detailTextLabel?.text = self.tableDataDic.objectForKey(key as NSString)  as? String
         case "user_email":
             cell.textLabel?.text = "邮箱"
-            cell.detailTextLabel?.text = self.selfInfoDic.objectForKey(key as NSString)  as? String
+            cell.detailTextLabel?.text = self.tableDataDic.objectForKey(key as NSString)  as? String
         case "role_id":
             cell.textLabel?.text = "角色编号"
-            //println(value)
-            cell.detailTextLabel?.text = self.selfInfoDic.objectForKey(key as NSString)  as? String
+            cell.detailTextLabel?.text = self.tableDataDic.objectForKey(key as NSString)  as? String
         case "offline_id":
             cell.textLabel?.text = "线下机构编号"
-            //println(self.selfInfoDic.objectForKey(key as NSString))
-            cell.detailTextLabel?.text = self.selfInfoDic.objectForKey(key as NSString)  as? String
+            cell.detailTextLabel?.text = self.tableDataDic.objectForKey(key as NSString)  as? String
         case "offline_name":
             cell.textLabel?.text = "线下机构名称"
-            cell.detailTextLabel?.text = self.selfInfoDic.objectForKey(key as NSString)  as? String
+            cell.detailTextLabel?.text = self.tableDataDic.objectForKey(key as NSString)  as? String
+        case "pro_num":
+            cell.textLabel?.text = "项目编号"
+            cell.detailTextLabel?.text = self.tableDataDic.objectForKey(key as NSString)  as? String
+        case "pro_title":
+            cell.textLabel?.text = "项目标题"
+            cell.detailTextLabel?.text = self.tableDataDic.objectForKey(key as NSString)  as? String
+        case "date":
+            cell.textLabel?.text = "还款日期"
+            cell.detailTextLabel?.text = self.tableDataDic.objectForKey(key as NSString)  as? String
+        case "type":
+            cell.textLabel?.text = "还款类型"
+            cell.detailTextLabel?.text = self.tableDataDic.objectForKey(key as NSString)  as? String
+        case "money":
+            cell.textLabel?.text = "还款金额"
+            cell.detailTextLabel?.text = self.tableDataDic.objectForKey(key as NSString)  as? String
         default:
             break
         }

@@ -14,8 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var user_id:String = "a";var pro_id:String = ""
     var offline_id:String = ""
-    var ipUrl = "http://123.57.219.112/"//"http://10.104.7.241/"
-    var IP = "123.57.219.112"//10.104.5.16"//"
+    var ipUrl = "http://123.57.219.112/"//"http://10.104.7.241/"10.104.4.232/"//
+    var IP = "123.57.219.112"
         {
         didSet{
             self.ipUrl = "http://\(self.IP)/"

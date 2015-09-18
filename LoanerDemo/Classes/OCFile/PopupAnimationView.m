@@ -17,9 +17,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor grayColor];
-        self.layer.cornerRadius = 8.0f;
-        //self.opaque = YES;
-        //self.alpha = 0.5f;
         [self initControllers];
     }
     return self;
@@ -34,12 +31,11 @@
     idLabel = [[UILabel alloc] init];
     idLabel.frame = CGRectMake(10, 50, 60, 20);
     idLabel.text = @"IP地址:";
-    idLabel.layer.cornerRadius = 6.0f;
+    idLabel.textColor = [UIColor whiteColor];
     [self addSubview:idLabel];
     
     idText = [[UITextField alloc]init];
     idText.frame = CGRectMake(80, 40, 200, 40);
-    idText.layer.cornerRadius = 6.0f;
     idText.backgroundColor = [UIColor whiteColor];
     idText.borderStyle = UITextBorderStyleRoundedRect;
     idText.font = [UIFont systemFontOfSize: 14];
@@ -51,12 +47,15 @@
     idText.enablesReturnKeyAutomatically = YES;
     [self addSubview:idText];
     
-    //okButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    okButton = [[UIButton alloc] initWithFrame:CGRectMake(self.bounds.size.width / 2 -40, self.bounds.size.height - 45, 80, 30)];
-    //okButton.buttonType = UIButtonTypeCustom;
-    okButton.frame = CGRectMake(self.bounds.size.width / 2 -50, self.bounds.size.height - 45, 100, 30);
+    UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, 100, 300, 1)];
+    line.image = [UIImage imageNamed:@"line"];
+    [self addSubview:line];
+    
+    okButton = [[UIButton alloc] initWithFrame:CGRectMake(self.bounds.size.width / 2 -40, self.bounds.size.height - 20, 80, 30)];
+    okButton.frame = CGRectMake(self.bounds.size.width / 2 -50, self.bounds.size.height - 40, 100, 30);
     okButton.backgroundColor = [UIColor greenColor];
     [okButton setTitle:@"确定" forState:UIControlStateNormal];
+    okButton.backgroundColor = [UIColor grayColor];
     okButton.layer.cornerRadius = 6.0f;
     [okButton addTarget:self action:@selector(personalMsgEdited) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:okButton];

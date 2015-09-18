@@ -21,6 +21,7 @@ class AnnouncementTBVC: UITableViewController {
     }
     var unConnectedView:UIImageView!
     var announcements:NSMutableArray = []
+    var financeArray:NSMutableArray = []
     let reuserCell = "anCell"
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,25 +33,38 @@ class AnnouncementTBVC: UITableViewController {
         self.refreshControl?.addTarget(self, action: "getAnnouncement", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.tableHeaderView?.addSubview(self.refreshControl!)
     }
+    
     override func viewWillAppear(animated: Bool) {
         self.getAnnouncement()
     }
     
     func getAnnouncement() {
         self.showActivityIndicatorViewInNavigationItem()
-        let url = AppDelegate.app().ipUrl + config + "app/news?id=\(AppDelegate.app().offline_id)"
+        let url = AppDelegate.app().ipUrl + config + "app/news?id=\(AppDelegate.app().offline_id)&uid=\(AppDelegate.app().user_id)"
         NetworkRequest.AlamofireGetJSON(url, success: {
             (data) in
-            let json:JSON = JSON(data!)
-            if json.count == 0 {self.thereisNoAnnouncement()}
-            self.announcements = []
-            for (f,it) in json {
-                let item:AnnounceItem = AnnounceItem(json: it)
-                self.announcements.addObject(item)
-                if !item.isReaded {
-                    self.numOfUnread++
+            if data == nil {self.thereisNoAnnouncement()}
+            for (key,value) in JSON(data!) {
+                switch key as String {
+                case "news":
+                    self.announcements = []
+                    for (f,it) in value {
+                        let item:AnnounceItem = AnnounceItem(json: it)
+                        self.announcements.addObject(item)
+                        if !item.isReaded {
+                            self.numOfUnread++
+                        }
+                    }
+                case "caiwu":
+                    if value.type == .Array {
+                        if value.count > 0 {
+                            self.financeArray = value.object as! NSMutableArray
+                        }
+                    }
+                default:break
                 }
             }
+            
             if self.unConnectedView != nil {
                 self.unConnectedView.removeFromSuperview()
                 self.unConnectedView = nil
@@ -78,9 +92,6 @@ class AnnouncementTBVC: UITableViewController {
     
     func showActivityIndicatorViewInNavigationItem() {
         var actView:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-        //self.navigationItem.titleView = actView
-        //actView.startAnimating()
-        //self.navigationItem.prompt = "数据加载中..."
     }
     
     func hiddenActivityIndicatorViewInNavigationItem() {
@@ -99,23 +110,57 @@ class AnnouncementTBVC: UITableViewController {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 1
+        return 2
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 70
+        return 60
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 1 && self.financeArray.count == 0 {
+            return self.view.height - 149 - CGFloat(60 * self.announcements.count)
+        }
+        return 35
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 1 && self.financeArray.count == 0 {
+            let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
+            headerView.backgroundColor = UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 225.0/205.0, alpha: 1)
+            return headerView
+        }
+        let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
+        headerView.backgroundColor = UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 225.0/205.0, alpha: 1)
+        let text:String = (section == 0 ? "公告消息" : "财务打款")
+        var label:UILabel = UILabel(frame: CGRectMake(5, 10, self.view.width, 20))
+        label.text = text;label.textColor = UIColor.grayColor()
+        label.font = UIFont.systemFontOfSize(14)
+        headerView.addSubview(label)
+        return headerView
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
+        if section == 1 {
+            return self.financeArray.count
+        }
         return self.announcements.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let item = self.announcements[indexPath.row] as? AnnounceItem {
+        let array = (indexPath.section == 0 ? self.announcements : self.financeArray)
+        if let item = array[indexPath.row] as? AnnounceItem {
             if var cell = tableView.dequeueReusableCellWithIdentifier(reuserCell, forIndexPath: indexPath) as? NewsTableViewCell {
                 cell.setupCell(item.title, date: item.date, isRead: item.isReaded)
+                return cell
+            }
+        }else if let item = array[indexPath.row] as? NSDictionary {
+            if var cell = tableView.dequeueReusableCellWithIdentifier(reuserCell, forIndexPath: indexPath) as? NewsTableViewCell {
+                let title: String =  ((item.allKeys as NSArray).containsObject("pro_num") ? item.objectForKey("pro_num") as! String : "")
+                let subtitle: String =  ((item.allKeys as NSArray).containsObject("pro_title") ? item.objectForKey("pro_title") as! String : "")
+                cell.setupCell(title, date: subtitle, isRead: false)
                 return cell
             }
         }
@@ -123,26 +168,39 @@ class AnnouncementTBVC: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let item = self.announcements[indexPath.row] as? AnnounceItem {
-            if !item.isReaded {
-                item.isReaded = true
-                self.numOfUnread--
-                self.tableView.reloadData()
+        switch indexPath.section {
+        case 0:
+            if let item = self.announcements[indexPath.row] as? AnnounceItem {
+                if !item.isReaded {
+                    item.isReaded = true
+                    self.numOfUnread--
+                    self.tableView.reloadData()
+                }
+                NetworkRequest.AlamofireGetString(item.url, success: {
+                    (data) in
+                    var detailAnc:NewsViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("NewsViewController") as! NewsViewController
+                    detailAnc.titles = item.title
+                    detailAnc.title = "公告"
+                    detailAnc.date = item.date
+                    detailAnc.detail = data! as! String
+                    let nav:UINavigationController = UINavigationController(rootViewController: detailAnc)
+                    self.navigationController?.presentViewController(nav, animated: true, completion: nil)
+                    }, failed: {
+                        println("error")
+                    }, outTime: {
+                        println("outtime")
+                })
             }
-            NetworkRequest.AlamofireGetString(item.url, success: {
-                (data) in
-                var detailAnc:NewsViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("NewsViewController") as! NewsViewController
-                detailAnc.titles = item.title
-                detailAnc.title = "公告"
-                detailAnc.date = item.date
-                detailAnc.detail = data! as! String
-                let nav:UINavigationController = UINavigationController(rootViewController: detailAnc)
-                self.navigationController?.presentViewController(nav, animated: true, completion: nil)
-                }, failed: {
-                    println("error")
-                }, outTime: {
-                    println("outtime")
-            })
+        case 1:
+            if let item = self.financeArray[indexPath.row] as? NSDictionary {
+                var financeVC:SelfTableViewController = SelfTableViewController()
+                financeVC.actionString = "payFinance:"
+                financeVC.buttonTitle = "确认打款"
+                financeVC.tableDataDic = item
+                financeVC.infoArray = ["pro_num","pro_title","date","type","money"]
+                self.navigationController?.pushViewController(financeVC, animated: false)
+            }
+        default:break
         }
     }
 }

@@ -25,9 +25,9 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     
     var activityView:UIActivityIndicatorView!
     var typeMenu:PopoverMenuView!
-    var typeDic:NSDictionary = NSDictionary()
-    var json:JSON = JSON.nullJSON
-    var sortJsonArray:NSArray = []
+    var newProTypeDic:NSDictionary = NSDictionary()
+    var useableArray:NSArray = []
+    var unuseableArray:NSArray = []
     
     var headers: [String: String] = [:]
     var body: String?
@@ -43,22 +43,22 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
             if data != nil {
                 let typejs = JSON(data!)
                 if typejs.type == .Dictionary {
-                    self.typeDic = typejs.object as! NSDictionary
-                    if self.typeDic.count < 2 {
+                    self.newProTypeDic = typejs.object as! NSDictionary
+                    if self.newProTypeDic.count < 2 {
                         progressHud.labelText = "数据异常"
                         progressHud.hide(true, afterDelay: 1)
                         return
                     }
                     progressHud.hide(true)
-                    let keys = self.typeDic.allKeys
+                    let keys = self.newProTypeDic.allKeys
                     var typeArray:NSMutableArray = NSMutableArray()         //菜单选项数组
                     for key in keys {
-                        typeArray.addObject(self.typeDic.objectForKey(key)!)
+                        typeArray.addObject(self.newProTypeDic.objectForKey(key)!)
                     }
                     if (self.typeMenu != nil) {
                         self.typeMenu.dismissMenuPopover()
                     }
-                    let hight = self.typeDic.count * 44
+                    let hight = self.newProTypeDic.count * 44
                     self.typeMenu = PopoverMenuView(frame: CGRectMake(originalX, 70, popverMenuX, CGFloat(hight)), menuItems: typeArray as [AnyObject])
                     self.typeMenu.menuPopoverDelegate = self
                     self.typeMenu.showInView(self.view)
@@ -74,12 +74,12 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     //MARK:--PopoverMenuViewDelegate
     func menuPopover(menuView: PopoverMenuView!, didSelectMenuItemAtIndex selectedIndex: Int) {
         let ip = "http://\(AppDelegate.app().IP)/"
-        let keys = self.typeDic.allKeys
+        let keys = self.newProTypeDic.allKeys
         let type:String = keys[selectedIndex] as! String
         var addView:BranchTableViewController = BranchTableViewController()
         addView.url = AppDelegate.app().ipUrl + config + typeURL + type
         addView.typeOp.type = type
-        addView.typeOp.typeName = self.typeDic.objectForKey(type) as! String
+        addView.typeOp.proNum = self.newProTypeDic.objectForKey(type) as! String
         let nav:UINavigationController = UINavigationController(rootViewController: addView)
         self.navigationController?.presentViewController(nav, animated: true, completion: nil)
     }
@@ -112,25 +112,20 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         NetworkRequest.AlamofireGetJSON(url, success: { (data) in
             self.hiddenActivityIndicatorViewInNavigationItem()
             if data == nil {println("empty");return}
-            self.json = JSON(data!)
-            if self.json != nil {
-                if self.json.count != 0 {           //项目编号排序
-                    var keys:NSArray = (self.json.object as! NSDictionary).allKeys
-                    self.sortJsonArray = keys.sortedArrayUsingComparator({
-                        (s1,s2) -> NSComparisonResult in
-                        if (s1 as! String) > (s2 as! String) {
-                            return NSComparisonResult.OrderedAscending
-                        }
-                        return NSComparisonResult.OrderedDescending
-                    })
+            for (key,value) in JSON(data!) {
+                if (key as String == "unuseable") && (value.type == .Array) {
+                    self.unuseableArray = value.object as! NSArray
                 }
-                if self.unConnectedView != nil {
-                    self.unConnectedView.removeFromSuperview()
-                    self.unConnectedView = nil
+                if (key as String == "useable") && (value.type == .Array) {
+                    self.useableArray = value.object as! NSArray
                 }
-                self.tableView.reloadData()
-                self.navigationItem.title = "所有项目"
             }
+            if self.unConnectedView != nil {
+                self.unConnectedView.removeFromSuperview()
+                self.unConnectedView = nil
+            }
+            self.tableView.reloadData()
+            self.navigationItem.title = "所有项目"
             }, failed: {
                 self.hiddenActivityIndicatorViewInNavigationItem()
                 if self.unConnectedView == nil {
@@ -187,7 +182,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 1
+        return 2
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -197,51 +192,44 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        if self.json == nil {
-            return 0
+        if section == 0 {
+            return self.useableArray.count
         }
-        return self.json.count
+        return self.unuseableArray.count
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 35
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
+        headerView.backgroundColor = UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 225.0/205.0, alpha: 1)
+        return headerView
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "historyCell")
-        if self.json == nil {
-            return cell
-        }
-        if self.json.type == .Dictionary {
-            var keys:NSArray = (self.json.object as! NSDictionary).allKeys
-            let key: AnyObject = self.sortJsonArray[indexPath.row]
-            let js = self.json[key as! String]
-            if js.type == .Dictionary {
-                if js.count == 1 {
-                    let text: AnyObject? = (js.object as! NSDictionary).allKeys.first
-                    cell.textLabel?.text = text?.description
-                    cell.textLabel?.font = UIFont.systemFontOfSize(textFontSize)
-                    let detail = js[text as! String]
-                    cell.detailTextLabel?.text = detail.description
-                    cell.detailTextLabel?.font = UIFont.systemFontOfSize(detailFontSize)
-                    cell.detailTextLabel?.textColor = UIColor.grayColor()
-                }
-            }
+        let array = (indexPath.section == 0 ? self.useableArray : self.unuseableArray)
+        if let element = array[indexPath.row] as? NSArray {
+            cell.textLabel?.text = element[1] as? String
+            cell.textLabel?.font = UIFont.systemFontOfSize(textFontSize)
+            cell.detailTextLabel?.text = element[2] as? String
+            cell.detailTextLabel?.font = UIFont.systemFontOfSize(detailFontSize)
+            cell.detailTextLabel?.textColor = UIColor.grayColor()
         }
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var browseView:BranchTableViewController = BranchTableViewController()
-        if self.json.type == .Dictionary {
-            let key: AnyObject = self.sortJsonArray[indexPath.row]
-            let js = self.json[key as! String]
-            if js.type == .Dictionary {
-                if js.count == 1 {
-                    let text: AnyObject? = (js.object as! NSDictionary).allKeys.first
-                    browseView.typeOp.typeName = text!.description
-                }
-            }
-            //browseView.pro_id = key as! String
-            AppDelegate.app().pro_id = key as! String
+        let array = (indexPath.section == 0 ? self.useableArray : self.unuseableArray)
+        if let element = array[indexPath.row] as? NSArray {
+            //0-1-2:项目ID、项目编号、项目状态
+            var browseView:BranchTableViewController = BranchTableViewController()
+            browseView.typeOp.proNum = (element[1] as? String)!
+            AppDelegate.app().pro_id = element[0] as! String
             browseView.isAdd = false
-            browseView.url = AppDelegate.app().ipUrl + config + readTableURL + "\(key)" + "&remark=" + AppDelegate.app().user_id
+            browseView.url = AppDelegate.app().ipUrl + config + readTableURL + "\(AppDelegate.app().pro_id)" + "&remark=" + AppDelegate.app().user_id
             let nav:UINavigationController = UINavigationController(rootViewController: browseView)
             nav.navigationBar.backItem?.title = "返回"
             self.navigationController?.presentViewController(nav, animated: true, completion: nil)

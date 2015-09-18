@@ -28,12 +28,12 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
     var detailKeyArray:NSArray = []
     var defaultText:DefaultText = DefaultText(fileName: "", dicTexts: [:])
     
-    var typeTitle = operationType(type: "", typeName: "")
+    var typeTitle = operationType(type: "", proNum: "")
     let leafCell = "leafCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = self.typeTitle.typeName
+        self.title = self.typeTitle.proNum
         self.defaultText.dicTexts = LoanerHelper.infoWithFileName(self.defaultText.fileName)
         if self.isAdd {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "完成", style: UIBarButtonItemStyle.Plain, target: self, action:"postJson")
