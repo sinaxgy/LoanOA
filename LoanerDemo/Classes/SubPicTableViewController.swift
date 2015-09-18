@@ -181,12 +181,14 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 self.navigationController?.view.addSubview(self.hudProgress)
                 self.hudProgress.show(true)
                 //self.setupPhotoBrowser()
+                
                 var photoBrowser:ZLPhotoPickerBrowserViewController = ZLPhotoPickerBrowserViewController()
                 let nav:UINavigationController = UINavigationController(rootViewController: photoBrowser)
                 photoBrowser.delegate = self
                 photoBrowser.dataSource = self
                 photoBrowser.isMutable = NSString(string: item.multipage).boolValue
                 photoBrowser.imageUrls = LoanerHelper.OriginalUrlArraywith(item.imageurl)
+                println(photoBrowser.imageUrls)
                 photoBrowser.navigationItem.title = item.pic_explain
                 photoBrowser.currentIndexPath = NSIndexPath(forRow: 0, inSection: 0)
                 self.presentViewController(nav, animated: false, completion: nil)
@@ -490,6 +492,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
         }
         let item = self.tableArray[self.selectedIndexPath.row] as! PicJsonItemInfo
         let str: String = AppDelegate.app().ipUrl + (item.imageurl[indexPath.row] as! String) + "?\(arc4random() % 1000)"
+        //let str:String = AppDelegate.app().ipUrl + (LoanerHelper.OriginalImageURLStrWithSmallURLStr(NSString(string: item.imageurl[indexPath.row] as! String)))  + "?\(arc4random() % 1000)"
         var ar:NSArray = NSArray(array: [NSString(string: str)])
         var photo:ZLPhotoPickerBrowserPhoto = ZLPhotoPickerBrowserPhoto(anyImageObjWith: str)
         if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
@@ -524,7 +527,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
         }
     }
     
-    func photoBrowser(photoBrowser: ZLPhotoPickerBrowserViewController!, didUploadImage image: UIImage!, index: Int, progress: ((Float, Float) -> Void)!, success: ((String!) -> Void)!, failed: (() -> Void)!) {
+    func photoBrowser(photoBrowser: ZLPhotoPickerBrowserViewController!, didUploadImage image: UIImage!, index: Int, progress: ((Float, Float) -> Void)!, success: ((String!, String!) -> Void)!, failed: (() -> Void)!) {
         
         if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
             if var item:PicJsonItemInfo = self.tableArray[self.selectedIndexPath.row] as? PicJsonItemInfo {
@@ -541,8 +544,9 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 }, success: { (data) -> Void in
                     println(data)
                     if data == nil {println("empty return");return}
-                    let str = AppDelegate.app().ipUrl + (data! as! String) + "?\(arc4random() % 1000)"
-                    success(str)
+                    let small = AppDelegate.app().ipUrl + (data! as! String) + "?\(arc4random() % 1000)"
+                    let original = AppDelegate.app().ipUrl + LoanerHelper.OriginalImageURLStrWithSmallURLStr(data! as! String) + "?\(arc4random() % 1000)"
+                    success(original,small)
                     
                     if index == 0 {
                         self.tableView.reloadRowsAtIndexPaths([self.selectedIndexPath], withRowAnimation: UITableViewRowAnimation.Middle)

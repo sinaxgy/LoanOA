@@ -10,8 +10,8 @@ import UIKit
 import Foundation
 //UIDevice userInterfaceIdiom]
 let isIphone = (UIDevice.currentDevice().userInterfaceIdiom  == UIUserInterfaceIdiom.Phone ? true:false)
-let detailFontSize:CGFloat = (isIphone ? 12 : 24)
-let textFontSize:CGFloat = (isIphone ? 15 : 34)
+let detailFontSize:CGFloat = (isIphone ? 12 : 20)
+let textFontSize:CGFloat = (isIphone ? 15 : 24)
 let cellHeight:CGFloat = (isIphone ? 55 : 100)
 //let cellHeight:CGFloat = 55
 let mainColor = 0x4282e3//0x4282e3//0x25b6ed
@@ -128,7 +128,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
             self.navigationItem.title = "所有项目"
             }, failed: {
                 self.hiddenActivityIndicatorViewInNavigationItem()
-                if self.unConnectedView == nil {
+                if self.unConnectedView == nil && self.unuseableArray.count + self.useableArray.count == 0 {
                     self.unConnectedView = UIImageView(frame: UIScreen.mainScreen().bounds)
                     self.unConnectedView.image = UIImage(named: "noAnnounce")
                     self.view.addSubview(self.unConnectedView)

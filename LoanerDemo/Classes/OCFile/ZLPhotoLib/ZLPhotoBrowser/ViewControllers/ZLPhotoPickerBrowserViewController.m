@@ -33,6 +33,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (nonatomic , strong) NSMutableArray *photos;
 // 当前提供的分页数
 @property (nonatomic , assign) NSInteger currentPage;
+@property (nonatomic , assign) UIImage *currentImage;
 @end
 
 
@@ -486,7 +487,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 -(void)setPageLabelPage:(NSInteger)page{
-    self.pageLabel.text = [NSString stringWithFormat:@"%ld / %ld",page + 1, (unsigned long)self.photos.count];
+    self.pageLabel.text = [NSString stringWithFormat:@"%d / %ld",page + 1, (unsigned long)self.photos.count];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -604,6 +605,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 //    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void) loadImageComplete:(UIImage *)image {
+    self.currentImage = image;
+}
+
 #pragma mark - showHeadPortrait 放大缩小一张图片的情况下（查看头像）
 - (void)showHeadPortrait:(UIImageView *)toImageView{
     [self showHeadPortrait:toImageView originUrl:nil];
@@ -660,9 +665,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     if (selectedIndex == 0) {
         if ([self.photos[self.currentPage] isKindOfClass:[ZLPhotoPickerBrowserPhoto class]]) {
             ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:self.imageUrls[self.currentPage]];
-            ZLPhotoPickerBrowserPhoto *originalPhoto = self.photos[self.currentPage];
-            photo.toView = originalPhoto.toView;
-            photo.thumbImage = originalPhoto.thumbImage;
+            photo.thumbImage = self.currentImage;
             [self.photos replaceObjectAtIndex:self.currentPage withObject:photo];
             [self.collectionView reloadData];
         }
@@ -793,11 +796,11 @@ CGRect rect;
         [self.delegate photoBrowser:self didUploadImage:image index:self.currentPage progress:^(float written, float total) {
             NSLog(@"written:%f\ntotal:%f",written,total);
             hud.progress = written / total;
-        } success:^(NSString *str) {
-            NSLog(@"str:%@",str);
+        } success:^(NSString *originalUrl,NSString *smallUrl) {
+            NSLog(@"str:%@",originalUrl);
             hud.hidden = YES;
-            [self.imageUrls replaceObjectAtIndex:self.currentPage withObject:str];
-            ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:str];
+            [self.imageUrls replaceObjectAtIndex:self.currentPage withObject:originalUrl];
+            ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:smallUrl];
             photo.thumbImage = [UIImage imageNamed:@"defaultimage"];
             [self.photos replaceObjectAtIndex:self.currentPage withObject:photo];
             [self.collectionView reloadData];
@@ -830,15 +833,11 @@ CGRect rect;
             if ([status.firstObject isKindOfClass:[ZLPhotoAssets class]]) {
                 ZLPhotoAssets *asset = status.firstObject;
                 [self.delegate photoBrowser:self didUploadImage:asset.originImage index:index progress:^(float written, float total) {
-                    NSLog(@"written:%f\ntotal:%f",written,total);
                     hud.progress = written / total;
-                    NSLog(@"currentPage:%ld",(long)self.currentPage);
-                } success:^(NSString *str) {
-                    NSLog(@"str:%@",str);
-                    NSLog(@"currentPage:%ld",(long)self.currentPage);
+                } success:^(NSString *originalUrl,NSString *smallUrl) {
                     hud.hidden = YES;
-                    [self.imageUrls replaceObjectAtIndex:index withObject:str];
-                    ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:str];
+                    [self.imageUrls replaceObjectAtIndex:index withObject:originalUrl];
+                    ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:smallUrl];
                     photo.thumbImage = [UIImage imageNamed:@"defaultimage"];
                     [self.photos replaceObjectAtIndex:index withObject:photo];
                     [self.collectionView reloadData];

@@ -57,6 +57,7 @@
         
         DACircularProgressView *progressView = [[DACircularProgressView alloc] init];
         
+        progressView.progressTintColor = [UIColor blueColor];
         progressView.frame = CGRectMake(0, 0, ZLPickerProgressViewW, ZLPickerProgressViewH);
         progressView.center = CGPointMake([UIScreen mainScreen].bounds.size.width * 0.5, [UIScreen mainScreen].bounds.size.height * 0.5);
         progressView.roundedCorners = YES;
@@ -132,6 +133,7 @@
                 self.isLoadingDone = YES;
                 if (image) {
                     _photoImageView.image = image;
+                    [self.photoScrollViewDelegate loadImageComplete:image];
                     [weakSelf displayImage];
                 }else{
                     [_photoImageView removeScaleBigTap];

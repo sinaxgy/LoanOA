@@ -20,6 +20,7 @@ typedef void(^callBackBlock)(id obj);
 @optional
 // 单击调用
 - (void) pickerPhotoScrollViewDidSingleClick:(ZLPhotoPickerBrowserPhotoScrollView *)photoScrollView;
+- (void) loadImageComplete:(UIImage*)image;
 @end
 
 @interface ZLPhotoPickerBrowserPhotoScrollView : UIScrollView <UIScrollViewDelegate, ZLPhotoPickerBrowserPhotoImageViewDelegate,ZLPhotoPickerBrowserPhotoViewDelegate>

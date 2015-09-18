@@ -30,17 +30,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //        navigationBarAppearace.translucent = false
         navigationBarAppearace.barTintColor = UIColor(hex: navColor)
         navigationBarAppearace.tintColor = UIColor.whiteColor()
-        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(),NSFontAttributeName:UIFont.systemFontOfSize(20, weight: 10)]
+        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(),NSFontAttributeName:UIFont.systemFontOfSize(18, weight: 10)]
         if !UserHelper.readValueOfPWIsSaved() {
-            //let loginStory:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            //let loginedView:LoginsViewController = (loginStory.instantiateViewControllerWithIdentifier("LoginsViewController") as? LoginsViewController)!
             var loginedView:LoginsViewController = LoginsViewController()
             self.window?.rootViewController = loginedView
             return true
         }
         self.user_id = UserHelper.readRecentID()
         self.offline_id = self.getoffline_id()
-        //self.IP = KeyChain.getIPItem(UserHelper.readRecentID(recentID)!) as String
         return true
     }
     

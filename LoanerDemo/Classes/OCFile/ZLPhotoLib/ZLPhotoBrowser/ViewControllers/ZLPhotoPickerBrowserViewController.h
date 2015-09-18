@@ -76,7 +76,7 @@
 
 //- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser didRemoveLastOne:(BOOL)isRemoved;
 
-- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser didUploadImage:(UIImage*)image index:(NSInteger)index progress:(void (^)(float written,float total))progress success:(void (^)(NSString *str))success failed:(void (^)())failed;
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser didUploadImage:(UIImage*)image index:(NSInteger)index progress:(void (^)(float written,float total))progress success:(void (^)(NSString *originalUrl,NSString *smallUrl))success failed:(void (^)())failed;
 
 - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser didRemoveLastOneSuccess:(void (^)(NSString *str))success failed:(void (^)())failed;
 
