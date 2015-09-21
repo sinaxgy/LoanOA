@@ -114,6 +114,8 @@ class MasterImageTableViewController: UITableViewController {
                 }
             }
         }
+        cell.titleLabel.font = UIFont.systemFontOfSize(textFontSize)
+        cell.subTextLabel.font = UIFont.systemFontOfSize(detailFontSize)
         
         return cell
     }

@@ -27,6 +27,7 @@ class LeafTableViewCell: UITableViewCell ,UIActionSheetDelegate{
         titleLabel.font = UIFont.systemFontOfSize(textFontSize)
         titleLabel.text = "\(self.itemInfo.explain):"
         detailLabel.text = self.itemInfo.value as String
+        detailLabel.font = UIFont.systemFontOfSize(detailFontSize)
         if !itemInfo.editable {
             detailLabel.textColor = UIColor.grayColor()
             self.accessoryType = UITableViewCellAccessoryType.None

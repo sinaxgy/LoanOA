@@ -18,6 +18,8 @@ class NewsTableViewCell: UITableViewCell {
     
     func setupNewsCell(title:String,date:String,isRead:Bool) {
         self.titleLabel.text = title
+        self.titleLabel.font = UIFont.systemFontOfSize(textFontSize)
+        self.subTextLabel.font = UIFont.systemFontOfSize(detailFontSize)
         self.subTextLabel.text = date
         self.imageV.frame = CGRectMake(0, 0, 36, 36)
         self.imageV.image = UIImage(named: (isRead ? "ancReaded" : "announce"))
@@ -25,6 +27,8 @@ class NewsTableViewCell: UITableViewCell {
     
     func setupCell(title:String,date:String,isRead:Bool) {
         self.titleLabel.text = title
+        self.titleLabel.font = UIFont.systemFontOfSize(textFontSize)
+        self.subTextLabel.font = UIFont.systemFontOfSize(detailFontSize)
         self.subTextLabel.text = date
         self.imageV.frame = CGRectMake(0, 0, 36, 36)
         self.imageV.image = UIImage(named: (isRead ? "finance" : "finance"))

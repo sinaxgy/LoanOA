@@ -105,7 +105,5 @@ class LoanerHelper: NSObject {
     static func infoWriteToFile(fileName:String,info:NSMutableDictionary) {
         let filePath = NSHomeDirectory().stringByAppendingPathComponent("Documents/\(fileName).plist")//.stringByAppendingPathComponent("\(fileName).plist")
         let k = info.writeToFile(filePath, atomically: false)
-        println(k)
-        println(NSFileManager.defaultManager().fileExistsAtPath(filePath))
     }
 }

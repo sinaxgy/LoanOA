@@ -122,7 +122,6 @@
 		C5F44EAD1B9712D9001AF995 /* TextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F44EAB1B9712D9001AF995 /* TextTableViewCell.swift */; };
 		C5F44EAE1B9712D9001AF995 /* TextTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5F44EAC1B9712D9001AF995 /* TextTableViewCell.xib */; };
 		C5F5596B1B9D36A3003538CB /* BranchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F559691B9D36A3003538CB /* BranchTableViewCell.swift */; };
-		C5F5596C1B9D36A3003538CB /* BranchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5F5596A1B9D36A3003538CB /* BranchTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -352,7 +351,6 @@
 		C5F44EAB1B9712D9001AF995 /* TextTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextTableViewCell.swift; path = Classes/Cell/TextTableViewCell.swift; sourceTree = "<group>"; };
 		C5F44EAC1B9712D9001AF995 /* TextTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TextTableViewCell.xib; path = Classes/Cell/TextTableViewCell.xib; sourceTree = "<group>"; };
 		C5F559691B9D36A3003538CB /* BranchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BranchTableViewCell.swift; path = Classes/Cell/BranchTableViewCell.swift; sourceTree = "<group>"; };
-		C5F5596A1B9D36A3003538CB /* BranchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BranchTableViewCell.xib; path = Classes/Cell/BranchTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -772,7 +770,6 @@
 				C5D9F3C31B96D40800C2630E /* LeafTableViewCell.swift */,
 				C5D9F3C41B96D40800C2630E /* LeafTableViewCell.xib */,
 				C5F559691B9D36A3003538CB /* BranchTableViewCell.swift */,
-				C5F5596A1B9D36A3003538CB /* BranchTableViewCell.xib */,
 				C5F44EAB1B9712D9001AF995 /* TextTableViewCell.swift */,
 				C5F44EAC1B9712D9001AF995 /* TextTableViewCell.xib */,
 				C5D7B9B91B3A7BD700823343 /* DetailTableViewCell.swift */,
@@ -934,7 +931,6 @@
 				C52BD9DA1B4CCE8E000316A8 /* 37x-Checkmark.png in Resources */,
 				C5E71B6C1B6B04BA00FCE0A2 /* SubPopCollectionViewCell.xib in Resources */,
 				C5D7B97C1B390C4800823343 /* Info-OSX.plist in Resources */,
-				C5F5596C1B9D36A3003538CB /* BranchTableViewCell.xib in Resources */,
 				C5374A9B1B69C08900A80625 /* xiang.imageset in Resources */,
 				C5F218EA1B4AA8350072D445 /* Menu_PopOver_BG.png in Resources */,
 				C5DBEC281B665EE1003F5749 /* MutableTableViewCell.xib in Resources */,

@@ -153,16 +153,19 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("branchCell", forIndexPath: indexPath) as! BranchTableViewCell
+        let cellImageWidth:CGFloat = (isIphone ? 18 : 27)
+        //tableView.dequeueReusableCellWithIdentifier("branchCell", forIndexPath: indexPath) as! BranchTableViewCell
         if let branch = self.branchItems[indexPath.row] as? BranchItem {
+            let cell = BranchTableViewCell(width: cellImageWidth, reuseIdentifier: "branchCell")
             if branch.isComplete == "false" {
                 cell.titleLabel.textColor = UIColor(hex: mainColor)
             }
             cell.title = branch.tag_name
             cell.titleImage = UIImage(named: branch.fileName)
             cell.titleLabel?.font = UIFont.systemFontOfSize(textFontSize)
+            return cell
         }
-        return cell
+        return UITableViewCell()
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

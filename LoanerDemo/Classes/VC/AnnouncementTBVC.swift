@@ -23,6 +23,7 @@ class AnnouncementTBVC: UITableViewController {
     var announcements:NSMutableArray = []
     var financeArray:NSMutableArray = []
     let reuserCell = "anCell"
+    var hideSection = 3   //隐藏section，2全隐藏，1隐藏section1，0隐藏section0
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,7 +44,10 @@ class AnnouncementTBVC: UITableViewController {
         let url = AppDelegate.app().ipUrl + config + "app/news?id=\(AppDelegate.app().offline_id)&uid=\(AppDelegate.app().user_id)"
         NetworkRequest.AlamofireGetJSON(url, success: {
             (data) in
-            if data == nil {self.thereisNoAnnouncement()}
+            if data == nil || JSON(data!).count == 0 {
+                self.thereisNoAnnouncement()
+                return
+            }
             for (key,value) in JSON(data!) {
                 switch key as String {
                 case "news":
@@ -123,31 +127,16 @@ class AnnouncementTBVC: UITableViewController {
         }
         return 35
     }
-    
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 1 && self.financeArray.count == 0 {
-            let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
-            headerView.backgroundColor = UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 225.0/205.0, alpha: 1)
-            return headerView
-        }
-        let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
-        headerView.backgroundColor = UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 225.0/205.0, alpha: 1)
-        let text:String = (section == 0 ? "财务打款" : "公告消息")
-        var label:UILabel = UILabel(frame: CGRectMake(25, 5, self.view.width, 25))
-        label.text = text;label.textColor = UIColor.grayColor()
-        label.font = UIFont.systemFontOfSize(14)
-        headerView.addSubview(label)
-        
-        var triangleView:UIImageView = UIImageView(frame: CGRectMake(5, 10, 15, 15))
-        triangleView.image = UIImage(named: "triangle")
-        triangleView.contentMode = UIViewContentMode.ScaleAspectFit
-        headerView.addSubview(triangleView)
-        return headerView
-    }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
+        if self.hideSection == 2 {
+            return 0
+        }
+        if section == self.hideSection {
+            return 0
+        }
         if section == 0 {
             return self.financeArray.count
         }
@@ -172,6 +161,29 @@ class AnnouncementTBVC: UITableViewController {
         return UITableViewCell()
     }
     
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
+        headerView.backgroundColor = UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 225.0/205.0, alpha: 1)
+        let text:String = (section == 0 ? "财务信息" : "部门公告")
+        var label:UILabel = UILabel(frame: CGRectMake(25, 5, self.view.width, 25))
+        label.text = text;label.textColor = UIColor.grayColor()
+        label.font = UIFont.systemFontOfSize(detailFontSize)
+        headerView.addSubview(label)
+        
+        var triangleView:UIImageView = UIImageView(frame: CGRectMake(5, 10, 15, 15))
+        var triangleName = (self.hideSection == section ? "triangleDown" : "triangle")
+        if self.hideSection == 2 {triangleName = "triangleDown"}
+        triangleView.image = UIImage(named: triangleName)
+        triangleView.contentMode = UIViewContentMode.ScaleAspectFit
+        headerView.addSubview(triangleView)
+        
+        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "clickedSelectSection:")
+        headerView.addGestureRecognizer(tap)
+        headerView.tag = section
+        return headerView
+    }
+    
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.section {
         case 1:
@@ -191,9 +203,7 @@ class AnnouncementTBVC: UITableViewController {
                     let nav:UINavigationController = UINavigationController(rootViewController: detailAnc)
                     self.navigationController?.presentViewController(nav, animated: true, completion: nil)
                     }, failed: {
-                        println("error")
                     }, outTime: {
-                        println("outtime")
                 })
             }
         case 0:
@@ -208,5 +218,37 @@ class AnnouncementTBVC: UITableViewController {
             }
         default:break
         }
+    }
+    
+    func clickedSelectSection(sender:UITapGestureRecognizer) {
+        let view:UIView = sender.view!
+        switch self.hideSection {
+        case 0:
+            if view.tag == 0 {
+                self.hideSection = 3
+            }else {
+                self.hideSection = 2
+            }
+        case 1:
+            if view.tag == 1 {
+                self.hideSection = 3
+            }else {
+                self.hideSection = 2
+            }
+        case 2:
+            if view.tag == 0 {
+                self.hideSection = 1
+            }else {
+                self.hideSection = 0
+            }
+        case 3:
+            self.hideSection = view.tag
+        default:
+            break
+            
+        }
+        self.tableView.beginUpdates()
+        self.tableView.reloadSections(NSIndexSet(index:view.tag), withRowAnimation: UITableViewRowAnimation.Middle)
+        self.tableView.endUpdates()
     }
 }

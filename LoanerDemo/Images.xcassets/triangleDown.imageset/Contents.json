@@ -2,18 +2,16 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "速评表-选中.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "速评表-选中-1.png"
+      "filename" : "三角.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "速评表-选中-2.png"
+      "scale" : "3x"
     }
   ],
   "info" : {

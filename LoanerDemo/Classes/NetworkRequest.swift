@@ -108,8 +108,6 @@ class NetworkRequest: NSObject {
             (_,_,data,error) in
             upload = nil
             if error != nil {
-                println("error>>>>>>>>>>>>>>>>>>>")
-                println(error)
                 failed()
                 return
             }

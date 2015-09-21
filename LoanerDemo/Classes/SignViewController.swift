@@ -47,7 +47,7 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
         let imgV:UIImageView = UIImageView(image: UIImage(named: "textFieldInput"))
         imgV.frame = CGRectMake(0, 0, 20, 20);imgV.center = leftView.center
         leftView.addSubview(imgV)
-        textField.leftView = leftView
+        textField.leftView = leftView;textField.font = UIFont.systemFontOfSize(detailFontSize)
         textField.leftViewMode = UITextFieldViewMode.Always
         textField.keyboardType = LoanerHelper.keyboardTypeWithType(verify)!
         textField.autocorrectionType = UITextAutocorrectionType.No

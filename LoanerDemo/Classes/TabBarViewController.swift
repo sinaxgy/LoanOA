@@ -42,7 +42,7 @@ class TabBarViewController: UITabBarController {
                 let bar = self.tabBar.items![1] as! UITabBarItem
                 bar.badgeValue = num
             }
-            }, failed: {println("error")}, outTime: {println("error")})
+            }, failed: {}, outTime: {})
     }
 
     override func didReceiveMemoryWarning() {

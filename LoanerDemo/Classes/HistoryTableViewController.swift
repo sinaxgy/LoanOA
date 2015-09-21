@@ -10,8 +10,9 @@ import UIKit
 import Foundation
 //UIDevice userInterfaceIdiom]
 let isIphone = (UIDevice.currentDevice().userInterfaceIdiom  == UIUserInterfaceIdiom.Phone ? true:false)
-let detailFontSize:CGFloat = (isIphone ? 12 : 20)
-let textFontSize:CGFloat = (isIphone ? 15 : 24)
+let detailFontSize:CGFloat = (isIphone ? 12 : 18)
+let textFontSize:CGFloat = (isIphone ? 15 : 20)
+//let textFontHeight:CGFloat = (isIphone ? )
 let cellHeight:CGFloat = (isIphone ? 55 : 70)
 //let cellHeight:CGFloat = 55
 let mainColor = 0x4282e3//0x4282e3//0x25b6ed
@@ -30,7 +31,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     var unuseableArray:NSArray = []
     
     var headers: [String: String] = [:]
-    var body: String?
+    var body: String?;var hideSection = 3   //隐藏section，2全隐藏，1隐藏section1，0隐藏section0
     var elapsedTime: NSTimeInterval?
     
     @IBAction func tableAddAction(sender: AnyObject) {
@@ -112,7 +113,13 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         let url = "http://\(AppDelegate.app().IP)/" + config + readHisURL + "\(user_id)"
         NetworkRequest.AlamofireGetJSON(url, success: { (data) in
             self.hiddenActivityIndicatorViewInNavigationItem()
-            if data == nil {println("empty");return}
+            if data == nil {return}
+            if JSON(data!).count == 0 {
+                self.unConnectedView = UIImageView(frame: UIScreen.mainScreen().bounds)
+                self.unConnectedView.image = UIImage(named: "noAnnounce")
+                self.view.addSubview(self.unConnectedView)
+                return
+            }
             for (key,value) in JSON(data!) {
                 if (key as String == "unuseable") && (value.type == .Array) {
                     self.unuseableArray = value.object as! NSArray
@@ -193,6 +200,12 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
+        if self.hideSection == 2 {
+            return 0
+        }
+        if section == self.hideSection {
+            return 0
+        }
         if section == 0 {
             return self.useableArray.count
         }
@@ -203,23 +216,10 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         return 35
     }
     
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
-        headerView.backgroundColor = UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 225.0/205.0, alpha: 1)
-        let text:String = (section == 0 ? "待处理项目" : "处理中项目")
-        var label:UILabel = UILabel(frame: CGRectMake(25, 5, self.view.width, 25))
-        label.text = text;label.textColor = UIColor.grayColor()
-        label.font = UIFont.systemFontOfSize(14)
-        headerView.addSubview(label)
-        
-        var triangleView:UIImageView = UIImageView(frame: CGRectMake(5, 10, 15, 15))
-        triangleView.image = UIImage(named: "triangle")
-        triangleView.contentMode = UIViewContentMode.ScaleAspectFit
-        headerView.addSubview(triangleView)
-        return headerView
-    }
-    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        //        if self.hideSection == indexPath.section {
+        //            return UITableViewCell()
+        //        }
         let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "historyCell")
         let array = (indexPath.section == 0 ? self.useableArray : self.unuseableArray)
         if let element = array[indexPath.row] as? NSArray {
@@ -231,6 +231,28 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
             cell.detailTextLabel?.textColor = UIColor.grayColor()
         }
         return cell
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
+        headerView.backgroundColor = UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 225.0/205.0, alpha: 1)
+        let text:String = (section == 0 ? "待处理项目" : "处理中项目")
+        var label:UILabel = UILabel(frame: CGRectMake(25, 5, self.view.width, 25))
+        label.text = text;label.textColor = UIColor.grayColor()
+        label.font = UIFont.systemFontOfSize(detailFontSize)
+        headerView.addSubview(label)
+        
+        var triangleView:UIImageView = UIImageView(frame: CGRectMake(5, 10, 15, 15))
+        var triangleName = (self.hideSection == section ? "triangleDown" : "triangle")
+        if self.hideSection == 2 {triangleName = "triangleDown"}
+        triangleView.image = UIImage(named: triangleName)
+        triangleView.contentMode = UIViewContentMode.ScaleAspectFit
+        headerView.addSubview(triangleView)
+        
+        let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "clickedSelectSection:")
+        headerView.addGestureRecognizer(tap)
+        headerView.tag = section
+        return headerView
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -252,5 +274,37 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         self.tableView.reloadData()
         self.reload(self.refreshControl!)
         //self.tableView.touchesShouldCancelInContentView(self.tableView)
+    }
+    
+    func clickedSelectSection(sender:UITapGestureRecognizer) {
+        let view:UIView = sender.view!
+        switch self.hideSection {
+        case 0:
+            if view.tag == 0 {
+                self.hideSection = 3
+            }else {
+                self.hideSection = 2
+            }
+        case 1:
+            if view.tag == 1 {
+                self.hideSection = 3
+            }else {
+                self.hideSection = 2
+            }
+        case 2:
+            if view.tag == 0 {
+                self.hideSection = 1
+            }else {
+                self.hideSection = 0
+            }
+        case 3:
+            self.hideSection = view.tag
+        default:
+            break
+            
+        }
+        self.tableView.beginUpdates()
+        self.tableView.reloadSections(NSIndexSet(index:view.tag), withRowAnimation: UITableViewRowAnimation.Middle)
+        self.tableView.endUpdates()
     }
 }

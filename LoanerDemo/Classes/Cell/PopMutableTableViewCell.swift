@@ -202,7 +202,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
                 hud.progress = sub/sup
                 }, success: {
                     data in
-                    if data == nil {println("empty return");return}
+                    if data == nil {return}
                     hud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
                     hud.mode = MBProgressHUDMode.CustomView
                     hud.hide(true, afterDelay: 1)
@@ -277,7 +277,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
                             let sup:Float = Float(totalExpectedToWrite) * 0.000977
                             hud.progress = sub/sup
                             }, success: {(data) in
-                                if data == nil {println("empty return");hud.hide(true);return}
+                                if data == nil {hud.hide(true);return}
                                 hud.hide(true)
                                 //self.imageUrlArray.replaceObjectAtIndex(currentIndexPath.row, withObject: data as! String)
                                 self.delegate.photoesDidBeChanged(self.imageUrlArray,cell: self)

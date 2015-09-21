@@ -27,7 +27,7 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
     
     var personalInfomation:NSMutableDictionary = NSMutableDictionary()
     func initView() {
-        let width:CGFloat = (self.view.width < 376 ? self.view.width - 40 : 300)
+        let width:CGFloat = (UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Phone ? self.view.width - 40 : self.view.width - 200)
         user_idText = UITextField(frame: CGRectMake(0, 95, width - 10, 30))
         user_idText.centerX = self.view.centerX
         user_idText.delegate = self
@@ -35,8 +35,8 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
         user_idText.autocorrectionType = UITextAutocorrectionType.No
         user_idText.placeholder = "用户名"
         user_idText.textColor = UIColor.whiteColor()
-        user_idText.font = UIFont.systemFontOfSize(14)
-        user_idText.setValue(UIColor(red: 226.0/255.0, green: 225.0/255.0, blue: 195.0/205.0, alpha: 1)
+        user_idText.font = UIFont.systemFontOfSize(textFontSize)
+        user_idText.setValue(UIColor(red: 226.0/255.0, green: 225.0/255.0, blue: 195.0/255.0, alpha: 1)
             , forKeyPath: "_placeholderLabel.textColor")
         self.view.addSubview(user_idText)
         
@@ -51,8 +51,8 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
         passwordText.placeholder = "密码"
         passwordText.centerX = self.view.centerX
         passwordText.secureTextEntry = true
-        passwordText.font = UIFont.systemFontOfSize(14)
-        passwordText.setValue(UIColor(red: 226.0/255.0, green: 225.0/255.0, blue: 195.0/205.0, alpha: 1)
+        passwordText.font = UIFont.systemFontOfSize(textFontSize)
+        passwordText.setValue(UIColor(red: 226.0/255.0, green: 225.0/255.0, blue: 195.0/255.0, alpha: 1)
             , forKeyPath: "_placeholderLabel.textColor")
         self.view.addSubview(passwordText)
         
@@ -70,16 +70,20 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
         
         UITextField.appearance().tintColor = UIColor.whiteColor()
         
-        var label:UILabel = UILabel(frame: CGRectMake(self.view.centerX - width / 2 + 20, 178, 80, 20))
-        label.text = "记住密码";label.font = UIFont.systemFontOfSize(15)
-        label.textColor = UIColor.whiteColor()
-        self.view.addSubview(label)
+        var remenberBtn:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+         remenberBtn.frame = CGRectMake(self.view.centerX - width / 2 + 20, 178, 80, 20)
+        var text:NSMutableAttributedString = NSMutableAttributedString(string: "记住密码")
+        text.addAttributes([NSForegroundColorAttributeName:UIColor.whiteColor(),
+            NSFontAttributeName:UIFont.systemFontOfSize(textFontSize, weight: 2)], range: NSMakeRange(0, text.length))
+        remenberBtn.setAttributedTitle(text, forState: UIControlState.Normal)
+        remenberBtn.addTarget(self, action: "clicked:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(remenberBtn)
         
         settingBtn = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
         settingBtn.frame = CGRectMake(self.view.centerX + width / 2 - 55, 178, 65, 20)
         var str:NSMutableAttributedString = NSMutableAttributedString(string: "配置IP")
         str.addAttributes([NSForegroundColorAttributeName:UIColor.whiteColor(),NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.rawValue,
-            NSFontAttributeName:UIFont.systemFontOfSize(15, weight: 2)], range: NSMakeRange(0, str.length))
+            NSFontAttributeName:UIFont.systemFontOfSize(textFontSize, weight: 2)], range: NSMakeRange(0, str.length))
         settingBtn.setAttributedTitle(str, forState: UIControlState.Normal)
         settingBtn.addTarget(self, action: "settingAction:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(settingBtn)
@@ -116,6 +120,10 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
     
     func savePasswordAction(sender: UIButton) {
         savePasswordBtn.selected = !savePasswordBtn.selected
+    }
+    
+    func clicked(sender:UIButton) {
+        self.savePasswordAction(self.savePasswordBtn)
     }
     
     func loginToServiceAction(sender: UIButton) {

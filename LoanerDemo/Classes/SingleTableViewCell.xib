@@ -24,29 +24,38 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3sA-WH-1jf">
-                        <rect key="frame" x="71" y="18" width="24" height="22"/>
+                        <rect key="frame" x="71" y="11" width="24" height="29"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="subtitle" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WFt-Fy-rf1">
-                        <rect key="frame" x="71" y="37" width="45" height="16"/>
+                        <rect key="frame" x="71" y="42" width="45" height="16"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="3sA-WH-1jf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="3" id="7y4-RY-ihh"/>
                     <constraint firstItem="3sA-WH-1jf" firstAttribute="leading" secondItem="eNl-HY-wbc" secondAttribute="trailing" constant="8" id="EDh-pp-Dun"/>
                     <constraint firstItem="3sA-WH-1jf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="IEy-b5-3bo"/>
                     <constraint firstItem="eNl-HY-wbc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="2" id="NLc-0W-gg2"/>
                     <constraint firstItem="WFt-Fy-rf1" firstAttribute="leading" secondItem="eNl-HY-wbc" secondAttribute="trailing" constant="8" id="Od2-Yw-Qai"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="WFt-Fy-rf1" secondAttribute="bottom" constant="3" id="SaY-P6-Xli"/>
                     <constraint firstItem="3sA-WH-1jf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="WN4-Yj-PXz"/>
                     <constraint firstAttribute="bottomMargin" secondItem="WFt-Fy-rf1" secondAttribute="bottom" constant="8" id="YcF-gh-UbY"/>
                     <constraint firstItem="3sA-WH-1jf" firstAttribute="leading" secondItem="eNl-HY-wbc" secondAttribute="trailing" constant="8" id="ejp-aw-P5X"/>
                     <constraint firstAttribute="bottomMargin" secondItem="3sA-WH-1jf" secondAttribute="bottom" constant="21" id="vD8-Xf-Nzj"/>
                     <constraint firstItem="eNl-HY-wbc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="z4b-WW-hWR"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="IEy-b5-3bo"/>
+                        <exclude reference="WN4-Yj-PXz"/>
+                        <exclude reference="YcF-gh-UbY"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="imageV" destination="eNl-HY-wbc" id="KKa-yL-DGS"/>

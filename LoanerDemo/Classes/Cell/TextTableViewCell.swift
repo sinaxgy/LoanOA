@@ -18,7 +18,6 @@ class TextTableViewCell: UITableViewCell {
     var delegate:defaultTextDelegate!
     var titleText:String! = "" {didSet{self.titleLabel.text = titleText}}
     @IBAction func deleteAction(sender: AnyObject) {
-        println("delete")
         self.delegate.defaultTextShouldBeDelete(self.titleText)
     }
     

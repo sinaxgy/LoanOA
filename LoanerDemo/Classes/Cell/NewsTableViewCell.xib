@@ -16,13 +16,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="subtitle" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lFU-Q2-IPb">
-                        <rect key="frame" x="48" y="29" width="45" height="16"/>
+                        <rect key="frame" x="48" y="35" width="45" height="16"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cjJ-zi-EIm">
-                        <rect key="frame" x="48" y="13" width="24" height="17"/>
+                        <rect key="frame" x="48" y="8" width="24" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -42,6 +42,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="UQf-9o-aD7" firstAttribute="leading" secondItem="DAg-gy-vm4" secondAttribute="leadingMargin" id="11U-vd-I4p"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="lFU-Q2-IPb" secondAttribute="bottom" id="4wN-96-ymc"/>
                     <constraint firstItem="cjJ-zi-EIm" firstAttribute="leading" secondItem="DAg-gy-vm4" secondAttribute="leading" constant="51" id="6ab-z5-Kn3"/>
                     <constraint firstItem="cjJ-zi-EIm" firstAttribute="top" secondItem="DAg-gy-vm4" secondAttribute="topMargin" constant="5" id="Acq-tB-069"/>
                     <constraint firstAttribute="bottomMargin" secondItem="lFU-Q2-IPb" secondAttribute="bottom" constant="6" id="Jrm-69-7IM"/>
@@ -51,6 +52,7 @@
                     <constraint firstItem="lFU-Q2-IPb" firstAttribute="leading" secondItem="cjJ-zi-EIm" secondAttribute="leading" id="axt-sh-bJL"/>
                     <constraint firstItem="UQf-9o-aD7" firstAttribute="top" secondItem="DAg-gy-vm4" secondAttribute="topMargin" constant="12" id="gLk-yA-mpe"/>
                     <constraint firstItem="cjJ-zi-EIm" firstAttribute="leading" secondItem="UQf-9o-aD7" secondAttribute="trailing" constant="20" id="ja8-lp-p81"/>
+                    <constraint firstItem="cjJ-zi-EIm" firstAttribute="top" secondItem="DAg-gy-vm4" secondAttribute="topMargin" id="kP8-wS-Uar"/>
                     <constraint firstItem="UQf-9o-aD7" firstAttribute="leading" secondItem="DAg-gy-vm4" secondAttribute="leadingMargin" constant="-7" id="uve-dh-o4h"/>
                 </constraints>
                 <variation key="default">
@@ -59,6 +61,8 @@
                         <exclude reference="Ygh-wP-OI9"/>
                         <exclude reference="uve-dh-o4h"/>
                         <exclude reference="6ab-z5-Kn3"/>
+                        <exclude reference="Acq-tB-069"/>
+                        <exclude reference="Jrm-69-7IM"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>

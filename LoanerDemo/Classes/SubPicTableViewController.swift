@@ -116,7 +116,6 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        println("_____________________")
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -167,6 +166,8 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 cell.subTextLabel?.text = item.date
                 cell.isMutable = NSString(string: item.multipage).boolValue
                 cell.titleLabel.text = (cell.isMutable ? (item.pic_explain + "（\(item.imageurl.count)）") : item.pic_explain)
+                cell.titleLabel.font = UIFont.systemFontOfSize(textFontSize)
+                cell.subTextLabel.font = UIFont.systemFontOfSize(detailFontSize)
                 return cell
             }
         }
@@ -274,7 +275,6 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                     hud.progress = sub/sup  
                 }, success: {
                     data in
-                    println(data)
                     hud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
                     hud.mode = MBProgressHUDMode.CustomView
                     hud.hide(true, afterDelay: 1)
@@ -331,7 +331,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             let url = AppDelegate.app().ipUrl + config + "app/delete"
             NetworkRequest.AlamofirePostParameters(url, parameters: ["path":"\(JSON(item.imageurl))"], success: {
                 (data) in
-                if data == nil {println("empty return");return}
+                if data == nil {return}
                 if data as! String == "success" {
                     if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
                         cell.imageV.image = UIImage(named: placeholderImageName)
@@ -375,7 +375,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                             let sup:Float = Float(totalExpectedToWrite) * 0.000977
                             hud.progress = sub/sup
                             }, success: {(data) in
-                                if data == nil {println("empty return");return}
+                                if data == nil {return}
                                 hud.hide(true)
                                 item.imageurl.addObject(data as! String)
                                 if let cell = self.tableView.cellForRowAtIndexPath(currentIndexPath) as? SingleTableViewCell {
@@ -383,7 +383,13 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                                     cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                                 }
                                 self.tableView.reloadRowsAtIndexPaths([currentIndexPath], withRowAnimation: UITableViewRowAnimation.Middle)
-                            }, failed: {},outTime:{})
+                            }, failed: {
+                                hud.mode = MBProgressHUDMode.Text
+                                hud.labelText = "上传中断"
+                                hud.hide(true, afterDelay: 2)},outTime:{
+                                    hud.mode = MBProgressHUDMode.Text
+                                    hud.labelText = "上传中断"
+                                    hud.hide(true, afterDelay: 2)})
                     })
                     }}
             }
@@ -426,7 +432,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                                 current += (Float(bytesWritten) * 0.000977)
                                 }, success: {
                                     data in
-                                    if data == nil {println("empty return");return}
+                                    if data == nil {return}
                                     imageUrlArray.addObject(data as! String)
                                     if imageUrlArray.count == array.count { //发送完成
                                         hud.hide(true)
@@ -449,10 +455,16 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                                             cell.imageUrlArray = NSMutableArray(array: item.imageurl)
                                             cell.mutableCollection.reloadData()
                                         }
+                                        self.tableView.reloadRowsAtIndexPaths([currentIndexPath], withRowAnimation: UITableViewRowAnimation.Middle)
                                     }
-                                    self.tableView.reloadRowsAtIndexPaths([currentIndexPath], withRowAnimation: UITableViewRowAnimation.Middle)
                                 },failed:{
-                                },outTime:{})
+                                    hud.mode = MBProgressHUDMode.Text
+                                    hud.labelText = "上传中断"
+                                    hud.hide(true, afterDelay: 2)
+                                },outTime:{
+                                    hud.mode = MBProgressHUDMode.Text
+                                    hud.labelText = "上传中断"
+                                    hud.hide(true, afterDelay: 2)})
                             sleep(2)
                         })
                     }
@@ -500,7 +512,6 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     }
     
     func photoBrowser(photoBrowser: ZLPhotoPickerBrowserViewController!, removePhotoAtIndexPath indexPath: NSIndexPath!) {
-        println(indexPath.row)
     }
     
     func photoBrowser(photoBrowser: ZLPhotoPickerBrowserViewController!, didRemoveLastOneSuccess success: ((String!) -> Void)!, failed: (() -> Void)!) {
@@ -539,8 +550,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 NetworkRequest.AlamofireUploadImage(url, data: uploadData, progress: { (_, written, total) -> Void in
                     progress(Float(written) * 0.000977,Float(total) * 0.000977)
                 }, success: { (data) -> Void in
-                    println(data)
-                    if data == nil {println("empty return");return}
+                    if data == nil {return}
                     let small = AppDelegate.app().ipUrl + (data! as! String) + "?\(arc4random() % 1000)"
                     let original = AppDelegate.app().ipUrl + LoanerHelper.OriginalImageURLStrWithSmallURLStr(data! as! String) + "?\(arc4random() % 1000)"
                     success(original,small)
@@ -569,7 +579,6 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     
     //MARK:--UIAlertViewDelegate
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        println(buttonIndex)
         if buttonIndex == 1 {
             switch alertView.tag {
             case deleteTag:

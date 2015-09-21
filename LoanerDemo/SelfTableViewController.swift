@@ -76,7 +76,6 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
                 success: {
                         (data) -> Void in
                         if data as! String == "success" {
-                            println("ads")
                             hud.labelText = "确认成功"
                             hud.mode = MBProgressHUDMode.CustomView
                             hud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
@@ -153,6 +152,7 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
             var btn:UIButton = UIButton(frame: CGRectMake(0, 0, self.view.width, 40))
             btn.titleLabel?.textAlignment = NSTextAlignment.Center
             btn.setTitle(self.buttonTitle, forState: UIControlState.Normal)
+            btn.titleLabel?.font = UIFont.systemFontOfSize(textFontSize)
             btn.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
             btn.setTitleColor(UIColor.blueColor(), forState: UIControlState.Selected)
             btn.setTitleColor(UIColor.lightGrayColor(), forState: UIControlState.Selected)
@@ -166,6 +166,8 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
     
     func setPersonalCell(indexPath:NSIndexPath) -> UITableViewCell {
         var cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "selfCell")
+        cell.textLabel?.font = UIFont.systemFontOfSize(textFontSize)
+        cell.detailTextLabel?.font = UIFont.systemFontOfSize(detailFontSize)
         var key: NSString = self.infoArray[indexPath.row] as! NSString
         switch key {
         case "dep_id":
