@@ -273,7 +273,8 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
                 let mg_adviceprice: Float = NSString(string: self.postDic["mg_adviceprice"] as! String).floatValue
                 let value = NSString(string: text).floatValue
                 if value < mg_adviceprice {
-                    message.appendString("\n抵押物原价不能小于建议金额！")
+                    message.appendString((message == "" ? "" : "\n"))
+                    message.appendString("抵押物原价不能小于建议金额！")
                 }
             }
         case "mg_assessprice":      //估价：不能大于原价，不能小于建议金额
@@ -286,6 +287,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
             if (self.postDic.allKeys as NSArray).containsObject("mg_adviceprice") {
                 let mg_adviceprice: Float = NSString(string: self.postDic["mg_adviceprice"] as! String).floatValue
                 if NSString(string: text).floatValue < mg_adviceprice {
+                    message.appendString((message == "" ? "" : "\n"))
                     message.appendString("抵押物估价不能小于建议金额！")
                 }
             }
@@ -299,7 +301,8 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
             if (self.postDic.allKeys as NSArray).containsObject("mg_assessprice") {
                 let mg_assessprice: Float = NSString(string: self.postDic["mg_assessprice"] as! String).floatValue
                 if NSString(string: text).floatValue > mg_assessprice {
-                    message.appendString("\n建议金额不能大于抵押物估价！")
+                    message.appendString((message == "" ? "" : "\n"))
+                    message.appendString("建议金额不能大于抵押物估价！")
                 }
             }
         case "car_bdate":      //出厂日期早于初登日期

@@ -29,9 +29,6 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mutableImage" translatesAutoresizingMaskIntoConstraints="NO" id="i3z-Zw-RaB">
-                        <rect key="frame" x="8" y="0.0" width="55" height="13"/>
-                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="subtitle" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WFt-Fy-rf1">
                         <rect key="frame" x="71" y="37" width="45" height="16"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -40,14 +37,10 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottomMargin" secondItem="i3z-Zw-RaB" secondAttribute="bottom" constant="48" id="5W4-rx-JZE"/>
                     <constraint firstItem="3sA-WH-1jf" firstAttribute="leading" secondItem="eNl-HY-wbc" secondAttribute="trailing" constant="8" id="EDh-pp-Dun"/>
                     <constraint firstItem="3sA-WH-1jf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="IEy-b5-3bo"/>
-                    <constraint firstItem="i3z-Zw-RaB" firstAttribute="trailing" secondItem="eNl-HY-wbc" secondAttribute="trailing" id="JKH-f5-Kbc"/>
                     <constraint firstItem="eNl-HY-wbc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="2" id="NLc-0W-gg2"/>
-                    <constraint firstItem="i3z-Zw-RaB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="NUl-OK-VR5"/>
                     <constraint firstItem="WFt-Fy-rf1" firstAttribute="leading" secondItem="eNl-HY-wbc" secondAttribute="trailing" constant="8" id="Od2-Yw-Qai"/>
-                    <constraint firstItem="i3z-Zw-RaB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="TwT-MH-vbU"/>
                     <constraint firstItem="3sA-WH-1jf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="WN4-Yj-PXz"/>
                     <constraint firstAttribute="bottomMargin" secondItem="WFt-Fy-rf1" secondAttribute="bottom" constant="8" id="YcF-gh-UbY"/>
                     <constraint firstItem="3sA-WH-1jf" firstAttribute="leading" secondItem="eNl-HY-wbc" secondAttribute="trailing" constant="8" id="ejp-aw-P5X"/>
@@ -57,14 +50,10 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="imageV" destination="eNl-HY-wbc" id="KKa-yL-DGS"/>
-                <outlet property="mutableView" destination="i3z-Zw-RaB" id="pwa-mz-8u8"/>
                 <outlet property="subTextLabel" destination="WFt-Fy-rf1" id="Jbq-C1-88P"/>
                 <outlet property="titleLabel" destination="3sA-WH-1jf" id="exE-IZ-QM0"/>
             </connections>
             <point key="canvasLocation" x="273" y="366"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="mutableImage" width="99" height="10"/>
-    </resources>
 </document>

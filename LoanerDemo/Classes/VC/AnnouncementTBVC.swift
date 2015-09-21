@@ -132,28 +132,33 @@ class AnnouncementTBVC: UITableViewController {
         }
         let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
         headerView.backgroundColor = UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 225.0/205.0, alpha: 1)
-        let text:String = (section == 0 ? "公告消息" : "财务打款")
-        var label:UILabel = UILabel(frame: CGRectMake(5, 10, self.view.width, 20))
+        let text:String = (section == 0 ? "财务打款" : "公告消息")
+        var label:UILabel = UILabel(frame: CGRectMake(25, 5, self.view.width, 25))
         label.text = text;label.textColor = UIColor.grayColor()
         label.font = UIFont.systemFontOfSize(14)
         headerView.addSubview(label)
+        
+        var triangleView:UIImageView = UIImageView(frame: CGRectMake(5, 10, 15, 15))
+        triangleView.image = UIImage(named: "triangle")
+        triangleView.contentMode = UIViewContentMode.ScaleAspectFit
+        headerView.addSubview(triangleView)
         return headerView
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        if section == 1 {
+        if section == 0 {
             return self.financeArray.count
         }
         return self.announcements.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let array = (indexPath.section == 0 ? self.announcements : self.financeArray)
+        let array = (indexPath.section == 1 ? self.announcements : self.financeArray)
         if let item = array[indexPath.row] as? AnnounceItem {
             if var cell = tableView.dequeueReusableCellWithIdentifier(reuserCell, forIndexPath: indexPath) as? NewsTableViewCell {
-                cell.setupCell(item.title, date: item.date, isRead: item.isReaded)
+                cell.setupNewsCell(item.title, date: item.date, isRead: item.isReaded)
                 return cell
             }
         }else if let item = array[indexPath.row] as? NSDictionary {
@@ -169,7 +174,7 @@ class AnnouncementTBVC: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.section {
-        case 0:
+        case 1:
             if let item = self.announcements[indexPath.row] as? AnnounceItem {
                 if !item.isReaded {
                     item.isReaded = true
@@ -191,14 +196,15 @@ class AnnouncementTBVC: UITableViewController {
                         println("outtime")
                 })
             }
-        case 1:
+        case 0:
             if let item = self.financeArray[indexPath.row] as? NSDictionary {
                 var financeVC:SelfTableViewController = SelfTableViewController()
                 financeVC.actionString = "payFinance:"
                 financeVC.buttonTitle = "确认打款"
                 financeVC.tableDataDic = item
+                financeVC.navigationItem.title = "财务打款"
                 financeVC.infoArray = ["pro_num","pro_title","date","type","money"]
-                self.navigationController?.pushViewController(financeVC, animated: false)
+                self.navigationController?.pushViewController(financeVC, animated: true)
             }
         default:break
         }

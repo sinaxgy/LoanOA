@@ -20,19 +20,27 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
     let textCell = "textCell";var delegate:SignTextDelegate!
     var verify:String = "";var isDateType = false;var validText = ""    //输入校验预存储，以备恢复
     var comparedInfo:NSDictionary = [:]
+    var keyboardHeight:CGFloat = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.initView()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillChangeFrameNotification, object: nil)
         // Do any additional setup after loading the view.
     }
     
+    func keyboardWillShow(notification:NSNotification) {
+        let info:NSDictionary = notification.userInfo!
+        let size:CGSize = info.objectForKey(UIKeyboardFrameEndUserInfoKey)!.CGRectValue().size
+        self.keyboardHeight = size.height
+    }
+    
     func initView() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "submit"), style: UIBarButtonItemStyle.Bordered, target: self, action: "complete:")
         
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "submit"), style: UIBarButtonItemStyle.Bordered, target: self, action: "complete:")
         self.view.backgroundColor = UIColor.whiteColor()
-        textField = UITextField(frame: CGRectMake(5, 69, self.view.bounds.width - 10, 35))
-        textField.layer.borderWidth = 2;textField.layer.cornerRadius = 6
+        textField = UITextField(frame: CGRectMake(0, 64, self.view.bounds.width , 35))
+        textField.backgroundColor = UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 225.0/205.0, alpha: 1)
         textField.clearButtonMode = UITextFieldViewMode.Always
         textField.delegate = self;textField.placeholder = "请输入\(self.title!)"
         let leftView:UIView = UIView(frame: CGRectMake(0, 0, 30, 30))
@@ -91,14 +99,14 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 35
+        return 5
     }
-    
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
-        headerView.backgroundColor = UIColor(red: 205.0/255.0, green: 205.0/255.0, blue: 205.0/205.0, alpha: 1)
-        return headerView
-    }
+//
+//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
+//        headerView.backgroundColor = UIColor(red: 205.0/255.0, green: 205.0/255.0, blue: 205.0/205.0, alpha: 1)
+//        return headerView
+//    }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.navigationController?.popViewControllerAnimated(true)
@@ -107,6 +115,18 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
     
     //MARK:--UITextFieldDelegate
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+        let msg = LoanerHelper.vaildInputWith(verify, targetString: textField.text)
+        if msg != nil {
+            var vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
+            self.view.addSubview(vaildHud)
+            vaildHud.show(true)
+            vaildHud.mode = MBProgressHUDMode.Text
+            vaildHud.detailsLabelText = msg
+            vaildHud.detailsLabelFont = UIFont.systemFontOfSize(17)
+            vaildHud.yOffset = Float(self.keyboardHeight / 2 - self.view.center.y)
+            vaildHud.hide(true, afterDelay: 1)
+            return false
+        }
         if !self.defaultTexts.containsObject(textField.text) {
             self.defaultTexts.addObject(textField.text)
         }
@@ -116,18 +136,21 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
     }
     
     func textFieldDidChanged(textField:UITextField) {
-        let msg = LoanerHelper.vaildInputWith(verify, targetString: textField.text)
-        if msg != nil {
-            var vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
-            self.view.addSubview(vaildHud)
-            vaildHud.show(true)
-            vaildHud.mode = MBProgressHUDMode.Text
-            vaildHud.detailsLabelText = msg
-            vaildHud.detailsLabelFont = UIFont.systemFontOfSize(17)
-            vaildHud.hide(true, afterDelay: 1)
-            self.textField.text = self.validText
-        }else {validText = textField.text}
-
+        if verify == "num" {
+            let msg = LoanerHelper.vaildInputWith(verify, targetString: textField.text)
+            if msg != nil {
+                var vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
+                self.view.addSubview(vaildHud)
+                vaildHud.show(true)
+                vaildHud.mode = MBProgressHUDMode.Text
+                vaildHud.detailsLabelText = msg
+                vaildHud.detailsLabelFont = UIFont.systemFontOfSize(17)
+                vaildHud.yOffset = Float(self.keyboardHeight / 2 - self.view.center.y)
+                textField.keyboardAppearance.rawValue
+                vaildHud.hide(true, afterDelay: 1)
+                self.textField.text = self.validText
+            }else {validText = textField.text}
+        }
     }
     
     //MARK:--defaultTextDelegate
@@ -147,6 +170,18 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
     }
     
     func complete(sender:AnyObject){
+        let msg = LoanerHelper.vaildInputWith(verify, targetString: textField.text)
+        if msg != nil {
+            var vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
+            self.view.addSubview(vaildHud)
+            vaildHud.show(true)
+            vaildHud.mode = MBProgressHUDMode.Text
+            vaildHud.detailsLabelText = msg
+            vaildHud.detailsLabelFont = UIFont.systemFontOfSize(17)
+            vaildHud.yOffset = Float(self.keyboardHeight / 2 - self.view.center.y)
+            vaildHud.hide(true, afterDelay: 1)
+            return
+        }
         if !self.defaultTexts.containsObject(textField.text) {
             self.defaultTexts.addObject(textField.text)
         }

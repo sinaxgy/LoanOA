@@ -27,36 +27,42 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
     
     var personalInfomation:NSMutableDictionary = NSMutableDictionary()
     func initView() {
-        user_idText = UITextField(frame: CGRectMake(20, 90, self.view.width - 40, 30))
+        let width:CGFloat = (self.view.width < 376 ? self.view.width - 40 : 300)
+        user_idText = UITextField(frame: CGRectMake(0, 95, width - 10, 30))
+        user_idText.centerX = self.view.centerX
         user_idText.delegate = self
         user_idText.autocapitalizationType = UITextAutocapitalizationType.None
         user_idText.autocorrectionType = UITextAutocorrectionType.No
         user_idText.placeholder = "用户名"
         user_idText.textColor = UIColor.whiteColor()
         user_idText.font = UIFont.systemFontOfSize(14)
-        user_idText.setValue(UIColor(red: 186.0/255.0, green: 185.0/255.0, blue: 155.0/205.0, alpha: 1)
+        user_idText.setValue(UIColor(red: 226.0/255.0, green: 225.0/255.0, blue: 195.0/205.0, alpha: 1)
             , forKeyPath: "_placeholderLabel.textColor")
         self.view.addSubview(user_idText)
         
-        var line:UIImageView = UIImageView(frame: CGRectMake(15, 125, self.view.width - 30, 1))
+        var line:UIImageView = UIImageView(frame: CGRectMake(0, 125, width, 1))
         line.image = UIImage(named: "line")
+        line.centerX = self.view.centerX
         self.view.addSubview(line)
         
-        passwordText = UITextField(frame: CGRectMake(20, 135, self.view.width - 40, 30))
+        passwordText = UITextField(frame: CGRectMake(0, 135, width - 10, 30))
         passwordText.delegate = self;passwordText.textColor = UIColor.whiteColor()
         passwordText.autocorrectionType = UITextAutocorrectionType.No
         passwordText.placeholder = "密码"
+        passwordText.centerX = self.view.centerX
+        passwordText.secureTextEntry = true
         passwordText.font = UIFont.systemFontOfSize(14)
-        passwordText.setValue(UIColor(red: 186.0/255.0, green: 185.0/255.0, blue: 155.0/205.0, alpha: 1)
+        passwordText.setValue(UIColor(red: 226.0/255.0, green: 225.0/255.0, blue: 195.0/205.0, alpha: 1)
             , forKeyPath: "_placeholderLabel.textColor")
         self.view.addSubview(passwordText)
         
-        var line1:UIImageView = UIImageView(frame: CGRectMake(15, 165, self.view.width - 30, 1))
+        var line1:UIImageView = UIImageView(frame: CGRectMake(0, 165, width, 1))
         line1.image = UIImage(named: "line")
+        line1.centerX = self.view.centerX
         self.view.addSubview(line1)
         
         savePasswordBtn = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
-        savePasswordBtn.frame = CGRectMake(15, 180, 15, 15)
+        savePasswordBtn.frame = CGRectMake(self.view.centerX - width / 2, 180, 15, 15)
         savePasswordBtn.setBackgroundImage(UIImage(named: "pwunselected"), forState: UIControlState.Normal)
         savePasswordBtn.setBackgroundImage(UIImage(named: "pwselected"), forState: UIControlState.Selected)
         savePasswordBtn.addTarget(self, action: "savePasswordAction:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -64,13 +70,13 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
         
         UITextField.appearance().tintColor = UIColor.whiteColor()
         
-        var label:UILabel = UILabel(frame: CGRectMake(36, 178, 80, 20))
+        var label:UILabel = UILabel(frame: CGRectMake(self.view.centerX - width / 2 + 20, 178, 80, 20))
         label.text = "记住密码";label.font = UIFont.systemFontOfSize(15)
         label.textColor = UIColor.whiteColor()
         self.view.addSubview(label)
         
         settingBtn = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
-        settingBtn.frame = CGRectMake(self.view.width - 80, 178, 65, 20)
+        settingBtn.frame = CGRectMake(self.view.centerX + width / 2 - 55, 178, 65, 20)
         var str:NSMutableAttributedString = NSMutableAttributedString(string: "配置IP")
         str.addAttributes([NSForegroundColorAttributeName:UIColor.whiteColor(),NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.rawValue,
             NSFontAttributeName:UIFont.systemFontOfSize(15, weight: 2)], range: NSMakeRange(0, str.length))
@@ -80,10 +86,11 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
         
         
         loginBtn = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
-        loginBtn.frame = CGRectMake(15, 220, self.view.width - 30, 40)
+        loginBtn.frame = CGRectMake(0, 220, width, 40)
         loginBtn.backgroundColor = UIColor.whiteColor()
+        loginBtn.centerX = self.view.centerX
         loginBtn.setTitle("登录", forState: UIControlState.Normal)
-        loginBtn.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal)
+        loginBtn.setTitleColor(UIColor(red: 64.0/255.0, green: 130.0/255.0, blue: 228.0/255.0, alpha: 1), forState: UIControlState.Normal)
         loginBtn.addTarget(self, action: "loginToServiceAction:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(loginBtn)
     }
@@ -117,7 +124,7 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
             alert.show()
             return
         }
-        
+        UITextField.appearance().resignFirstResponder()
         var progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
         self.view.addSubview(progressHud)
         progressHud.labelText = "正在登录"

@@ -299,6 +299,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     self.isUpload = false;
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"more"] style:UIBarButtonItemStyleBordered target:self action:@selector(more)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStyleBordered target:self action:@selector(back)];
     [self showToView];
@@ -316,7 +317,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 - (void)back{
     if (self.disMissBlock) {
-        NSLog(@"count:%lu,currentpage:%ld",(unsigned long)self.photos.count,(long)self.currentPage);
         if (self.photos.count == 1) {
             self.currentPage = 0;
         }
@@ -487,7 +487,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 -(void)setPageLabelPage:(NSInteger)page{
-    self.pageLabel.text = [NSString stringWithFormat:@"%d / %ld",page + 1, (unsigned long)self.photos.count];
+    self.pageLabel.text = [NSString stringWithFormat:@"%ld / %ld",page + 1, (unsigned long)self.photos.count];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -497,7 +497,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     if (currentPage == self.photos.count - 2) {
         currentPage = roundf((scrollView.contentOffset.x) / (scrollView.frame.size.width));
     }
-    NSLog(@"\ncontentOffset.x:%f\ncontentOffset.y:%f",self.collectionView.contentOffset.x,self.collectionView.contentOffset.y);
 //    if (currentPage == self.photos.count - 1) {
 //        self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x - ZLPickerColletionViewPadding, 0);
 //    }
@@ -586,23 +585,20 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 #pragma mark - <PickerPhotoScrollViewDelegate>
 - (void)pickerPhotoScrollViewDidSingleClick:(ZLPhotoPickerBrowserPhotoScrollView *)photoScrollView{
-    
-    if ([self.photos[self.currentPage] isKindOfClass:[ZLPhotoPickerBrowserPhoto class]]) {
-        ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
-        [self showImage:photo.thumbImage];
-        NSLog(@"%@",photo.photoImage);
+    self.navigationController.navigationBarHidden = !self.navigationController.navigationBarHidden;
+    //[self showImage:self.currentImage];
+    /*  //单击退出图片浏览器
+    if (self.disMissBlock) {
+        
+        if (self.photos.count == 1) {
+            self.currentPage = 0;
+        }
+        self.disMissBlock(self.currentPage);
+    }else{
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
-//    if (self.disMissBlock) {
-//        
-//        if (self.photos.count == 1) {
-//            self.currentPage = 0;
-//        }
-//        self.disMissBlock(self.currentPage);
-//    }else{
-//        [self dismissViewControllerAnimated:YES completion:nil];
-//    }
-//    
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];*/
 }
 
 - (void) loadImageComplete:(UIImage *)image {
@@ -681,49 +677,24 @@ static NSString *_cellIdentifier = @"collectionViewCell";
                                     otherButtonTitles:@"确定", nil];
         [removeAlert show];
     }
-    switch (selectedIndex) {
-        case 0:
-            NSLog(@"0");
-            break;
-        case 1:
-            NSLog(@"1");
-            break;
-        case 2:
-            NSLog(@"2");
-            break;
-
-        //        default:
-//            break;
-    }
 }
 
 #pragma mark additional
-CGRect rect;
 - (void)showImage:(UIImage*)image {
-    if (image) {
-        NSLog(@"showImage:%@",image);
-    }else{
-        return;
-    }
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
-    UIImageView *toImageView = nil;
-    if(self.status == UIViewAnimationAnimationStatusZoom){
-        toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
-    }
+    UIImageView *toImageView = [[UIImageView alloc] initWithImage:self.currentImage];
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
-    rect = [backView convertRect:toImageView.frame toView:window];
+    toImageView.contentMode = UIViewContentModeScaleAspectFit;
     backView.backgroundColor = [UIColor blackColor];
     backView.alpha = 0;
-    toImageView.tag = 1;
     [backView addSubview:toImageView];
-    //[self.view addSubview:backView];
     [window addSubview:backView];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideImage:)];
     [backView addGestureRecognizer:tap];
     
-    [UIView animateWithDuration:1.6f animations:^{
-        toImageView.frame=[UIScreen mainScreen].bounds;//CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    [UIView animateWithDuration:0.6f animations:^{
+        toImageView.frame=[UIScreen mainScreen].bounds;
         backView.alpha=1;
     } completion:^(BOOL finished) {
         
@@ -734,7 +705,8 @@ CGRect rect;
     UIView *backgroundView=tap.view;
     UIImageView *imageView=(UIImageView*)[tap.view viewWithTag:1];
     [UIView animateWithDuration:0.3 animations:^{
-        imageView.frame=[UIScreen mainScreen].bounds;
+        imageView.center = self.view.center;
+        imageView.frame=CGRectZero;
         backgroundView.alpha=0;
     } completion:^(BOOL finished) {
         [backgroundView removeFromSuperview];

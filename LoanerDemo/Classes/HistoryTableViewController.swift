@@ -12,7 +12,7 @@ import Foundation
 let isIphone = (UIDevice.currentDevice().userInterfaceIdiom  == UIUserInterfaceIdiom.Phone ? true:false)
 let detailFontSize:CGFloat = (isIphone ? 12 : 20)
 let textFontSize:CGFloat = (isIphone ? 15 : 24)
-let cellHeight:CGFloat = (isIphone ? 55 : 100)
+let cellHeight:CGFloat = (isIphone ? 55 : 70)
 //let cellHeight:CGFloat = 55
 let mainColor = 0x4282e3//0x4282e3//0x25b6ed
 let navColor = 0x1960e3
@@ -89,7 +89,8 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         //self.navigationController?.tabBarItem.badgeValue = "12"
         self.refreshControl = UIRefreshControl(frame: CGRectMake(0, 0, self.tableView.frame.size.width, 100))
         self.refreshControl?.addTarget(self, action: "reload:", forControlEvents: UIControlEvents.ValueChanged)
-        self.tableView.tableHeaderView?.addSubview(self.refreshControl!)
+        //self.tableView.tableHeaderView?.addSubview(self.refreshControl!)
+        self.tableView.tableFooterView?.addSubview(self.refreshControl!)
         
         self.activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
         self.activityView.frame = self.navigationController!.view.bounds
@@ -104,7 +105,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     
     func reload(sender:AnyObject) {
         if (self.refreshControl!.refreshing) {
-            self.refreshControl?.attributedTitle = NSAttributedString(string: "加载中...")
+            self.refreshControl?.attributedTitle = NSAttributedString(string: "下拉刷新")
         }
         
         let user_id:String = AppDelegate.app().user_id
@@ -205,6 +206,16 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
         headerView.backgroundColor = UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 225.0/205.0, alpha: 1)
+        let text:String = (section == 0 ? "待处理项目" : "处理中项目")
+        var label:UILabel = UILabel(frame: CGRectMake(25, 5, self.view.width, 25))
+        label.text = text;label.textColor = UIColor.grayColor()
+        label.font = UIFont.systemFontOfSize(14)
+        headerView.addSubview(label)
+        
+        var triangleView:UIImageView = UIImageView(frame: CGRectMake(5, 10, 15, 15))
+        triangleView.image = UIImage(named: "triangle")
+        triangleView.contentMode = UIViewContentMode.ScaleAspectFit
+        headerView.addSubview(triangleView)
         return headerView
     }
     
@@ -212,6 +223,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "historyCell")
         let array = (indexPath.section == 0 ? self.useableArray : self.unuseableArray)
         if let element = array[indexPath.row] as? NSArray {
+            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
             cell.textLabel?.text = element[1] as? String
             cell.textLabel?.font = UIFont.systemFontOfSize(textFontSize)
             cell.detailTextLabel?.text = element[2] as? String

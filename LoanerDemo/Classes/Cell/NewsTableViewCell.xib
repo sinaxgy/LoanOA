@@ -16,33 +16,51 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="subtitle" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lFU-Q2-IPb">
-                        <rect key="frame" x="51" y="29" width="45" height="16"/>
+                        <rect key="frame" x="48" y="29" width="45" height="16"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ancReaded" translatesAutoresizingMaskIntoConstraints="NO" id="UQf-9o-aD7">
-                        <rect key="frame" x="8" y="15" width="35" height="30"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="35" id="ZAA-x0-G0e"/>
-                            <constraint firstAttribute="height" constant="30" id="zRn-N8-o5s"/>
-                        </constraints>
-                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cjJ-zi-EIm">
-                        <rect key="frame" x="51" y="13" width="24" height="17"/>
+                        <rect key="frame" x="48" y="13" width="24" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ancReaded" translatesAutoresizingMaskIntoConstraints="NO" id="UQf-9o-aD7">
+                        <rect key="frame" x="8" y="20" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="25" id="EC7-Z3-K2a"/>
+                            <constraint firstAttribute="width" constant="20" id="ces-SY-dxA"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="EC7-Z3-K2a"/>
+                            </mask>
+                        </variation>
+                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="cjJ-zi-EIm" firstAttribute="leading" secondItem="UQf-9o-aD7" secondAttribute="trailing" constant="8" symbolic="YES" id="0Xq-cs-4je"/>
+                    <constraint firstItem="UQf-9o-aD7" firstAttribute="leading" secondItem="DAg-gy-vm4" secondAttribute="leadingMargin" id="11U-vd-I4p"/>
+                    <constraint firstItem="cjJ-zi-EIm" firstAttribute="leading" secondItem="DAg-gy-vm4" secondAttribute="leading" constant="51" id="6ab-z5-Kn3"/>
                     <constraint firstItem="cjJ-zi-EIm" firstAttribute="top" secondItem="DAg-gy-vm4" secondAttribute="topMargin" constant="5" id="Acq-tB-069"/>
                     <constraint firstAttribute="bottomMargin" secondItem="lFU-Q2-IPb" secondAttribute="bottom" constant="6" id="Jrm-69-7IM"/>
-                    <constraint firstItem="UQf-9o-aD7" firstAttribute="leading" secondItem="DAg-gy-vm4" secondAttribute="leadingMargin" id="SwM-4l-qvf"/>
-                    <constraint firstItem="lFU-Q2-IPb" firstAttribute="leading" secondItem="UQf-9o-aD7" secondAttribute="trailing" constant="8" id="xKC-lF-9Ru"/>
-                    <constraint firstItem="UQf-9o-aD7" firstAttribute="bottom" secondItem="lFU-Q2-IPb" secondAttribute="bottom" id="yWU-mb-q4l"/>
+                    <constraint firstItem="UQf-9o-aD7" firstAttribute="leading" secondItem="DAg-gy-vm4" secondAttribute="leadingMargin" constant="-4" id="RSF-Et-q3F"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="UQf-9o-aD7" secondAttribute="bottom" constant="11" id="XJ8-KD-o25"/>
+                    <constraint firstItem="UQf-9o-aD7" firstAttribute="top" secondItem="DAg-gy-vm4" secondAttribute="topMargin" constant="9" id="Ygh-wP-OI9"/>
+                    <constraint firstItem="lFU-Q2-IPb" firstAttribute="leading" secondItem="cjJ-zi-EIm" secondAttribute="leading" id="axt-sh-bJL"/>
+                    <constraint firstItem="UQf-9o-aD7" firstAttribute="top" secondItem="DAg-gy-vm4" secondAttribute="topMargin" constant="12" id="gLk-yA-mpe"/>
+                    <constraint firstItem="cjJ-zi-EIm" firstAttribute="leading" secondItem="UQf-9o-aD7" secondAttribute="trailing" constant="20" id="ja8-lp-p81"/>
+                    <constraint firstItem="UQf-9o-aD7" firstAttribute="leading" secondItem="DAg-gy-vm4" secondAttribute="leadingMargin" constant="-7" id="uve-dh-o4h"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="RSF-Et-q3F"/>
+                        <exclude reference="Ygh-wP-OI9"/>
+                        <exclude reference="uve-dh-o4h"/>
+                        <exclude reference="6ab-z5-Kn3"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="imageV" destination="UQf-9o-aD7" id="MZb-6U-vvw"/>
@@ -53,6 +71,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="ancReaded" width="34" height="34"/>
+        <image name="ancReaded" width="128" height="128"/>
     </resources>
 </document>

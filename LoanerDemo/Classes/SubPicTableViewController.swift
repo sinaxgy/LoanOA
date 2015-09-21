@@ -188,7 +188,6 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 photoBrowser.dataSource = self
                 photoBrowser.isMutable = NSString(string: item.multipage).boolValue
                 photoBrowser.imageUrls = LoanerHelper.OriginalUrlArraywith(item.imageurl)
-                println(photoBrowser.imageUrls)
                 photoBrowser.navigationItem.title = item.pic_explain
                 photoBrowser.currentIndexPath = NSIndexPath(forRow: 0, inSection: 0)
                 self.presentViewController(nav, animated: false, completion: nil)
@@ -260,7 +259,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
         cell.contentView.addSubview(hud)
         hud.show(true)
         
-        if var item:PicJsonItemInfo = self.tableArray[self.selectedIndexPath.row] as? PicJsonItemInfo { var index = 0
+        if var item:PicJsonItemInfo = self.tableArray[currentIndexPath.row] as? PicJsonItemInfo { var index = 0
             if item.multipage == "1" {index = item.imageurl.count + 1}
             let str = "pro_id=\(AppDelegate.app().pro_id)&filename=\(item.tbName)&page=\(index)&nsdata="
             var uploadData:NSMutableData = NSMutableData()
@@ -279,7 +278,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                     hud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
                     hud.mode = MBProgressHUDMode.CustomView
                     hud.hide(true, afterDelay: 1)
-                    if let cell1 = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
+                    if let cell1 = self.tableView.cellForRowAtIndexPath(currentIndexPath) as? SingleTableViewCell {
                         if !cell1.isMutable || item.imageurl.count == 0  {
                             //单张或者无图片数据时，更新略缩图
                             let url = AppDelegate.app().ipUrl + (data as! String) as String + "?\(arc4random() % 1000)"
@@ -360,7 +359,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 let cellView = self.tableView.cellForRowAtIndexPath(currentIndexPath)
                 var hud:MBProgressHUD = MBProgressHUD(view: cellView)
                 cellView?.addSubview(hud);hud.show(true)
-                if var item:PicJsonItemInfo = self.tableArray[self.selectedIndexPath.row] as? PicJsonItemInfo {
+                if var item:PicJsonItemInfo = self.tableArray[currentIndexPath.row] as? PicJsonItemInfo {
                 if let asset = array.firstObject as? ZLPhotoAssets {
                     let image = asset.originImage()
                     let imageData:NSData = UIImagePNGRepresentation(image)
@@ -383,7 +382,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                                     let url = AppDelegate.app().ipUrl + (item.imageurl.firstObject as! String) + "?\(arc4random() % 1000)"
                                     cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                                 }
-                                self.tableView.reloadRowsAtIndexPaths([self.selectedIndexPath], withRowAnimation: UITableViewRowAnimation.Middle)
+                                self.tableView.reloadRowsAtIndexPaths([currentIndexPath], withRowAnimation: UITableViewRowAnimation.Middle)
                             }, failed: {},outTime:{})
                     })
                     }}
@@ -403,11 +402,11 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 let serialQueue:dispatch_queue_t = dispatch_queue_create("serial", DISPATCH_QUEUE_SERIAL)
                 let currentIndexPath:NSIndexPath = self.selectedIndexPath
                 var total:Float = 0;var current:Float = 0
-                let cellView = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath)
+                let cellView = self.tableView.cellForRowAtIndexPath(currentIndexPath)
                 var hud:MBProgressHUD = MBProgressHUD(view: cellView)
                 cellView?.addSubview(hud)
                 hud.show(true)
-                if var item:PicJsonItemInfo = self.tableArray[self.selectedIndexPath.row] as? PicJsonItemInfo {
+                if var item:PicJsonItemInfo = self.tableArray[currentIndexPath.row] as? PicJsonItemInfo {
                     var currentIndex = item.imageurl.count + 1;
                     var imageUrlArray:NSMutableArray = [];//NSMutableArray(array: item.imageurl)
                 for ass in array {
@@ -427,7 +426,6 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                                 current += (Float(bytesWritten) * 0.000977)
                                 }, success: {
                                     data in
-                                    println(data)
                                     if data == nil {println("empty return");return}
                                     imageUrlArray.addObject(data as! String)
                                     if imageUrlArray.count == array.count { //发送完成
@@ -452,10 +450,9 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                                             cell.mutableCollection.reloadData()
                                         }
                                     }
-                                    self.tableView.reloadRowsAtIndexPaths([self.selectedIndexPath], withRowAnimation: UITableViewRowAnimation.Middle)
+                                    self.tableView.reloadRowsAtIndexPaths([currentIndexPath], withRowAnimation: UITableViewRowAnimation.Middle)
                                 },failed:{
                                 },outTime:{})
-        
                             sleep(2)
                         })
                     }

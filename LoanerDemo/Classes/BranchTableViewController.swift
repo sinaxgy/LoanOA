@@ -29,9 +29,8 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
         super.viewDidLoad()
         self.navigationItem.title = self.typeOp.proNum
         self.showActivityIndicatorViewInNavigationItem()
-        //self.loadJSONOfView()
+        
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"), style: UIBarButtonItemStyle.Bordered, target: self, action: "cancel:")
-            //UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "cancel:")
         
         self.tableView.registerNib(UINib(nibName: "BranchTableViewCell", bundle: nil), forCellReuseIdentifier: "branchCell")
     }
@@ -154,19 +153,6 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "cell")
-//        if let branch = self.branchItems[indexPath.row] as? BranchItem {
-//            if branch.isComplete == "true" {
-//                cell.textLabel?.textColor = UIColor.redColor()
-//                var textAttach:NSTextAttachment = NSTextAttachment()
-//                textAttach.image = UIImage(named: "mustMark")
-//                var str:NSAttributedString = NSAttributedString(attachment: textAttach)
-//                cell.textLabel?.attributedText = str
-//                
-//            }
-//            cell.textLabel?.text = branch.tag_name
-//            cell.textLabel?.font = UIFont.systemFontOfSize(textFontSize)
-//        }
         let cell = tableView.dequeueReusableCellWithIdentifier("branchCell", forIndexPath: indexPath) as! BranchTableViewCell
         if let branch = self.branchItems[indexPath.row] as? BranchItem {
             if branch.isComplete == "false" {
@@ -305,8 +291,8 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
         }
         if array.count == 1 {
             if array.firstObject as! String == "submitEnable" {
-                //self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "submitAction")
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "submit"), style: UIBarButtonItemStyle.Bordered, target: self, action: "submitAction")
+                
                 return
             }
         }else {
@@ -323,7 +309,6 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                 }
             }
             self.menuItems = items
-            //self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Bookmarks, target: self, action: "showMenu:")
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "more"), style: UIBarButtonItemStyle.Bordered, target: self, action: "showMenu:")
         }
     }

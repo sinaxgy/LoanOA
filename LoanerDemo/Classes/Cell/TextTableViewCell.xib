@@ -33,7 +33,7 @@
                         <rect key="frame" x="262" y="11" width="58" height="22"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="58" id="4uI-mF-aAW"/>
-                            <constraint firstAttribute="width" constant="58" id="YpU-7n-xIN"/>
+                            <constraint firstAttribute="width" constant="58" id="gLW-Oc-d4L"/>
                         </constraints>
                         <state key="normal" image="delete">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -51,11 +51,11 @@
                 <constraints>
                     <constraint firstAttribute="trailingMargin" secondItem="AjX-FG-bE2" secondAttribute="trailing" constant="-8" id="2HG-xO-ozp"/>
                     <constraint firstItem="6fD-92-AsC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="3" id="9Tc-FJ-ymc"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="AjX-FG-bE2" secondAttribute="trailing" constant="-8" id="FF1-p9-8mB"/>
+                    <constraint firstItem="AjX-FG-bE2" firstAttribute="top" secondItem="6fD-92-AsC" secondAttribute="top" id="FEh-GL-UQh"/>
                     <constraint firstItem="6fD-92-AsC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="N6e-sc-ii5"/>
                     <constraint firstItem="6fD-92-AsC" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="UYL-4M-cCv"/>
-                    <constraint firstItem="AjX-FG-bE2" firstAttribute="top" secondItem="6fD-92-AsC" secondAttribute="top" id="Zd5-T7-Cyl"/>
                     <constraint firstItem="AjX-FG-bE2" firstAttribute="leading" secondItem="6fD-92-AsC" secondAttribute="trailing" constant="10" id="dTW-85-f88"/>
+                    <constraint firstAttribute="trailing" secondItem="AjX-FG-bE2" secondAttribute="trailing" id="hGc-QZ-GMt"/>
                     <constraint firstItem="6fD-92-AsC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="lIs-Ip-O2U"/>
                 </constraints>
                 <variation key="default">

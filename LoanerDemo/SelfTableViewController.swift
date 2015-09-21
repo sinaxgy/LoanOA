@@ -12,7 +12,7 @@ import Alamofire
 class SelfTableViewController: UITableViewController ,personalMessageEditDelegete{
     
     var tableDataDic:NSDictionary!
-    var actionString = "settingIP:"
+    var actionString = "logout:"
     var buttonTitle = "退出登录"
     
     var infoArray:NSArray = ["user_name","user_sex","user_id","user_tel","user_email","offline_name"]
@@ -21,7 +21,7 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if actionString == "settingIP:" && buttonTitle == "退出登录" {
+        if actionString == "logout:" && buttonTitle == "退出登录" {
             tableDataDic = self.getPersonalInfo()
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "配置IP", style: UIBarButtonItemStyle.Plain, target: self, action:"settingIP:")
             self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([
@@ -61,6 +61,7 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
     
     func payFinance(sender:UIButton) {
         sender.selected = !sender.selected
+        sender.enabled = sender.selected
         let dic = self.getPersonalInfo()
         var hud:MBProgressHUD = MBProgressHUD(view: self.view)
         hud.show(true);self.view.addSubview(hud)
@@ -80,6 +81,10 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
                             hud.mode = MBProgressHUDMode.CustomView
                             hud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
                             hud.hide(true, afterDelay: 1)
+                            var gcdDelay:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * NSEC_PER_SEC))
+                            dispatch_after(gcdDelay, dispatch_get_main_queue(), { () -> Void in
+                                self.navigationController?.popToRootViewControllerAnimated(false)
+                            })
                         }
             }, failed: { () -> Void in
                 hud.hide(true, afterDelay: 1)

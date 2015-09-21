@@ -20,12 +20,14 @@ class TabBarViewController: UITabBarController {
         // Do any additional setup after loading the view.
         UITabBarItem.appearance().setTitleTextAttributes(
             [NSFontAttributeName:UIFont.systemFontOfSize(12),
-                NSForegroundColorAttributeName:UIColor(red: 186.0/255.0, green: 205.0/255.0, blue: 255.0/205.0, alpha: 1)], forState: UIControlState.Normal)
+                NSForegroundColorAttributeName:UIColor.whiteColor()], forState: UIControlState.Normal)
         UITabBarItem.appearance().setTitleTextAttributes(
             [NSFontAttributeName:UIFont.systemFontOfSize(10),
-                NSForegroundColorAttributeName:UIColor.whiteColor()], forState: UIControlState.Selected)
+                NSForegroundColorAttributeName:UIColor(red: 0.0/255.0, green: 46.0/255.0, blue: 116.0/205.0, alpha: 1)], forState: UIControlState.Selected)
         for it in self.tabBar.items! {
-            if let item = it as? UITabBarItem {
+            if var item = it as? UITabBarItem {
+                //item = UITabBarItem(title: "中国", image: UIImage(named: "ancReaded"), selectedImage: UIImage(named: "ancReaded"))
+                
                 item.image = item.image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
             }
         }

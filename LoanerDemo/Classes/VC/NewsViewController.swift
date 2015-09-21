@@ -23,6 +23,7 @@ class NewsViewController: UIViewController {
         self.titleLabel.text = titles
         self.dateLabel.text = date
         self.detailText.text = detail
+        
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"), style: UIBarButtonItemStyle.Bordered, target: self, action: "cancel:")
         // Do any additional setup after loading the view.
     }

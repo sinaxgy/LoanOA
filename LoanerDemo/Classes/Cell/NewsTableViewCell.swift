@@ -16,11 +16,18 @@ class NewsTableViewCell: UITableViewCell {
     @IBOutlet weak var subTextLabel: UILabel!
 
     
-    func setupCell(title:String,date:String,isRead:Bool) {
+    func setupNewsCell(title:String,date:String,isRead:Bool) {
         self.titleLabel.text = title
         self.subTextLabel.text = date
         self.imageV.frame = CGRectMake(0, 0, 36, 36)
         self.imageV.image = UIImage(named: (isRead ? "ancReaded" : "announce"))
+    }
+    
+    func setupCell(title:String,date:String,isRead:Bool) {
+        self.titleLabel.text = title
+        self.subTextLabel.text = date
+        self.imageV.frame = CGRectMake(0, 0, 36, 36)
+        self.imageV.image = UIImage(named: (isRead ? "finance" : "finance"))
     }
     
     override func awakeFromNib() {
