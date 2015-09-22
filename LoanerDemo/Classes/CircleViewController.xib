@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CircleViewController" customModule="车融资" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CircleViewController" customModule="车融资OA" customModuleProvider="target">
             <connections>
                 <outlet property="msgLabel" destination="yFN-aV-sxE" id="Mu1-d3-ptN"/>
                 <outlet property="msgTextView" destination="GIy-cG-MJz" id="Gh2-d0-Kww"/>
-                <outlet property="submitBtn" destination="a39-MD-z0z" id="scb-VF-WbJ"/>
                 <outlet property="sumLabel" destination="Xkr-Uv-Rrc" id="KkI-qj-MTT"/>
                 <outlet property="sumTextField" destination="1Vd-2R-Ioj" id="aHG-t9-JhE"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -32,26 +31,16 @@
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1Vd-2R-Ioj">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入建议金额" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1Vd-2R-Ioj">
                     <rect key="frame" x="108" y="94" width="473" height="30"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numbersAndPunctuation"/>
                 </textField>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a39-MD-z0z">
-                    <rect key="frame" x="19" y="426" width="562" height="30"/>
-                    <color key="backgroundColor" red="0.50196081399917603" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" title="提交">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="submitAction:" destination="-1" eventType="touchUpInside" id="b5z-vA-dWr"/>
-                    </connections>
-                </button>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GIy-cG-MJz">
-                    <rect key="frame" x="108" y="164" width="473" height="211"/>
+                    <rect key="frame" x="108" y="164" width="473" height="241"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="211" id="tWl-Kf-P2o"/>
+                        <constraint firstAttribute="height" constant="241" id="72P-15-0IX"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
@@ -59,19 +48,16 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="GIy-cG-MJz" firstAttribute="leading" secondItem="1Vd-2R-Ioj" secondAttribute="leading" id="7xR-sZ-vVC"/>
                 <constraint firstAttribute="trailing" secondItem="1Vd-2R-Ioj" secondAttribute="trailing" constant="19" id="Htk-JL-Yab"/>
-                <constraint firstItem="a39-MD-z0z" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="19" id="K5E-Kt-H9h"/>
+                <constraint firstItem="GIy-cG-MJz" firstAttribute="trailing" secondItem="1Vd-2R-Ioj" secondAttribute="trailing" id="LP8-GS-mQt"/>
                 <constraint firstItem="Xkr-Uv-Rrc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="19" id="N1u-PI-E77"/>
-                <constraint firstItem="GIy-cG-MJz" firstAttribute="leading" secondItem="yFN-aV-sxE" secondAttribute="trailing" constant="19" id="QgJ-aP-e2W"/>
-                <constraint firstItem="a39-MD-z0z" firstAttribute="top" secondItem="GIy-cG-MJz" secondAttribute="bottom" constant="51" id="SUr-5B-GiI"/>
-                <constraint firstItem="GIy-cG-MJz" firstAttribute="top" secondItem="1Vd-2R-Ioj" secondAttribute="bottom" constant="40" id="Vgg-nK-KiG"/>
                 <constraint firstItem="yFN-aV-sxE" firstAttribute="top" secondItem="Xkr-Uv-Rrc" secondAttribute="bottom" constant="54" id="gP5-mD-Hbu"/>
                 <constraint firstItem="yFN-aV-sxE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="19" id="id7-NM-OSx"/>
-                <constraint firstAttribute="trailing" secondItem="a39-MD-z0z" secondAttribute="trailing" constant="19" id="jkb-DW-ygW"/>
+                <constraint firstItem="GIy-cG-MJz" firstAttribute="top" secondItem="1Vd-2R-Ioj" secondAttribute="bottom" constant="40" id="qjk-Jy-H4q"/>
                 <constraint firstItem="Xkr-Uv-Rrc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="rMe-ze-mre"/>
                 <constraint firstItem="1Vd-2R-Ioj" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="94" id="vGn-ig-t37"/>
                 <constraint firstItem="1Vd-2R-Ioj" firstAttribute="leading" secondItem="Xkr-Uv-Rrc" secondAttribute="trailing" constant="19" id="vHP-dT-KJM"/>
-                <constraint firstAttribute="trailing" secondItem="GIy-cG-MJz" secondAttribute="trailing" constant="19" id="wtU-jO-bbi"/>
             </constraints>
             <point key="canvasLocation" x="305" y="249"/>
         </view>

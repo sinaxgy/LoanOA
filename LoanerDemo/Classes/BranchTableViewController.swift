@@ -17,7 +17,6 @@ struct operationType {
 class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UIAlertViewDelegate,PopoverMenuViewDelegate{
     
     var isAdd:Bool = true
-    //var pro_id:String = ""{didSet{AppDelegate.app().pro_id = self.pro_id}}
     var isShowNoti = false
     var typeOp = operationType(type: "", proNum: "")
     var dbjson:JSON = JSON.nullJSON
@@ -178,7 +177,6 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                     var imageVC:MasterImageTableViewController = MasterImageTableViewController()
                     imageVC.picURL.footer = branch.data.description
                     imageVC.title = "图片上传"
-                    //imageVC.pro_id = self.pro_id
                     if branch.editable == "true" {
                         imageVC.editable = true
                     }else if branch.editable == "false" {
@@ -197,10 +195,10 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                     self.navigationController?.pushViewController(requestVC, animated: true)
                 }
             case 2:
-                let circleVC:CircleViewController = CircleViewController()
+                let circleVC:CircleViewController = CircleViewController()//FeedbackTableVC = FeedbackTableVC()
+                
                 circleVC.json = branch.data
                 circleVC.title = branch.tag_name
-                //circleVC.pro_id = self.pro_id
                 self.navigationController?.pushViewController(circleVC, animated: true)
             case 13,14:
                 var detailView:DetailTableViewController = DetailTableViewController()

@@ -9,17 +9,17 @@
 import UIKit
 import Alamofire
 
-class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertViewDelegate{
+class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertViewDelegate,UITextViewDelegate,UITextFieldDelegate{
 
     @IBOutlet weak var sumLabel: UILabel!
     @IBOutlet weak var msgLabel: UILabel!
     @IBOutlet weak var sumTextField: UITextField!
     @IBOutlet weak var msgTextView: UITextView!
-    @IBOutlet weak var submitBtn: UIButton!
     
     var json:JSON = JSON.nullJSON
     var menuView : PopoverMenuView!
-    //var pro_id:String = ""
+    
+    var label:UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,28 +27,46 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
         self.msgTextView.layer.borderColor = UIColor(red: 230.0/255.0, green: 250.0/255.0, blue: 250.0/255.0, alpha: 1).CGColor
         self.msgTextView.layer.borderWidth = 3
         self.msgTextView.layer.cornerRadius = 6
+        self.sumLabel.font = UIFont.systemFontOfSize(textFontSize)
+        self.msgLabel.font = UIFont.systemFontOfSize(textFontSize)
+        self.sumTextField.font = UIFont.systemFontOfSize(detailFontSize)
+        self.msgTextView.font = UIFont.systemFontOfSize(detailFontSize)
         
         if self.json.count > 0{
             self.sumTextField.enabled = false
             self.msgTextView.editable = false
-            self.submitBtn.hidden = true
-            self.submitBtn = UIButton()
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "操作", style: UIBarButtonItemStyle.Plain, target: self, action: "handleFeedback:")
         }else {
             var tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
             self.view.addGestureRecognizer(tapGesture)
-            self.submitBtn.layer.cornerRadius = 8
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "提交", style: UIBarButtonItemStyle.Bordered, target: self, action: "submitAction:")
+            self.msgTextView.delegate = self
+            
+            var toolBar:UIToolbar = UIToolbar(frame: CGRectMake(0, 0, self.view.frame.width, 35))
+            var btn:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+            btn.frame = CGRectMake(0, 5, 35, 35)
+            btn.addTarget(self, action: "hideKeyboard", forControlEvents: UIControlEvents.TouchUpInside)
+            btn.setImage(UIImage(named: "hideKeyboard"), forState: UIControlState.Normal)
+            toolBar.setItems([UIBarButtonItem(customView: btn)], animated: false)
+            self.msgTextView.inputAccessoryView = toolBar
+            self.sumTextField.inputAccessoryView = toolBar
+            self.sumTextField.delegate = self
+            
+            label = UILabel(frame: CGRectMake(self.msgTextView.bounds.origin.x + 5, self.msgTextView.bounds.origin.y + 5, self.msgTextView.width - 10, 20))
+            label.backgroundColor = UIColor.clearColor()
+            label.text = "请输入反馈意见";label.textColor = UIColor.lightGrayColor()
+            label.font = UIFont.systemFontOfSize(detailFontSize)
+            self.msgTextView.addSubview(label)
         }
     }
     
-    @IBAction func submitAction(sender: AnyObject) {
+    func submitAction(sender: AnyObject) {
+        self.keyboardHide()
         if self.sumTextField.text == "" {
             let alert:UIAlertView = UIAlertView(title: "错误", message: "请输入建议金额", delegate: nil, cancelButtonTitle: "确定")
             alert.show()
             return
         }
-        
-        //let hud:MBProgressHUD = MBProgressHUD.showHUDAddedTo(self.navigationController!.view, animated: true)
         
         let progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
         self.navigationController?.view.addSubview(progressHud)
@@ -156,7 +174,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
                 return
             }
             let feedbackVC:CircleViewController = CircleViewController()
-            //feedbackVC.pro_id = self.pro_id
+            feedbackVC.navigationItem.title = "反馈回执"
             self.navigationController?.pushViewController(feedbackVC, animated: true)
             return
         case 2:
@@ -223,6 +241,28 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
                 }
             }
         }
+    }
+    
+    //MARK:--UITextViewDelegate
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if !self.label.hidden {
+            self.label.hidden = true
+        }
+        return true
+    }
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        if textView.text == "" {
+            if self.label.hidden {
+                self.label.hidden = false
+            }
+        }
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     convenience init() {

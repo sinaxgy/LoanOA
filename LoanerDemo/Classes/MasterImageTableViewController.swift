@@ -15,7 +15,6 @@ struct requestURL {
         }
     }
     var URL:String
-    //var pro_id:String
 }
 
 let ipurl = "http://\(AppDelegate.app().IP)/"
@@ -28,18 +27,13 @@ class MasterImageTableViewController: UITableViewController {
     var masterSubURL:NSMutableArray = []
     var titleArray:NSMutableArray = []
     let kSingleCell = "singleCell";var editable = false
-    //var pro_id = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.showActivityIndicatorViewInNavigationItem()
         self.tableView.registerNib(UINib(nibName: "SingleTableViewCell", bundle: nil), forCellReuseIdentifier: kSingleCell)
-//        var progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
-//        self.navigationController?.view.addSubview(progressHud)
-//        progressHud.show(true)
         NetworkRequest.AlamofireGetJSON(self.picURL.URL, success: {
             (data) in
-            //progressHud.hide(true)
             self.masterJson = JSON(data!)
             if self.masterJson != nil {
                 self.tableView.reloadData()
@@ -47,12 +41,8 @@ class MasterImageTableViewController: UITableViewController {
             self.hiddenActivityIndicatorViewInNavigationItem()
             }, failed: {
                 self.hiddenActivityIndicatorViewInNavigationItem()
-//                progressHud.labelText = "连接异常"
-//                progressHud.hide(true, afterDelay: 1)
             }, outTime: {
                     self.hiddenActivityIndicatorViewInNavigationItem()
-//                    progressHud.labelText = "请求超时"
-//                    progressHud.hide(true, afterDelay: 1)
         })
     }
     
@@ -105,7 +95,7 @@ class MasterImageTableViewController: UITableViewController {
                         let url = AppDelegate.app().ipUrl + (v as! String) + "?\(arc4random() % 100)"
                         cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                     }else if k.description == "url" {
-                        var imgU:requestURL = requestURL(footer: "", URL: "")//, pro_id: "")
+                        var imgU:requestURL = requestURL(footer: "", URL: "")
                         imgU.footer = v as! String
                         self.masterSubURL.addObject(imgU.URL)
                     }else if k.description == "date" {
@@ -125,7 +115,6 @@ class MasterImageTableViewController: UITableViewController {
         subPicVC.title = self.titleArray[indexPath.row] as? String
         subPicVC.subURL = self.masterSubURL[indexPath.row] as! String
         subPicVC.editable = self.editable
-        //subPicVC.pro_id = self.pro_id
         self.navigationController?.pushViewController(subPicVC, animated: true)
     }
 }

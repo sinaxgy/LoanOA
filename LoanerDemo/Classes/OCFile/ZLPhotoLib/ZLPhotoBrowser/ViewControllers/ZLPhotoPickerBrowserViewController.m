@@ -487,7 +487,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 -(void)setPageLabelPage:(NSInteger)page{
-    self.pageLabel.text = [NSString stringWithFormat:@"%ld / %ld",page + 1, (unsigned long)self.photos.count];
+    self.pageLabel.text = [NSString stringWithFormat:@"%lu / %ld",(unsigned long)(page + 1), (unsigned long)self.photos.count];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{

@@ -36,6 +36,9 @@ class NewsViewController: UIViewController {
         self.titleLabel.text = title
         self.dateLabel.text = date
         self.detailText.text = text
+        self.titleLabel.font = UIFont.systemFontOfSize(textFontSize)
+        self.dateLabel.font = UIFont.systemFontOfSize(detailFontSize)
+        self.detailText.font = UIFont.systemFontOfSize(detailFontSize)
         
     }
 

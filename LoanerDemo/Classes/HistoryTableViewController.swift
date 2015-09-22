@@ -243,8 +243,8 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         headerView.addSubview(label)
         
         var triangleView:UIImageView = UIImageView(frame: CGRectMake(5, 10, 15, 15))
-        var triangleName = (self.hideSection == section ? "triangleDown" : "triangle")
-        if self.hideSection == 2 {triangleName = "triangleDown"}
+        var triangleName = (self.hideSection == section ? "triangle" : "triangleDown")
+        if self.hideSection == 2 {triangleName = "triangle"}
         triangleView.image = UIImage(named: triangleName)
         triangleView.contentMode = UIViewContentMode.ScaleAspectFit
         headerView.addSubview(triangleView)
@@ -304,7 +304,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
             
         }
         self.tableView.beginUpdates()
-        self.tableView.reloadSections(NSIndexSet(index:view.tag), withRowAnimation: UITableViewRowAnimation.Middle)
+        self.tableView.reloadSections(NSIndexSet(index:view.tag), withRowAnimation: UITableViewRowAnimation.Fade)
         self.tableView.endUpdates()
     }
 }
