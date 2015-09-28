@@ -148,7 +148,7 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
         
         let user_id: NSString! = self.user_idText.text
         let password: NSString! = self.passwordText.text
-        let url = "https://\(AppDelegate.app().IP)/" + config + loginURL
+        let url = "http://\(AppDelegate.app().IP)/" + config + loginURL
         
         NetworkRequest.AlamofirePostParametersResponseJSON(url, parameters: ["user_id":"\(user_id)","user_password":"\(password)"], success: {(json) in
             if (json.count < 7) {
