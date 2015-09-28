@@ -43,7 +43,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
             let url = AppDelegate.app().ipUrl + (self.imageUrlArray[indexPath.row] as! String) + "?\(arc4random() % 100)"
             cell.imageView.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
             
-            var longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
+            let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
             cell.addGestureRecognizer(longPress)
             return cell
         }
@@ -82,11 +82,11 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
             if let index = self.mutableCollection.indexPathForCell((recognizer.view as? SubPopCollectionViewCell)!) {
                 self.selectedIndexPath = index
                 if index.row != self.imageUrlArray.count - 1 {      //最后一个
-                    var actionSheet:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: "替换")
+                    let actionSheet:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: "替换")
                     actionSheet.tag = 218
                     actionSheet.showInView(self.viewController.view)
                 }else {
-                    var actionSheet:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: "删除", otherButtonTitles: "替换")
+                    let actionSheet:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: "删除", otherButtonTitles: "替换")
                     actionSheet.tag = 217
                     actionSheet.showInView(self.viewController.view)
                 }
@@ -109,7 +109,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
                     }
                     }, failed: {}, outTime: {})
             case 2:         //替换
-                var sheetAction:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "从相册中选取","打开照相机")
+                let sheetAction:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "从相册中选取","打开照相机")
                 sheetAction.tag = 219
                 sheetAction.showInView(self.viewController.view)
             default:
@@ -119,7 +119,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
         case 218:
             switch buttonIndex {
             case 0:         //替换
-                var sheetAction:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "从相册中选取","打开照相机")
+                let sheetAction:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "从相册中选取","打开照相机")
                 sheetAction.tag = 219
                 sheetAction.showInView(self.viewController.view)
             default:
@@ -160,7 +160,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
     //MARK:-----Camera function
     func takePhoto(){
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
-            var picker:UIImagePickerController = UIImagePickerController()
+            let picker:UIImagePickerController = UIImagePickerController()
             picker.delegate = self
             //picker.allowsEditing = true
             picker.sourceType = UIImagePickerControllerSourceType.Camera
@@ -171,7 +171,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         self.viewController.dismissViewControllerAnimated(true, completion: nil)
         
         var image:UIImage = info[UIImagePickerControllerOriginalImage]! as! UIImage
@@ -187,13 +187,13 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
         }
         
         if let cell:SubPopCollectionViewCell = (self.mutableCollection.cellForItemAtIndexPath(self.selectedIndexPath) as? SubPopCollectionViewCell) {
-            var hud:MBProgressHUD = MBProgressHUD(view: cell.contentView)
+            let hud:MBProgressHUD = MBProgressHUD(view: cell.contentView)
             cell.contentView.addSubview(hud)
             hud.show(true)
             let str = "pro_id=\(AppDelegate.app().pro_id)&filename=\(self.tbName)&page=\(self.selectedIndexPath.row + 1)&nsdata="
-            var uploadData:NSMutableData = NSMutableData()
+            let uploadData:NSMutableData = NSMutableData()
             uploadData.appendString(str)
-            uploadData.appendData(UIImagePNGRepresentation(image))
+            uploadData.appendData(UIImagePNGRepresentation(image)!)
             NetworkRequest.AlamofireUploadImage("\(AppDelegate.app().ipUrl)web/index.php/app/upload", data: uploadData, progress: {
                 (bytesWritten,totalBytesWritten,totalBytesExpectedToWrite) in
                 hud.mode = MBProgressHUDMode.Determinate
@@ -223,7 +223,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
     
     //MARK: --
     func setupPhotoBrowser(indexPath:NSIndexPath) {
-        var photoBrowser:ZLPhotoPickerBrowserViewController = ZLPhotoPickerBrowserViewController()
+        let photoBrowser:ZLPhotoPickerBrowserViewController = ZLPhotoPickerBrowserViewController()
         photoBrowser.delegate = self
         photoBrowser.dataSource = self
         photoBrowser.editing = true
@@ -240,7 +240,7 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
     
     func photoBrowser(pickerBrowser: ZLPhotoPickerBrowserViewController!, photoAtIndexPath indexPath: NSIndexPath!) -> ZLPhotoPickerBrowserPhoto! {
         let str: String = AppDelegate.app().ipUrl  + LoanerHelper.OriginalImageURLStrWithSmallURLStr(self.imageUrlArray[indexPath.row] as! String) + "?\(arc4random() % 100)"
-        var photo:ZLPhotoPickerBrowserPhoto = ZLPhotoPickerBrowserPhoto(anyImageObjWith: str)
+        let photo:ZLPhotoPickerBrowserPhoto = ZLPhotoPickerBrowserPhoto(anyImageObjWith: str)
         if let cell = self.mutableCollection.cellForItemAtIndexPath(indexPath) as? SubPopCollectionViewCell {
             photo.toView = cell.imageView
             photo.thumbImage = cell.imageView.image
@@ -250,25 +250,25 @@ class PopMutableTableViewCell: UITableViewCell ,UICollectionViewDataSource,UICol
     
     //MARK:-----ZLPhotoPickerViewController
     func openZLPhotoSinglePicker() {    //单张的上传与替换
-        var pickerVC:ZLPhotoPickerViewController = ZLPhotoPickerViewController()
+        let pickerVC:ZLPhotoPickerViewController = ZLPhotoPickerViewController()
         pickerVC.status = PickerViewShowStatus.CameraRoll
         pickerVC.minCount = 1
         pickerVC.showPickerVc(self.viewController)
         pickerVC.callBack = { (assets) in
             if let array:NSArray = assets as? NSArray {
-                var queue:dispatch_queue_t = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
-                var group:dispatch_group_t = dispatch_group_create()
+                let queue:dispatch_queue_t = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+                let group:dispatch_group_t = dispatch_group_create()
                 let currentIndexPath:NSIndexPath = self.selectedIndexPath
                 let cellView = self.mutableCollection.cellForItemAtIndexPath(currentIndexPath)
-                var hud:MBProgressHUD = MBProgressHUD(view: cellView)
+                let hud:MBProgressHUD = MBProgressHUD(view: cellView)
                 cellView?.addSubview(hud);hud.show(true)
                 if let asset = array.firstObject as? ZLPhotoAssets {
                     let image = asset.originImage()
-                    let imageData:NSData = UIImagePNGRepresentation(image)
+                    let imageData:NSData = UIImagePNGRepresentation(image)!
                     dispatch_group_async(group, queue, {
                         let str = "pro_id=\(AppDelegate.app().pro_id)&filename=\(self.tbName)&page=\(currentIndexPath.row + 1)&nsdata="
                         let url = "\(AppDelegate.app().ipUrl)" + config + uploadUrl
-                        var uploadData:NSMutableData = NSMutableData()
+                        let uploadData:NSMutableData = NSMutableData()
                         uploadData.appendString(str)
                         uploadData.appendData(imageData)
                         NetworkRequest.AlamofireUploadImage(url, data: uploadData, progress: {(_,written,totalExpectedToWrite) in

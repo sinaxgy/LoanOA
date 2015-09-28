@@ -40,7 +40,7 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
             , forKeyPath: "_placeholderLabel.textColor")
         self.view.addSubview(user_idText)
         
-        var line:UIImageView = UIImageView(frame: CGRectMake(0, 125, width, 1))
+        let line:UIImageView = UIImageView(frame: CGRectMake(0, 125, width, 1))
         line.image = UIImage(named: "line")
         line.centerX = self.view.centerX
         self.view.addSubview(line)
@@ -56,12 +56,12 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
             , forKeyPath: "_placeholderLabel.textColor")
         self.view.addSubview(passwordText)
         
-        var line1:UIImageView = UIImageView(frame: CGRectMake(0, 165, width, 1))
+        let line1:UIImageView = UIImageView(frame: CGRectMake(0, 165, width, 1))
         line1.image = UIImage(named: "line")
         line1.centerX = self.view.centerX
         self.view.addSubview(line1)
         
-        savePasswordBtn = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        savePasswordBtn = UIButton(type: UIButtonType.Custom)
         savePasswordBtn.frame = CGRectMake(self.view.centerX - width / 2, 180, 15, 15)
         savePasswordBtn.setBackgroundImage(UIImage(named: "pwunselected"), forState: UIControlState.Normal)
         savePasswordBtn.setBackgroundImage(UIImage(named: "pwselected"), forState: UIControlState.Selected)
@@ -70,26 +70,34 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
         
         UITextField.appearance().tintColor = UIColor.whiteColor()
         
-        var remenberBtn:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        let remenberBtn:UIButton = UIButton(type: UIButtonType.Custom)
          remenberBtn.frame = CGRectMake(self.view.centerX - width / 2 + 20, 178, 80, 20)
-        var text:NSMutableAttributedString = NSMutableAttributedString(string: "记住密码")
-        text.addAttributes([NSForegroundColorAttributeName:UIColor.whiteColor(),
-            NSFontAttributeName:UIFont.systemFontOfSize(textFontSize, weight: 2)], range: NSMakeRange(0, text.length))
+        let text:NSMutableAttributedString = NSMutableAttributedString(string: "记住密码")
+        if #available(iOS 8.2, *) {
+            text.addAttributes([NSForegroundColorAttributeName:UIColor.whiteColor(),
+                NSFontAttributeName:UIFont.systemFontOfSize(textFontSize, weight: 2)], range: NSMakeRange(0, text.length))
+        } else {
+            // Fallback on earlier versions
+        }
         remenberBtn.setAttributedTitle(text, forState: UIControlState.Normal)
         remenberBtn.addTarget(self, action: "clicked:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(remenberBtn)
         
-        settingBtn = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        settingBtn = UIButton(type: UIButtonType.Custom)
         settingBtn.frame = CGRectMake(self.view.centerX + width / 2 - 55, 178, 65, 20)
-        var str:NSMutableAttributedString = NSMutableAttributedString(string: "配置IP")
-        str.addAttributes([NSForegroundColorAttributeName:UIColor.whiteColor(),NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.rawValue,
-            NSFontAttributeName:UIFont.systemFontOfSize(textFontSize, weight: 2)], range: NSMakeRange(0, str.length))
+        let str:NSMutableAttributedString = NSMutableAttributedString(string: "配置IP")
+        if #available(iOS 8.2, *) {
+            str.addAttributes([NSForegroundColorAttributeName:UIColor.whiteColor(),NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.rawValue,
+                NSFontAttributeName:UIFont.systemFontOfSize(textFontSize, weight: 2)], range: NSMakeRange(0, str.length))
+        } else {
+            // Fallback on earlier versions
+        }
         settingBtn.setAttributedTitle(str, forState: UIControlState.Normal)
         settingBtn.addTarget(self, action: "settingAction:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(settingBtn)
         
         
-        loginBtn = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        loginBtn = UIButton(type: UIButtonType.Custom)
         loginBtn.frame = CGRectMake(0, 220, width, 40)
         loginBtn.backgroundColor = UIColor.whiteColor()
         loginBtn.centerX = self.view.centerX
@@ -105,7 +113,7 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
         bk.image = UIImage(named: "background")
         self.view.addSubview(bk)
         self.initView()
-        var tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
+        let tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
         self.view.addGestureRecognizer(tapGesture)
         // Do any additional setup after loading the view.
     }
@@ -115,7 +123,7 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
         pvView.setTextField(AppDelegate.app().IP)
         pvView.popupDelegete = self
         pvView.parentVC = self
-        self.lew_presentPopupView(pvView, animation: LewPopupViewAnimationDrop.new(), dismissed: nil)
+        self.lew_presentPopupView(pvView, animation: LewPopupViewAnimationDrop(), dismissed: nil)
     }
     
     func savePasswordAction(sender: UIButton) {
@@ -133,14 +141,14 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
             return
         }
         UITextField.appearance().resignFirstResponder()
-        var progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
+        let progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
         self.view.addSubview(progressHud)
         progressHud.labelText = "正在登录"
         progressHud.show(true)
         
         let user_id: NSString! = self.user_idText.text
         let password: NSString! = self.passwordText.text
-        let url = "http://\(AppDelegate.app().IP)/" + config + loginURL
+        let url = "https://\(AppDelegate.app().IP)/" + config + loginURL
         
         NetworkRequest.AlamofirePostParametersResponseJSON(url, parameters: ["user_id":"\(user_id)","user_password":"\(password)"], success: {(json) in
             if (json.count < 7) {
@@ -151,29 +159,29 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
             }
             if json.type == .Dictionary {
                 self.personalInfomation.setDictionary(json.object as! [NSObject : AnyObject])
-            }else {println("返回数据有误")}   //预加载返回用户数据，以备保存
+            }else {print("返回数据有误")}   //预加载返回用户数据，以备保存
             var isSaveSuccess = false
             if self.savePasswordBtn.selected {
                 UserHelper.setValueOfPWIsSaved(true)
-                UserHelper.setRecentID(self.user_idText.text)
-                isSaveSuccess = UserHelper.setCurrentUserInfo(self.personalInfomation, user_id: self.user_idText.text)
+                UserHelper.setRecentID(self.user_idText.text!)
+                isSaveSuccess = UserHelper.setCurrentUserInfo(self.personalInfomation, user_id: self.user_idText.text!)
                 
-                if !KeyChain.addKeyChainItem(self.user_idText.text, user_password: self.passwordText.text, IP: AppDelegate.app().IP) {
-                    KeyChain.updateKeyChainItem(self.user_idText.text, user_password: self.passwordText.text)
-                    KeyChain.updateIPItem(self.user_idText.text, IP: AppDelegate.app().IP)
-                    let ip = KeyChain.getIPItem(self.user_idText.text)
-                    let pas = KeyChain.getKeyChainItem(self.user_idText.text)
+                if !KeyChain.addKeyChainItem(self.user_idText.text!, user_password: self.passwordText.text!, IP: AppDelegate.app().IP) {
+                    KeyChain.updateKeyChainItem(self.user_idText.text!, user_password: self.passwordText.text!)
+                    KeyChain.updateIPItem(self.user_idText.text!, IP: AppDelegate.app().IP)
+                    //let ip = KeyChain.getIPItem(self.user_idText.text!)
+                    //let pas = KeyChain.getKeyChainItem(self.user_idText.text!)
                 }
                 
             }else {
                 for key in self.personalInfomation.allKeys {
                     if key as! String == "offline_id" {
                         AppDelegate.app().offline_id = self.personalInfomation.objectForKey(key as! NSString)!.description
-                        AppDelegate.app().user_id = self.user_idText.text
+                        AppDelegate.app().user_id = self.user_idText.text!
                         break
                     }
                 }
-                let filepath = NSTemporaryDirectory().stringByAppendingPathComponent("selfInfo.plist")
+                let filepath = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("selfInfo.plist")
                 isSaveSuccess = self.personalInfomation.writeToFile(filepath, atomically: true)
             }
             
@@ -184,10 +192,10 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
                 progressHud.hide(true, afterDelay: 1)
                 AppDelegate.app().user_id = user_id as String
                 AppDelegate.app().offline_id = self.personalInfomation.objectForKey("offline_id") as! String
-                var gcdT:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC))
+                let gcdT:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC))
                 dispatch_after(gcdT, dispatch_get_main_queue(), {
-                    var loginStory:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                    AppDelegate.app().window?.rootViewController = loginStory.instantiateInitialViewController() as? UIViewController
+                    let loginStory:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    AppDelegate.app().window?.rootViewController = loginStory.instantiateInitialViewController()
                 })
             }
             
@@ -210,7 +218,7 @@ class LoginsViewController: UIViewController ,UITextFieldDelegate,personalMessag
     //MARK: --personalMessageEditDelegete
     func textfieldMessageID(idunique: String!) {
         if !LoanerHelper.isvaildIP(idunique) {
-            var hud = MBProgressHUD(view: self.view)
+            let hud = MBProgressHUD(view: self.view)
             self.view.addSubview(hud)
             hud.show(true)
             hud.mode = MBProgressHUDMode.Text

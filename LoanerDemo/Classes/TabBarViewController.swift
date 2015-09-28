@@ -24,12 +24,8 @@ class TabBarViewController: UITabBarController {
         UITabBarItem.appearance().setTitleTextAttributes(
             [NSFontAttributeName:UIFont.systemFontOfSize(10),
                 NSForegroundColorAttributeName:UIColor(red: 0.0/255.0, green: 46.0/255.0, blue: 116.0/205.0, alpha: 1)], forState: UIControlState.Selected)
-        for it in self.tabBar.items! {
-            if var item = it as? UITabBarItem {
-                //item = UITabBarItem(title: "中国", image: UIImage(named: "ancReaded"), selectedImage: UIImage(named: "ancReaded"))
-                
-                item.image = item.image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
-            }
+        for item in self.tabBar.items! {
+            item.image = item.image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
         }
     }
     
@@ -39,7 +35,7 @@ class TabBarViewController: UITabBarController {
             (data) in
             let num = String(stringInterpolationSegment: data!)
             if num != "0" {
-                let bar = self.tabBar.items![1] as! UITabBarItem
+                let bar = self.tabBar.items![1] 
                 bar.badgeValue = num
             }
             }, failed: {}, outTime: {})

@@ -28,7 +28,7 @@ class LoanerHelper: NSObject {
     }
     
     static func OriginalUrlArraywith(imageUrl:NSMutableArray) -> NSMutableArray {
-        var original:NSMutableArray = []
+        let original:NSMutableArray = []
         if imageUrl.count <= 9 {
             for item in imageUrl {
                 original.addObject(AppDelegate.app().ipUrl + LoanerHelper.OriginalImageURLStrWithSmallURLStr(item as! NSString) + "?\(arc4random() % 100)")
@@ -41,7 +41,7 @@ class LoanerHelper: NSObject {
     
     static func isvaildIP(targetString:String) -> Bool {
         let predicateString = "^\\d{1,3}(.\\d{1,3}){3}(:\\d{1,4})?"
-        var predicate:NSPredicate = NSPredicate(format:"SELF MATCHES %@", predicateString)
+        let predicate:NSPredicate = NSPredicate(format:"SELF MATCHES %@", predicateString)
         return predicate.evaluateWithObject(targetString)
     }
     
@@ -75,8 +75,8 @@ class LoanerHelper: NSObject {
         default:
             return nil
         }
-        var predicate:NSPredicate = NSPredicate(format:"SELF MATCHES %@", predicateString)
-        var isVaild:Bool = predicate.evaluateWithObject(targetString)
+        let predicate:NSPredicate = NSPredicate(format:"SELF MATCHES %@", predicateString)
+        let isVaild:Bool = predicate.evaluateWithObject(targetString)
         if !isVaild {
             return promptMsg
         }
@@ -95,7 +95,7 @@ class LoanerHelper: NSObject {
     }
     
     static func infoWithFileName(fileName:String) -> NSMutableDictionary {
-        let filePath = NSHomeDirectory().stringByAppendingPathComponent("Documents/\(fileName).plist")//.stringByAppendingPathComponent("\(fileName).plist")
+        let filePath = (NSHomeDirectory() as NSString).stringByAppendingPathComponent("Documents/\(fileName).plist")//.stringByAppendingPathComponent("\(fileName).plist")
         if NSFileManager.defaultManager().fileExistsAtPath(filePath) {
             return NSMutableDictionary(contentsOfFile: filePath)!
         }
@@ -103,7 +103,7 @@ class LoanerHelper: NSObject {
     }
     
     static func infoWriteToFile(fileName:String,info:NSMutableDictionary) {
-        let filePath = NSHomeDirectory().stringByAppendingPathComponent("Documents/\(fileName).plist")//.stringByAppendingPathComponent("\(fileName).plist")
-        let k = info.writeToFile(filePath, atomically: false)
+        let filePath = (NSHomeDirectory() as NSString).stringByAppendingPathComponent("Documents/\(fileName).plist")//.stringByAppendingPathComponent("\(fileName).plist")
+        info.writeToFile(filePath, atomically: false)
     }
 }

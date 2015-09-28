@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 
 class SelfTableViewController: UITableViewController ,personalMessageEditDelegete{
     
@@ -24,10 +23,14 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
         if actionString == "logout:" && buttonTitle == "退出登录" {
             tableDataDic = self.getPersonalInfo()
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "配置IP", style: UIBarButtonItemStyle.Plain, target: self, action:"settingIP:")
-            self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([
-                NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.rawValue,
-                NSFontAttributeName:UIFont.systemFontOfSize(14, weight: 3)],
-                forState: UIControlState.Normal)
+            if #available(iOS 8.2, *) {
+                self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([
+                    NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.rawValue,
+                    NSFontAttributeName:UIFont.systemFontOfSize(14, weight: 3)],
+                    forState: UIControlState.Normal)
+            } else {
+                // Fallback on earlier versions
+            }
             self.height = 6
             self.navigationController?.tabBarItem.selectedImage = UIImage(named: "perSelected")
         }else {
@@ -40,12 +43,12 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
         pvView.setTextField(AppDelegate.app().IP)
         pvView.popupDelegete = self
         pvView.parentVC = self
-        self.lew_presentPopupView(pvView, animation: LewPopupViewAnimationDrop.new(), dismissed: nil)
+        self.lew_presentPopupView(pvView, animation: LewPopupViewAnimationDrop(), dismissed: nil)
     }
     
     func textfieldMessageID(idunique: String!) {
         if !LoanerHelper.isvaildIP(idunique) {
-            var hud = MBProgressHUD(view: self.view)
+            let hud = MBProgressHUD(view: self.view)
             self.view.addSubview(hud)
             hud.show(true)
             hud.mode = MBProgressHUDMode.Text
@@ -63,7 +66,7 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
         sender.selected = !sender.selected
         sender.enabled = sender.selected
         let dic = self.getPersonalInfo()
-        var hud:MBProgressHUD = MBProgressHUD(view: self.view)
+        let hud:MBProgressHUD = MBProgressHUD(view: self.view)
         hud.show(true);self.view.addSubview(hud)
         hud.labelText = "确认中..."
         if (dic.allKeys as NSArray).containsObject("role_id") {
@@ -80,7 +83,7 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
                             hud.mode = MBProgressHUDMode.CustomView
                             hud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
                             hud.hide(true, afterDelay: 1)
-                            var gcdDelay:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * NSEC_PER_SEC))
+                            let gcdDelay:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * NSEC_PER_SEC))
                             dispatch_after(gcdDelay, dispatch_get_main_queue(), { () -> Void in
                                 self.navigationController?.popToRootViewControllerAnimated(false)
                             })
@@ -101,7 +104,7 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
     
     func getPersonalInfo() -> NSDictionary {
         if !UserHelper.readValueOfPWIsSaved() {
-            let filepath = NSTemporaryDirectory().stringByAppendingPathComponent("selfInfo.plist")
+            let filepath = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("selfInfo.plist")
             return NSDictionary(contentsOfFile: filepath)!
         }else {
             return UserHelper.readCurrentUserInfo(AppDelegate.app().user_id)
@@ -149,7 +152,7 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
             return setPersonalCell(indexPath)
         case 1:
             let cell:UITableViewCell = UITableViewCell(frame: CGRectMake(0, 0, self.view.width, 40))
-            var btn:UIButton = UIButton(frame: CGRectMake(0, 0, self.view.width, 40))
+            let btn:UIButton = UIButton(frame: CGRectMake(0, 0, self.view.width, 40))
             btn.titleLabel?.textAlignment = NSTextAlignment.Center
             btn.setTitle(self.buttonTitle, forState: UIControlState.Normal)
             btn.titleLabel?.font = UIFont.systemFontOfSize(textFontSize)
@@ -165,10 +168,10 @@ class SelfTableViewController: UITableViewController ,personalMessageEditDeleget
     }
     
     func setPersonalCell(indexPath:NSIndexPath) -> UITableViewCell {
-        var cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "selfCell")
+        let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "selfCell")
         cell.textLabel?.font = UIFont.systemFontOfSize(textFontSize)
         cell.detailTextLabel?.font = UIFont.systemFontOfSize(detailFontSize)
-        var key: NSString = self.infoArray[indexPath.row] as! NSString
+        let key: NSString = self.infoArray[indexPath.row] as! NSString
         switch key {
         case "dep_id":
             cell.textLabel?.text = "部门编号"

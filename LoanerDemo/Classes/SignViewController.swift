@@ -31,13 +31,13 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
     
     func keyboardWillShow(notification:NSNotification) {
         let info:NSDictionary = notification.userInfo!
-        let size:CGSize = info.objectForKey(UIKeyboardFrameEndUserInfoKey)!.CGRectValue().size
+        let size:CGSize = info.objectForKey(UIKeyboardFrameEndUserInfoKey)!.CGRectValue.size
         self.keyboardHeight = size.height
     }
     
     func initView() {
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "submit"), style: UIBarButtonItemStyle.Bordered, target: self, action: "complete:")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "submit"), style: UIBarButtonItemStyle.Plain, target: self, action: "complete:")
         self.view.backgroundColor = UIColor.whiteColor()
         textField = UITextField(frame: CGRectMake(0, 64, self.view.bounds.width , 35))
         textField.backgroundColor = UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 225.0/205.0, alpha: 1)
@@ -56,12 +56,12 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
         textField.becomeFirstResponder()
         textField.addTarget(self, action: "textFieldDidChanged:", forControlEvents: UIControlEvents.EditingChanged)
         if isDateType {
-            var datePicker:DatepickerView = DatepickerView(width: self.view.bounds.width)
+            let datePicker:DatepickerView = DatepickerView(width: self.view.bounds.width)
             datePicker.dateDelegate = self
             textField.inputView = datePicker
         }else {
-            var toolBar:UIToolbar = UIToolbar(frame: CGRectMake(0, 0, self.view.frame.width, 35))
-            var btn:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+            let toolBar:UIToolbar = UIToolbar(frame: CGRectMake(0, 0, self.view.frame.width, 35))
+            let btn:UIButton = UIButton(type: UIButtonType.Custom)
             btn.frame = CGRectMake(0, 5, 35, 35)
             btn.addTarget(self, action: "hideKeyboard", forControlEvents: UIControlEvents.TouchUpInside)
             btn.setImage(UIImage(named: "hideKeyboard"), forState: UIControlState.Normal)
@@ -92,7 +92,7 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier(textCell, forIndexPath: indexPath) as! TextTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(textCell, forIndexPath: indexPath) as! TextTableViewCell
         cell.delegate = self
         cell.titleText = (self.defaultTexts[indexPath.row] as? String)!
         return cell
@@ -115,9 +115,9 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
     
     //MARK:--UITextFieldDelegate
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        let msg = LoanerHelper.vaildInputWith(verify, targetString: textField.text)
+        let msg = LoanerHelper.vaildInputWith(verify, targetString: textField.text!)
         if msg != nil {
-            var vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
+            let vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
             self.view.addSubview(vaildHud)
             vaildHud.show(true)
             vaildHud.mode = MBProgressHUDMode.Text
@@ -127,19 +127,19 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
             vaildHud.hide(true, afterDelay: 1)
             return false
         }
-        if !self.defaultTexts.containsObject(textField.text) {
-            self.defaultTexts.addObject(textField.text)
+        if !self.defaultTexts.containsObject(textField.text!) {
+            self.defaultTexts.addObject(textField.text!)
         }
-        self.delegate.signTextDidBeDone(textField.text, texts: defaultTexts)
+        self.delegate.signTextDidBeDone(textField.text!, texts: defaultTexts)
         self.navigationController?.popViewControllerAnimated(true)
         return true
     }
     
     func textFieldDidChanged(textField:UITextField) {
         if verify == "num" {
-            let msg = LoanerHelper.vaildInputWith(verify, targetString: textField.text)
+            let msg = LoanerHelper.vaildInputWith(verify, targetString: textField.text!)
             if msg != nil {
-                var vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
+                let vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
                 self.view.addSubview(vaildHud)
                 vaildHud.show(true)
                 vaildHud.mode = MBProgressHUDMode.Text
@@ -149,7 +149,7 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
                 textField.keyboardAppearance.rawValue
                 vaildHud.hide(true, afterDelay: 1)
                 self.textField.text = self.validText
-            }else {validText = textField.text}
+            }else {validText = textField.text!}
         }
     }
     
@@ -170,9 +170,9 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
     }
     
     func complete(sender:AnyObject){
-        let msg = LoanerHelper.vaildInputWith(verify, targetString: textField.text)
+        let msg = LoanerHelper.vaildInputWith(verify, targetString: textField.text!)
         if msg != nil {
-            var vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
+            let vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
             self.view.addSubview(vaildHud)
             vaildHud.show(true)
             vaildHud.mode = MBProgressHUDMode.Text
@@ -182,10 +182,10 @@ class SignViewController: UIViewController ,UITableViewDataSource,UITableViewDel
             vaildHud.hide(true, afterDelay: 1)
             return
         }
-        if !self.defaultTexts.containsObject(textField.text) {
-            self.defaultTexts.addObject(textField.text)
+        if !self.defaultTexts.containsObject(textField.text!) {
+            self.defaultTexts.addObject(textField.text!)
         }
-        self.delegate.signTextDidBeDone(textField.text, texts: defaultTexts)
+        self.delegate.signTextDidBeDone(textField.text!, texts: defaultTexts)
         self.navigationController?.popViewControllerAnimated(true)
     }
 

@@ -77,7 +77,7 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
         }
         
         if self.itemInfo.type.isEqualToString("datepicker") {
-            var datePicker:DatepickerView = DatepickerView(width: self.bounds.width)
+            let datePicker:DatepickerView = DatepickerView(width: self.bounds.width)
             datePicker.dateDelegate = self
             self.textfield.inputView = datePicker
         }
@@ -95,10 +95,10 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         switch self.itemInfo.type {
         case "select":
-            var selectSheet:UIActionSheet = UIActionSheet()
+            let selectSheet:UIActionSheet = UIActionSheet()
             selectSheet.delegate = self
             for key in self.itemInfo.options {
-                selectSheet.addButtonWithTitle(key as! String)
+                selectSheet.addButtonWithTitle(key as? String)
             }
             selectSheet.addButtonWithTitle("取消")
             selectSheet.cancelButtonIndex = selectSheet.numberOfButtons - 1
@@ -118,9 +118,9 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
         if self.itemInfo.type == "text" && self.itemInfo.options.count > 0 {
             for key in self.itemInfo.options {
                 if key as! String != "must" {
-                    let msg = LoanerHelper.vaildInputWith(key as! String, targetString: textField.text)
+                    let msg = LoanerHelper.vaildInputWith(key as! String, targetString: textField.text!)
                     if msg != nil {
-                        var vaildHud:MBProgressHUD = MBProgressHUD(view: self.superView.view)
+                        let vaildHud:MBProgressHUD = MBProgressHUD(view: self.superView.view)
                         self.superView.view.addSubview(vaildHud)
                         vaildHud.show(true)
                         vaildHud.mode = MBProgressHUDMode.Text
@@ -137,7 +137,7 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
         }
         textfield.layer.borderColor = UIColor.clearColor().CGColor
         textfield.textAlignment = NSTextAlignment.Left
-        textDelegate.catchTextFieldvalue(textField.text, key: self.itemInfo.title as String)
+        textDelegate.catchTextFieldvalue(textField.text!, key: self.itemInfo.title as String)
         return true
     }
     
@@ -150,17 +150,17 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
         if buttonIndex > self.itemInfo.options.count - 1{
             return
         }
-        self.textfield.text = self.itemInfo.options[buttonIndex] as! String
-        textDelegate.catchTextFieldvalue(textfield.text, key: self.itemInfo.title as String)
+        self.textfield.text = self.itemInfo.options[buttonIndex] as? String
+        textDelegate.catchTextFieldvalue(textfield.text!, key: self.itemInfo.title as String)
     }
     
     func picker(sender:UIDatePicker) {
-        var selectedDate:NSDate = sender.date
-        var formatter:NSDateFormatter = NSDateFormatter()
+        let selectedDate:NSDate = sender.date
+        let formatter:NSDateFormatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        var dateString:String = formatter.stringFromDate(selectedDate)
+        let dateString:String = formatter.stringFromDate(selectedDate)
         self.textfield.text = dateString
-        textDelegate.catchTextFieldvalue(textfield.text, key: self.itemInfo.title as String)
+        textDelegate.catchTextFieldvalue(textfield.text!, key: self.itemInfo.title as String)
         //sender.removeFromSuperview()
     }
     
@@ -175,7 +175,7 @@ class DetailTableViewCell: UITableViewCell ,UIActionSheetDelegate,UITextFieldDel
         self.textfield.resignFirstResponder()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 

@@ -23,7 +23,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
     
     var defaultText:DefaultText = DefaultText(fileName: "", dicTexts: [:])
     
-    var tag_Message:tag_Infomation = tag_Infomation(suffixURL: "", editable: false, tableJson: JSON.nullJSON, dbjson: JSON.nullJSON, arraysort: [])
+    var tag_Message:tag_Infomation = tag_Infomation(suffixURL: "", editable: false, tableJson: JSON.null, dbjson: JSON.null, arraysort: [])
     
     var postDic:NSMutableDictionary = NSMutableDictionary()
     var resigntf:UITextField!
@@ -58,8 +58,8 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
                 return
             }
             progressHud.hide(true)
-            let mainKeys = mainJSON.dictionary!.keys.array
-            for key in mainKeys {
+            let mainKeys = mainJSON.dictionary!.keys
+            for _ in mainKeys {
                 if let keyarray = mainJSON.dictionary?["arraysort"] {
                     if keyarray.type == .Array {
                         self.tag_Message.arraysort = (keyarray.object as? NSArray)!
@@ -94,7 +94,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
     }
     
     func showActivityIndicatorViewInNavigationItem() {
-        var actView:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        let actView:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
         self.navigationItem.titleView = actView
         actView.startAnimating()
         self.navigationItem.prompt = "数据加载中..."
@@ -130,7 +130,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
         //假如有编辑修改权限，遍历所有数据，若存在value值，则默认非编辑状态
         if self.tag_Message.tableJson.type == .Dictionary {
             var isEditable = true
-            let dic:NSDictionary = (self.tag_Message.tableJson.dictionary?[self.tag_Message.arraysort.firstObject as! String]?.object as? NSDictionary)!
+            _ = (self.tag_Message.tableJson.dictionary?[self.tag_Message.arraysort.firstObject as! String]?.object as? NSDictionary)!
             for key in self.tag_Message.arraysort {
                 let dic:NSDictionary = (self.tag_Message.tableJson.dictionary?[key as! String]?.object as? NSDictionary)!
                 for (k,v) in dic {
@@ -160,7 +160,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
     func setCellFromAddJSON(row: Int,forjson jsons:JSON) -> UITableViewCell{
         let key:String = self.tag_Message.arraysort[row] as! String
         if let js = jsons.dictionary?[key as String] {
-            var cell = DetailTableViewCell(title: key, forjson: js)
+            let cell = DetailTableViewCell(title: key, forjson: js)
             cell.superView = self
             cell.textDelegate = self
             cell.editable = self.editable
@@ -172,7 +172,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
             if self.postDic.count > 0 {             //填写表单时的数据填充
                 for rekey in self.postDic.allKeys {
                     if rekey as! String == cell.itemInfo.title {
-                        cell.textfield.text = self.postDic.objectForKey(rekey as! String) as! String
+                        cell.textfield.text = self.postDic.objectForKey(rekey as! String) as? String
                         break
                     }
                 }
@@ -244,7 +244,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //return self.setCellFromAddJSON(indexPath.row, forjson: self.tag_Message.tableJson)
-        var cell = tableView.dequeueReusableCellWithIdentifier("requestCell", forIndexPath: indexPath) as! LeafTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("requestCell", forIndexPath: indexPath) as! LeafTableViewCell
         
         let key:String = self.tag_Message.arraysort[indexPath.row] as! String
         if let js = self.tag_Message.tableJson.dictionary?[key as String] {
@@ -271,19 +271,19 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if !self.editable {return}
-        var cell = tableView.cellForRowAtIndexPath(indexPath) as! LeafTableViewCell
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! LeafTableViewCell
         if !cell.itemInfo.editable {return}
         if cell.itemInfo.type.isEqualToString("select") {       //选择器
-            var selectSheet:UIActionSheet = UIActionSheet()
+            let selectSheet:UIActionSheet = UIActionSheet()
             selectSheet.delegate = self
             for key in cell.itemInfo.options {
-                selectSheet.addButtonWithTitle(key as! String)
+                selectSheet.addButtonWithTitle(key as? String)
             }
             selectSheet.addButtonWithTitle("取消")
             selectSheet.cancelButtonIndex = selectSheet.numberOfButtons - 1
             selectSheet.showInView(self.view)
         }else {
-            var signView = SignViewController()
+            let signView = SignViewController()
             if cell.itemInfo.options.count > 0 {
                 for item in cell.itemInfo.options {
                     if item.description != "must" {signView.verify = item as! String}
@@ -308,7 +308,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
     //MARK:--SignTextDelegate
     func signTextDidBeDone(text: String, texts: NSArray?) {
         
-        let cell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow()!) as! LeafTableViewCell
+        let cell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow!) as! LeafTableViewCell
         cell.detailLabel.text = text
         cell.itemInfo.value = text
         self.postDic.setObject(cell.detailLabel.text!, forKey: cell.itemInfo.title as String)
@@ -330,7 +330,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
     
     //MARK:--UIActionSheetDelegate
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        let cell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow()!) as! LeafTableViewCell
+        let cell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow!) as! LeafTableViewCell
         if buttonIndex > cell.itemInfo.options.count - 1{
             return
         }
@@ -349,7 +349,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
                     return
                 }
             }
-            var progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
+            let progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
             self.navigationController?.view.addSubview(progressHud)
             progressHud.labelText = "正在提交表单"
             progressHud.show(true)
@@ -369,7 +369,7 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
                             progressHud.mode = MBProgressHUDMode.CustomView
                             progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
                             progressHud.hide(true, afterDelay: 2)
-                            var gcdT:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * NSEC_PER_SEC))
+                            let gcdT:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * NSEC_PER_SEC))
                             dispatch_after(gcdT, dispatch_get_main_queue(), {
                                 self.navigationController?.popToRootViewControllerAnimated(true)
                             })

@@ -15,7 +15,7 @@ class KeyChain: NSObject {
     }
     
     static func addKeyChainItem(user_id:NSString,user_password:NSString,IP:NSString) -> Bool {
-        var keyChainItem = NSMutableDictionary()
+        let keyChainItem = NSMutableDictionary()
         keyChainItem.setObject(kSecClassInternetPassword as NSString, forKey: kSecClass as NSString)
         keyChainItem.setObject(user_id, forKey: kSecAttrAccount as NSString)
 
@@ -24,7 +24,7 @@ class KeyChain: NSObject {
         }else{
             keyChainItem.setObject(user_password.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion:true)!, forKey: kSecValueData as String)
             keyChainItem.setObject(IP, forKey:  kSecAttrServer as NSString)
-            var status = SecItemAdd(keyChainItem, nil)
+            let status = SecItemAdd(keyChainItem, nil)
             if status == 0 {
                 return true
             }
@@ -33,73 +33,95 @@ class KeyChain: NSObject {
     }
     
     static func updateIPItem(user_id:NSString,IP:NSString) -> Bool {
-        var keyChainItem = NSMutableDictionary()
+        let keyChainItem = NSMutableDictionary()
         keyChainItem.setObject(kSecClassInternetPassword as NSString, forKey: kSecClass as NSString)
         keyChainItem.setObject(user_id, forKey: kSecAttrAccount as NSString)
         
         if SecItemCopyMatching(keyChainItem,nil) == noErr{
-            var updateDictionary = NSMutableDictionary()
+            let updateDictionary = NSMutableDictionary()
             updateDictionary.setObject(IP, forKey:kSecAttrServer as String)
-            var status = SecItemUpdate(keyChainItem,updateDictionary)
+            _ = SecItemUpdate(keyChainItem,updateDictionary)
             return true
         }
         return false
     }
     
     static func updateKeyChainItem(user_id:NSString,user_password:NSString) -> Bool {
-        var keyChainItem = NSMutableDictionary()
+        let keyChainItem = NSMutableDictionary()
         keyChainItem.setObject(kSecClassInternetPassword as NSString, forKey: kSecClass as NSString)
         keyChainItem.setObject(user_id, forKey: kSecAttrAccount as NSString)
         
         if SecItemCopyMatching(keyChainItem,nil) == noErr{
-            var updateDictionary = NSMutableDictionary()
+            let updateDictionary = NSMutableDictionary()
             updateDictionary.setObject(user_password.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion:true)!, forKey:kSecValueData as String)
-            var status = SecItemUpdate(keyChainItem,updateDictionary)
+            _ = SecItemUpdate(keyChainItem,updateDictionary)
             return true
         }
         return false
     }
     
     static func getKeyChainItem(user_id:NSString) -> NSString {
-        var keyChainItem = NSMutableDictionary()
+        let keyChainItem = NSMutableDictionary()
         keyChainItem.setObject(kSecClassInternetPassword as NSString, forKey: kSecClass as NSString)
         keyChainItem.setObject(user_id, forKey: kSecAttrAccount as NSString)
         
         keyChainItem.setObject(kCFBooleanTrue, forKey: kSecReturnData as String)
         keyChainItem.setObject(kCFBooleanTrue, forKey: kSecReturnAttributes as String)
-        var queryResult: Unmanaged<AnyObject>?
-        let status = SecItemCopyMatching(keyChainItem,&queryResult)
-        let opaque = queryResult?.toOpaque()
-        var contentsOfKeychain: NSString?
-        if let op = opaque {
-            let retrievedData = Unmanaged<NSDictionary>.fromOpaque(op).takeUnretainedValue()
-            let passwordData = retrievedData.objectForKey(kSecValueData) as! NSData
-            return NSString(data: passwordData, encoding: NSUTF8StringEncoding)!
+        //let queryResult: Unmanaged<AnyObject>?
+        
+        var result: AnyObject?
+        
+        let status = withUnsafeMutablePointer(&result) {
+            SecItemCopyMatching(keyChainItem,UnsafeMutablePointer($0))
         }
+        if status == noErr {
+            let opaque = (result as! Unmanaged<AnyObject>).toOpaque()
+            let retrievedData = Unmanaged<NSDictionary>.fromOpaque(opaque).takeUnretainedValue()
+            let IP = retrievedData.objectForKey(kSecAttrServer) as! NSString
+            return IP
+            
+        }
+        //SecItemCopyMatching(keyChainItem,(UnsafeMutablePointer)&queryResult)
+//        let opaque = queryResult?.toOpaque()
+//        var contentsOfKeychain: NSString?
+//        if let op = opaque {
+//            let retrievedData = Unmanaged<NSDictionary>.fromOpaque(op).takeUnretainedValue()
+//            let passwordData = retrievedData.objectForKey(kSecValueData) as! NSData
+//            return NSString(data: passwordData, encoding: NSUTF8StringEncoding)!
+//        }
         return ""
     }
     
     static func getIPItem(user_id:NSString) -> NSString {
-        var keyChainItem = NSMutableDictionary()
+        let keyChainItem = NSMutableDictionary()
         keyChainItem.setObject(kSecClassInternetPassword as NSString, forKey: kSecClass as NSString)
         keyChainItem.setObject(user_id, forKey: kSecAttrAccount as NSString)
         
         keyChainItem.setObject(kCFBooleanTrue, forKey: kSecReturnData as String)
         keyChainItem.setObject(kCFBooleanTrue, forKey: kSecReturnAttributes as String)
-        var queryResult: Unmanaged<AnyObject>?
-        let status = SecItemCopyMatching(keyChainItem,&queryResult)
-        let opaque = queryResult?.toOpaque()
-        var contentsOfKeychain: NSString?
-        if let op = opaque {
-            let retrievedData = Unmanaged<NSDictionary>.fromOpaque(op).takeUnretainedValue()
+        //let queryResult: Unmanaged<AnyObject>?
+        var result:AnyObject?
+        let status = withUnsafeMutablePointer(&result) {
+            SecItemCopyMatching(keyChainItem,UnsafeMutablePointer($0))
+        }
+        if status == noErr {
+            let opaque = (result as! Unmanaged<AnyObject>).toOpaque()
+            let retrievedData = Unmanaged<NSDictionary>.fromOpaque(opaque).takeUnretainedValue()
             let IP = retrievedData.objectForKey(kSecAttrServer) as! NSString
             return IP
+        
         }
+//        let opaque = queryResult?.toOpaque()
+//        if let op = opaque {
+//            let retrievedData = Unmanaged<NSDictionary>.fromOpaque(op).takeUnretainedValue()
+//            let IP = retrievedData.objectForKey(kSecAttrServer) as! NSString
+//            return IP
+//        }
         return ""
     }
 
     static func deleteKeyChainItem(user_id:NSString) -> Bool {
-        var keyChainItem = NSMutableDictionary()
+        let keyChainItem = NSMutableDictionary()
         keyChainItem.setObject(kSecClassInternetPassword as NSString, forKey: kSecClass as NSString)
         keyChainItem.setObject(user_id, forKey: kSecAttrAccount as NSString)
         

@@ -23,7 +23,7 @@ let placeholderImageName = "defaultimage"
 class MasterImageTableViewController: UITableViewController {
 
     var picURL:requestURL = requestURL(footer: "", URL: "");//, pro_id: "");
-    var masterJson:JSON = JSON.nullJSON
+    var masterJson:JSON = JSON.null
     var masterSubURL:NSMutableArray = []
     var titleArray:NSMutableArray = []
     let kSingleCell = "singleCell";var editable = false
@@ -47,7 +47,7 @@ class MasterImageTableViewController: UITableViewController {
     }
     
     func showActivityIndicatorViewInNavigationItem() {
-        var actView:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        let actView:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
         self.navigationItem.titleView = actView
         actView.startAnimating()
         self.navigationItem.prompt = "数据加载中..."
@@ -82,7 +82,7 @@ class MasterImageTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:SingleTableViewCell = tableView.dequeueReusableCellWithIdentifier(kSingleCell, forIndexPath: indexPath) as! SingleTableViewCell
+        let cell:SingleTableViewCell = tableView.dequeueReusableCellWithIdentifier(kSingleCell, forIndexPath: indexPath) as! SingleTableViewCell
         cell.isMutable = false
         let js = self.masterJson[indexPath.row];
         if js.type == .Dictionary {
@@ -111,7 +111,7 @@ class MasterImageTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var subPicVC:SubPicTableViewController = SubPicTableViewController()
+        let subPicVC:SubPicTableViewController = SubPicTableViewController()
         subPicVC.title = self.titleArray[indexPath.row] as? String
         subPicVC.subURL = self.masterSubURL[indexPath.row] as! String
         subPicVC.editable = self.editable

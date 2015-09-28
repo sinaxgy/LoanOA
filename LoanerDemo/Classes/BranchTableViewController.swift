@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 
 struct operationType {
     var type:String
@@ -19,7 +18,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
     var isAdd:Bool = true
     var isShowNoti = false
     var typeOp = operationType(type: "", proNum: "")
-    var dbjson:JSON = JSON.nullJSON
+    var dbjson:JSON = JSON.null
     var detailKeyArray:NSArray = []
     var url = "";var menuItems:NSArray = []
     var branchItems:NSMutableArray = []
@@ -29,13 +28,13 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
         self.navigationItem.title = self.typeOp.proNum
         self.showActivityIndicatorViewInNavigationItem()
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"), style: UIBarButtonItemStyle.Bordered, target: self, action: "cancel:")
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"), style: UIBarButtonItemStyle.Plain, target: self, action: "cancel:")
         
         self.tableView.registerNib(UINib(nibName: "BranchTableViewCell", bundle: nil), forCellReuseIdentifier: "branchCell")
     }
     
     func showActivityIndicatorViewInNavigationItem() {
-        var actView:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        let actView:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
         self.navigationItem.titleView = actView
         actView.startAnimating()
         self.navigationItem.prompt = "数据加载中..."
@@ -55,10 +54,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                 return
             }
             let js:JSON = JSON(data!)
-            var jsonArray:NSMutableArray = NSMutableArray()
-            var msgArray:NSMutableArray = []
-            var jsArray:NSMutableArray = []
-            var items:NSMutableArray = []
+            let items:NSMutableArray = []
             for (key,value) in js {
                 switch (key,value) {
                 case ("closeAction","true"):        items.addObject(key)
@@ -68,7 +64,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                 case ("dataRemark",_):
                     if value != "" && !self.isShowNoti {
                         self.isShowNoti = true
-                        var hud = MBProgressHUD(view: self.navigationController?.view)
+                        let hud = MBProgressHUD(view: self.navigationController?.view)
                         self.navigationController?.view.addSubview(hud)
                         hud.mode = MBProgressHUDMode.Text;
                         hud.show(true)
@@ -83,11 +79,11 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                         alert.show()
                         return
                     }
-                    for (vKey,vValue) in value {    //vValue为标签数组的标签元素
+                    for (_,vValue) in value {    //vValue为标签数组的标签元素
                         //遍历各标签
                         for (kk,vv) in vValue {     //vv，标签元素对应的value值
                             //标签层属性
-                            var branchItem:BranchItem = BranchItem()
+                            let branchItem:BranchItem = BranchItem()
                             branchItem.fileName = kk
                             for (k,v) in vv {       //遍历标签层属性
                                 switch k {
@@ -174,7 +170,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
             switch branch.data.count {
             case 0:
                 if branch.tag_name == "图片上传" {
-                    var imageVC:MasterImageTableViewController = MasterImageTableViewController()
+                    let imageVC:MasterImageTableViewController = MasterImageTableViewController()
                     imageVC.picURL.footer = branch.data.description
                     imageVC.title = "图片上传"
                     if branch.editable == "true" {
@@ -185,7 +181,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                     self.navigationController?.pushViewController(imageVC, animated: true)
                     return
                 }else {
-                    var requestVC:RequestTableViewController = RequestTableViewController()
+                    let requestVC:RequestTableViewController = RequestTableViewController()
                     requestVC.tag_Message.suffixURL = branch.data.description
                     if branch.editable == "true" {
                         requestVC.tag_Message.editable = true
@@ -201,7 +197,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                 circleVC.title = branch.tag_name
                 self.navigationController?.pushViewController(circleVC, animated: true)
             case 13,14:
-                var detailView:DetailTableViewController = DetailTableViewController()
+                let detailView:DetailTableViewController = DetailTableViewController()
                 detailView.json = branch.data;detailView.isAdd = self.isAdd
                 detailView.defaultText.fileName = branch.fileName
                 detailView.detailKeyArray = branch.arraysort
@@ -218,19 +214,19 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
     
     //MARK: barButtonAction
     func submitAction() {
-        var alert:UIAlertView = UIAlertView(title: "提交资料", message: "确定提交项目资料？此项目将进入下一流程！", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+        let alert:UIAlertView = UIAlertView(title: "提交资料", message: "确定提交项目资料？此项目将进入下一流程！", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
         alert.tag = 12
         alert.show()
     }
     
     func closeAction() {
-        var alert:UIAlertView = UIAlertView(title: "关闭项目", message: "确定关闭此项目？此操作不可逆！", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+        let alert:UIAlertView = UIAlertView(title: "关闭项目", message: "确定关闭此项目？此操作不可逆！", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
         alert.tag = 10
         alert.show()
     }
     
     func specialAction() {
-        var alert:UIAlertView = UIAlertView(title: "申请特批", message: "确定为此项目申请特批？请输入缘由", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+        let alert:UIAlertView = UIAlertView(title: "申请特批", message: "确定为此项目申请特批？请输入缘由", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
         alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
         alert.tag = 11
         alert.show()
@@ -244,7 +240,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex == 1 {
             let user_id:NSString = AppDelegate.app().user_id
-            var submitDic:NSMutableDictionary = NSMutableDictionary()
+            let submitDic:NSMutableDictionary = NSMutableDictionary()
             submitDic.setValue(user_id, forKey: "user_id")
             submitDic.setValue(AppDelegate.app().pro_id, forKey: "pro_id");var footer = ""
             switch alertView.tag {
@@ -268,7 +264,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                     progressHud.mode = MBProgressHUDMode.CustomView
                     progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
                     progressHud.hide(true, afterDelay: 2)
-                    var gcdT:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * NSEC_PER_SEC))
+                    let gcdT:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * NSEC_PER_SEC))
                     dispatch_after(gcdT, dispatch_get_main_queue(), {
                         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                     })
@@ -292,12 +288,12 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
         }
         if array.count == 1 {
             if array.firstObject as! String == "submitEnable" {
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "submit"), style: UIBarButtonItemStyle.Bordered, target: self, action: "submitAction")
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "submit"), style: UIBarButtonItemStyle.Plain, target: self, action: "submitAction")
                 
                 return
             }
         }else {
-            var items:NSMutableArray = []
+            let items:NSMutableArray = []
             for key in array {
                 if key as! String == "submitEnable" {
                     items.addObject("提交资料")
@@ -310,7 +306,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                 }
             }
             self.menuItems = items
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "more"), style: UIBarButtonItemStyle.Bordered, target: self, action: "showMenu:")
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "more"), style: UIBarButtonItemStyle.Plain, target: self, action: "showMenu:")
         }
     }
     
@@ -331,7 +327,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
     
     func showMenu(sender:UIBarButtonItem) {
         let hight = self.menuItems.count * 44
-        var menu:PopoverMenuView = PopoverMenuView(frame: CGRectMake(originalX, 70, popverMenuX, CGFloat(hight)), menuItems: self.menuItems as [AnyObject])
+        let menu:PopoverMenuView = PopoverMenuView(frame: CGRectMake(originalX, 70, popverMenuX, CGFloat(hight)), menuItems: self.menuItems as [AnyObject])
         menu.menuPopoverDelegate = self
         menu.showInView(self.view)
     }
@@ -341,7 +337,7 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
     }
     
     func connectFailed() {
-        var vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
+        let vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
         self.view.addSubview(vaildHud)
         vaildHud.show(true)
         vaildHud.mode = MBProgressHUDMode.Text

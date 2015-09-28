@@ -33,7 +33,7 @@ class tableItemInfo: NSObject {
                 self.value = json.dictionary![key as! String]!.description
             case "options":
                 let opt = json.dictionary?["options"]!
-                var nextJson: JSON = JSON(opt!.object)
+                let nextJson: JSON = JSON(opt!.object)
                 switch nextJson.type {
                 case .String:
                     let str:NSString = nextJson.description
@@ -63,7 +63,7 @@ class tableItemInfo: NSObject {
                 self.value = json.dictionary![key as! String]!.description
             case "options":
                 let opt = json.dictionary?["options"]!
-                var nextJson: JSON = JSON(opt!.object)
+                let nextJson: JSON = JSON(opt!.object)
                 switch nextJson.type {
                 case .String:
                     let str:NSString = nextJson.description

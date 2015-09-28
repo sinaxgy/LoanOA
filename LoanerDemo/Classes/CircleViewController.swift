@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 
 class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertViewDelegate,UITextViewDelegate,UITextFieldDelegate{
 
@@ -16,7 +15,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
     @IBOutlet weak var sumTextField: UITextField!
     @IBOutlet weak var msgTextView: UITextView!
     
-    var json:JSON = JSON.nullJSON
+    var json:JSON = JSON.null
     var menuView : PopoverMenuView!
     
     var label:UILabel!
@@ -37,13 +36,13 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
             self.msgTextView.editable = false
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "操作", style: UIBarButtonItemStyle.Plain, target: self, action: "handleFeedback:")
         }else {
-            var tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
+            let tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
             self.view.addGestureRecognizer(tapGesture)
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "提交", style: UIBarButtonItemStyle.Bordered, target: self, action: "submitAction:")
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "提交", style: UIBarButtonItemStyle.Plain, target: self, action: "submitAction:")
             self.msgTextView.delegate = self
             
-            var toolBar:UIToolbar = UIToolbar(frame: CGRectMake(0, 0, self.view.frame.width, 35))
-            var btn:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+            let toolBar:UIToolbar = UIToolbar(frame: CGRectMake(0, 0, self.view.frame.width, 35))
+            let btn:UIButton = UIButton(type: UIButtonType.Custom)
             btn.frame = CGRectMake(0, 5, 35, 35)
             btn.addTarget(self, action: "hideKeyboard", forControlEvents: UIControlEvents.TouchUpInside)
             btn.setImage(UIImage(named: "hideKeyboard"), forState: UIControlState.Normal)
@@ -75,17 +74,14 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
         
         let user_id:NSString = AppDelegate.app().user_id
         
-        var submitDic:NSMutableDictionary = NSMutableDictionary()
+        let submitDic:NSMutableDictionary = NSMutableDictionary()
         submitDic.setValue(user_id, forKey: "user_id")
         submitDic.setValue(AppDelegate.app().pro_id, forKey: "pro_id")
         submitDic.setValue(self.sumTextField.text, forKey: "suggest_money")
         submitDic.setValue(self.msgTextView.text, forKey: "remark")
-        var request: Alamofire.Request?
-        let ip = "http://\(AppDelegate.app().IP)/"
-        request = Alamofire.request(.POST, ip + config + "app/" + "disagree",
-            parameters: ["data":"\(JSON(submitDic))"])
         
-        request?.responseString() { (_, _, data, error) in
+        let url = AppDelegate.app().ipUrl + config + "app/disagree"
+        NetworkRequest.AlamofirePostParametersResponseJSON(url, parameters: ["data":"\(JSON(submitDic))"], success: { (data) -> Void in
             if data == "success" {
                 progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
                 progressHud.mode = MBProgressHUDMode.CustomView
@@ -99,6 +95,10 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
                 progressHud.labelText = "提交失败"
                 progressHud.hide(true, afterDelay: 1)
             }
+            }, failed: { () -> Void in
+                
+            }) { () -> Void in
+                
         }
     }
     
@@ -159,7 +159,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
     func menuPopover(menuView: PopoverMenuView!, didSelectMenuItemAtIndex selectedIndex: Int) {
         let user_id:NSString = AppDelegate.app().user_id
         
-        var submitDic:NSMutableDictionary = NSMutableDictionary()
+        let submitDic:NSMutableDictionary = NSMutableDictionary()
         submitDic.setValue(user_id, forKey: "user_id")
         submitDic.setValue(AppDelegate.app().pro_id, forKey: "pro_id")
         var footerURL:String = ""
@@ -189,12 +189,8 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
         progressHud.labelText = "正在提交"
         progressHud.show(true)
         
-        var request: Alamofire.Request?
-        let js:JSON = JSON(submitDic)
-        let ip = "http://\(AppDelegate.app().IP)/"
-        request = Alamofire.request(.POST, ip + config + "app/" + footerURL,
-            parameters: ["data":"\(js)"])
-        request?.responseString() { (_, _, data, error) in
+        let url = AppDelegate.app().ipUrl + config + "app/" + footerURL
+        NetworkRequest.AlamofirePostParametersResponseJSON(url, parameters: ["data":"\(JSON(submitDic))"], success: { (data) -> Void in
             if data == "success" {
                 progressHud.labelText = "提交成功"
                 progressHud.mode = MBProgressHUDMode.CustomView
@@ -206,6 +202,14 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
                 progressHud.labelText = "提交失败"
                 progressHud.hide(true, afterDelay: 1)
             }
+            }, failed: { () -> Void in
+                
+                progressHud.labelText = "提交失败"
+                progressHud.hide(true, afterDelay: 1)
+            }) { () -> Void in
+                
+                progressHud.labelText = "提交失败"
+                progressHud.hide(true, afterDelay: 1)
         }
     }
     
@@ -213,7 +217,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex == 1 {
             let user_id:NSString = AppDelegate.app().user_id
-            var submitDic:NSMutableDictionary = NSMutableDictionary()
+            let submitDic:NSMutableDictionary = NSMutableDictionary()
             submitDic.setValue(user_id, forKey: "user_id")
             submitDic.setValue(AppDelegate.app().pro_id, forKey: "pro_id")
             self.menuView.dismissMenuPopover()
@@ -222,24 +226,27 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
             progressHud.labelText = "正在提交"
             progressHud.show(true)
             
-            var request: Alamofire.Request?
-            let js:JSON = JSON(submitDic)
-            let ip = "http://\(AppDelegate.app().IP)/"
-            request = Alamofire.request(.POST, ip + config + "app/close",
-                parameters: ["data":"\(js)"])
-            request?.responseString() { (_, _, data, error) in
-                if data == "success" {
-                    progressHud.labelText = "提交成功"
-                    progressHud.mode = MBProgressHUDMode.CustomView
-                    progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
-                    progressHud.hide(true, afterDelay: 2)
-                    sleep(2)
-                    self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-                }else{
-                    progressHud.labelText = "提交失败"
-                    progressHud.hide(true, afterDelay: 1)
-                }
-            }
+            
+            let url = AppDelegate.app().ipUrl + config + "app/close"
+            NetworkRequest.AlamofirePostParametersResponseJSON(url,
+                parameters: ["data":"\(JSON(submitDic))"],
+                success: { (data) -> Void in
+                    if data == "success" {
+                        progressHud.labelText = "提交成功"
+                        progressHud.mode = MBProgressHUDMode.CustomView
+                        progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
+                        progressHud.hide(true, afterDelay: 2)
+                        sleep(2)
+                        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                    }else{
+                        progressHud.labelText = "提交失败"
+                        progressHud.hide(true, afterDelay: 1)
+                    }
+                }, failed: { () -> Void in
+                    
+                }, outTime: { () -> Void in
+                    
+            })
         }
     }
     
@@ -266,7 +273,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
     }
     
     convenience init() {
-        var nibNameOrNil = "CircleViewController"
+        let nibNameOrNil = "CircleViewController"
         if NSBundle.mainBundle().pathForResource(nibNameOrNil, ofType: "xib") == nil {
         }
         self.init(nibName: nibNameOrNil, bundle: nil)
@@ -276,7 +283,7 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 

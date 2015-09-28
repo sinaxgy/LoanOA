@@ -23,7 +23,7 @@ class CameraManageCenter: NSObject ,UIImagePickerControllerDelegate,UINavigation
     
     func takePhoto(viewCtrl:UIViewController){
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
-            var picker:UIImagePickerController = UIImagePickerController()
+            let picker:UIImagePickerController = UIImagePickerController()
             picker.delegate = self
             //picker.allowsEditing = true
             picker.sourceType = UIImagePickerControllerSourceType.Camera
@@ -36,7 +36,7 @@ class CameraManageCenter: NSObject ,UIImagePickerControllerDelegate,UINavigation
     
     func openPictureLibrary(viewCtrl:UIViewController){
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary){
-            var picker:UIImagePickerController = UIImagePickerController()
+            let picker:UIImagePickerController = UIImagePickerController()
             picker.delegate = self
             //picker.allowsEditing = true
             picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
@@ -50,13 +50,16 @@ class CameraManageCenter: NSObject ,UIImagePickerControllerDelegate,UINavigation
     func openFlashLight(){
         let device:AVCaptureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
         if device.torchMode == AVCaptureTorchMode.Off{
-            var session:AVCaptureSession = AVCaptureSession()
-            let input:AVCaptureDeviceInput = AVCaptureDeviceInput(device: device, error: nil)
+            let session:AVCaptureSession = AVCaptureSession()
+            let input:AVCaptureDeviceInput = try! AVCaptureDeviceInput(device: device)
             session.addInput(input)
-            var output:AVCaptureVideoDataOutput = AVCaptureVideoDataOutput()
+            let output:AVCaptureVideoDataOutput = AVCaptureVideoDataOutput()
             session.addOutput(output)
             session.beginConfiguration()
-            device.lockForConfiguration(nil)
+            do {
+                try device.lockForConfiguration()
+            } catch _ {
+            }
             device.torchMode = AVCaptureTorchMode.On
             device.unlockForConfiguration()
             session.commitConfiguration()
@@ -67,14 +70,14 @@ class CameraManageCenter: NSObject ,UIImagePickerControllerDelegate,UINavigation
     func shrinkImageSizeToMiddle(originalImage:UIImage) -> UIImage {
         UIGraphicsBeginImageContext(self.middleSize)
         originalImage.drawInRect(CGRectMake(0, 0, self.middleSize.width, self.middleSize.height))
-        var handledImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        let handledImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return handledImage
     }
     
     //UIImagePickerControllerDelegate拍摄完执行
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-        var image:UIImage = info[UIImagePickerControllerOriginalImage]! as! UIImage
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        let image:UIImage = info[UIImagePickerControllerOriginalImage]! as! UIImage
         if picker.sourceType == UIImagePickerControllerSourceType.Camera {
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
         }

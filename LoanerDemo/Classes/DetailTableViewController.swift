@@ -20,10 +20,10 @@ struct DefaultText {    //TEXT默认文字存储
 class DetailTableViewController: UITableViewController ,AddTableViewCellTextFieldDelegate,UIAlertViewDelegate,DatePickerViewDateDelegate,UIActionSheetDelegate,SignTextDelegate{
     
     //var headTitle:String = ""
-    var json:JSON = JSON.nullJSON           //存储“data”对应的value值
+    var json:JSON = JSON.null           //存储“data”对应的value值
     var postDic:NSMutableDictionary = NSMutableDictionary()
     var resigntf:UITextField!
-    var dbjson:JSON = JSON.nullJSON         //数据表字段json
+    var dbjson:JSON = JSON.null         //数据表字段json
     var isAdd:Bool = true;var fileName:String = ""
     var detailKeyArray:NSArray = []
     var defaultText:DefaultText = DefaultText(fileName: "", dicTexts: [:])
@@ -68,19 +68,19 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if !self.isAdd {return}
-        var cell = tableView.cellForRowAtIndexPath(indexPath) as! LeafTableViewCell
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! LeafTableViewCell
         if !cell.itemInfo.editable {return}
         if cell.itemInfo.type.isEqualToString("select") {       //选择器
-            var selectSheet:UIActionSheet = UIActionSheet()
+            let selectSheet:UIActionSheet = UIActionSheet()
             selectSheet.delegate = self
             for key in cell.itemInfo.options {
-                selectSheet.addButtonWithTitle(key as! String)
+                selectSheet.addButtonWithTitle(key as? String)
             }
             selectSheet.addButtonWithTitle("取消")
             selectSheet.cancelButtonIndex = selectSheet.numberOfButtons - 1
             selectSheet.showInView(self.view)
         }else {
-            var signView = SignViewController()
+            let signView = SignViewController()
             if cell.itemInfo.options.count > 0 {    //传入校验方式
                 for item in cell.itemInfo.options {
                     if item.description != "must" {signView.verify = item as! String}
@@ -104,7 +104,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //return self.setCellFromAddJSON(indexPath.row, forjson: self.json)
-        var cell = tableView.dequeueReusableCellWithIdentifier(self.leafCell, forIndexPath: indexPath) as! LeafTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(self.leafCell, forIndexPath: indexPath) as! LeafTableViewCell
         let key:String = self.detailKeyArray[indexPath.row] as! String
         if let js = self.json.dictionary?[key as String] {
             cell.initCellInfomation(key, forjson: js, editable: isAdd)
@@ -146,7 +146,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
             alert.show()
             return
         }
-        var alert = UIAlertView(title: "注意", message: "确定提交速评表？\n提交完成之后不可修改！", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+        let alert = UIAlertView(title: "注意", message: "确定提交速评表？\n提交完成之后不可修改！", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
         alert.show()
     }
     
@@ -164,7 +164,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
             if self.postDic.count > 0 {             //填写表单时的数据填充
                 for rekey in self.postDic.allKeys {
                     if rekey as! String == cell.itemInfo.title {
-                        cell.textfield.text = self.postDic.objectForKey(rekey as! String) as! String
+                        cell.textfield.text = self.postDic.objectForKey(rekey as! String) as? String
                         break
                     }
                 }
@@ -177,7 +177,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
     //MARK:--UIAlertViewDelegate
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex == 1 {
-            var progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
+            let progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
             self.navigationController?.view.addSubview(progressHud)
             progressHud.show(true)
             progressHud.labelText = "正在提交表单"
@@ -196,7 +196,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
                         progressHud.mode = MBProgressHUDMode.CustomView
                         progressHud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
                         progressHud.hide(true, afterDelay: 2)
-                        var gcdT:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * NSEC_PER_SEC))
+                        let gcdT:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * NSEC_PER_SEC))
                         dispatch_after(gcdT, dispatch_get_main_queue(), {
                             self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                         })
@@ -218,7 +218,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
     
     //MARK:--UIActionSheetDelegate
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        let cell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow()!) as! LeafTableViewCell
+        let cell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow!) as! LeafTableViewCell
         if buttonIndex > cell.itemInfo.options.count - 1{
             return
         }
@@ -228,7 +228,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
     
     //MARK:--SignTextDelegate
     func signTextDidBeDone(text: String, texts: NSArray?) {
-        let cell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow()!) as! LeafTableViewCell
+        let cell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow!) as! LeafTableViewCell
         let conditions:NSArray = ["mg_price","mg_assessprice","mg_adviceprice","car_bdate","car_ldate"]
         if conditions.containsObject(cell.itemInfo.title) {
             let message = self.checkInputPriceValue(cell.itemInfo.title as String, text: text)
@@ -258,7 +258,7 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
     }
     
     func checkInputPriceValue(key:String,text:String) -> NSString {
-        var message:NSMutableString = ""
+        let message:NSMutableString = ""
         switch key {                //远》估》建议金额
         case "mg_price":            //原价：不能小于估价
             if (self.postDic.allKeys as NSArray).containsObject("mg_assessprice") {

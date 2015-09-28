@@ -26,13 +26,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.statusBarStyle = UIStatusBarStyle.LightContent
         
         // 改变 navigation bar 的背景色
-        var navigationBarAppearace = UINavigationBar.appearance()
+        let navigationBarAppearace = UINavigationBar.appearance()
         //        navigationBarAppearace.translucent = false
         navigationBarAppearace.barTintColor = UIColor(hex: navColor)
         navigationBarAppearace.tintColor = UIColor.whiteColor()
-        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(),NSFontAttributeName:UIFont.systemFontOfSize(18, weight: 10)]
+        if #available(iOS 8.2, *) {
+            navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(),NSFontAttributeName:UIFont.systemFontOfSize(18, weight: 10)]
+        } else {
+            // Fallback on earlier versions
+        }
         if !UserHelper.readValueOfPWIsSaved() {
-            var loginedView:LoginsViewController = LoginsViewController()
+            let loginedView:LoginsViewController = LoginsViewController()
             self.window?.rootViewController = loginedView
             return true
         }

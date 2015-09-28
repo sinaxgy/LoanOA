@@ -35,7 +35,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     var elapsedTime: NSTimeInterval?
     
     @IBAction func tableAddAction(sender: AnyObject) {
-        var progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
+        let progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
         self.navigationController?.view.addSubview(progressHud)
         progressHud.show(true)
         
@@ -52,7 +52,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
                     }
                     progressHud.hide(true)
                     let keys = self.newProTypeDic.allKeys
-                    var typeArray:NSMutableArray = NSMutableArray()         //菜单选项数组
+                    let typeArray:NSMutableArray = NSMutableArray()         //菜单选项数组
                     for key in keys {
                         typeArray.addObject(self.newProTypeDic.objectForKey(key)!)
                     }
@@ -74,10 +74,9 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     
     //MARK:--PopoverMenuViewDelegate
     func menuPopover(menuView: PopoverMenuView!, didSelectMenuItemAtIndex selectedIndex: Int) {
-        let ip = "http://\(AppDelegate.app().IP)/"
         let keys = self.newProTypeDic.allKeys
         let type:String = keys[selectedIndex] as! String
-        var addView:BranchTableViewController = BranchTableViewController()
+        let addView:BranchTableViewController = BranchTableViewController()
         addView.url = AppDelegate.app().ipUrl + config + typeURL + type
         addView.typeOp.type = type
         addView.typeOp.proNum = self.newProTypeDic.objectForKey(type) as! String
@@ -149,7 +148,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     }
     
     func connectFailed() {
-        var vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
+        let vaildHud:MBProgressHUD = MBProgressHUD(view: self.view)
         self.view.addSubview(vaildHud)
         vaildHud.show(true)
         vaildHud.mode = MBProgressHUDMode.Text
@@ -159,7 +158,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     }
     
     func showActivityIndicatorViewInNavigationItem() {
-        var actView:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        let actView:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
         self.navigationItem.titleView = actView
         actView.startAnimating()
         self.navigationItem.prompt = "数据加载中..."
@@ -237,12 +236,12 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         let headerView:UIView = UIView(frame: CGRectMake(0, 0, self.view.width, 30))
         headerView.backgroundColor = UIColor(red: 225.0/255.0, green: 225.0/255.0, blue: 225.0/205.0, alpha: 1)
         let text:String = (section == 0 ? "待处理项目" : "处理中项目")
-        var label:UILabel = UILabel(frame: CGRectMake(25, 5, self.view.width, 25))
+        let label:UILabel = UILabel(frame: CGRectMake(25, 5, self.view.width, 25))
         label.text = text;label.textColor = UIColor.grayColor()
         label.font = UIFont.systemFontOfSize(detailFontSize)
         headerView.addSubview(label)
         
-        var triangleView:UIImageView = UIImageView(frame: CGRectMake(5, 10, 15, 15))
+        let triangleView:UIImageView = UIImageView(frame: CGRectMake(5, 10, 15, 15))
         var triangleName = (self.hideSection == section ? "triangle" : "triangleDown")
         if self.hideSection == 2 {triangleName = "triangle"}
         triangleView.image = UIImage(named: triangleName)
@@ -259,7 +258,7 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
         let array = (indexPath.section == 0 ? self.useableArray : self.unuseableArray)
         if let element = array[indexPath.row] as? NSArray {
             //0-1-2:项目ID、项目编号、项目状态
-            var browseView:BranchTableViewController = BranchTableViewController()
+            let browseView:BranchTableViewController = BranchTableViewController()
             browseView.typeOp.proNum = (element[1] as? String)!
             AppDelegate.app().pro_id = element[0] as! String
             browseView.isAdd = false

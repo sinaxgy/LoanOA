@@ -15,7 +15,7 @@ struct FeedbackMsg {
 
 class FeedbackTableVC: UITableViewController ,UIAlertViewDelegate,PopoverMenuViewDelegate,UITextFieldDelegate,UITextViewDelegate{
     
-    var json:JSON = JSON.nullJSON
+    var json:JSON = JSON.null
     var menuView : PopoverMenuView!
     var suggestSum:FeedbackMsg = FeedbackMsg(explain: "建议金额", value: "")
     var moreMsg:FeedbackMsg = FeedbackMsg(explain: "备注信息", value: "")
@@ -30,7 +30,7 @@ class FeedbackTableVC: UITableViewController ,UIAlertViewDelegate,PopoverMenuVie
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "操作", style: UIBarButtonItemStyle.Plain, target: self, action: "handleFeedback:")
         }else {
             self.editable = true
-            var tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
+            let tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "keyboardHide")
             self.view.addGestureRecognizer(tapGesture)
         }
     }
@@ -93,7 +93,7 @@ class FeedbackTableVC: UITableViewController ,UIAlertViewDelegate,PopoverMenuVie
     func menuPopover(menuView: PopoverMenuView!, didSelectMenuItemAtIndex selectedIndex: Int) {
         let user_id:NSString = AppDelegate.app().user_id
         
-        var submitDic:NSMutableDictionary = NSMutableDictionary()
+        let submitDic:NSMutableDictionary = NSMutableDictionary()
         submitDic.setValue(user_id, forKey: "user_id")
         submitDic.setValue(AppDelegate.app().pro_id, forKey: "pro_id")
         var footerURL:String = ""
@@ -151,7 +151,7 @@ class FeedbackTableVC: UITableViewController ,UIAlertViewDelegate,PopoverMenuVie
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex == 1 {
             let user_id:NSString = AppDelegate.app().user_id
-            var submitDic:NSMutableDictionary = NSMutableDictionary()
+            let submitDic:NSMutableDictionary = NSMutableDictionary()
             submitDic.setValue(user_id, forKey: "user_id")
             submitDic.setValue(AppDelegate.app().pro_id, forKey: "pro_id")
             self.menuView.dismissMenuPopover()
@@ -252,7 +252,7 @@ class FeedbackTableVC: UITableViewController ,UIAlertViewDelegate,PopoverMenuVie
     
     func setupSubmitCell() -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "submitCell")
-        var btn:UIButton = UIButton(frame: CGRectMake(0, 0, self.view.width, cellHeight))
+        let btn:UIButton = UIButton(frame: CGRectMake(0, 0, self.view.width, cellHeight))
         btn.titleLabel?.textAlignment = NSTextAlignment.Center
         btn.setTitle("提交", forState: UIControlState.Normal)
         btn.titleLabel?.font = UIFont.systemFontOfSize(textFontSize)
@@ -267,12 +267,12 @@ class FeedbackTableVC: UITableViewController ,UIAlertViewDelegate,PopoverMenuVie
     
     func setupMessageCell() -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "msgCell")
-        var label:UILabel = UILabel(frame: CGRectMake(15, 10, 110, 30))
+        let label:UILabel = UILabel(frame: CGRectMake(15, 10, 110, 30))
         label.centerY = cellHeight / 2
         label.text = self.moreMsg.explain + "："
         label.font = UIFont.systemFontOfSize(textFontSize)
         cell.addSubview(label)
-        var textView:UITextView = UITextView(frame: CGRectMake(140, 10, self.view.width - 110, self.view.height / 3 - 20))
+        let textView:UITextView = UITextView(frame: CGRectMake(140, 10, self.view.width - 110, self.view.height / 3 - 20))
         textView.text = self.moreMsg.value
         textView.font = UIFont.systemFontOfSize(detailFontSize)
         textView.editable = self.editable
@@ -285,12 +285,12 @@ class FeedbackTableVC: UITableViewController ,UIAlertViewDelegate,PopoverMenuVie
     
     func setupSumCell() -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "sumCell")
-        var label:UILabel = UILabel(frame: CGRectMake(15, 0, 110, 30))
+        let label:UILabel = UILabel(frame: CGRectMake(15, 0, 110, 30))
         label.text = self.suggestSum.explain + "："
         label.centerY = cellHeight / 2
         label.font = UIFont.systemFontOfSize(textFontSize)
         cell.addSubview(label)
-        var textField:UITextField = UITextField(frame: CGRectMake(140, 0, self.view.width - 120, cellHeight - 20))
+        let textField:UITextField = UITextField(frame: CGRectMake(140, 0, self.view.width - 120, cellHeight - 20))
         textField.centerY = cellHeight / 2
         textField.text = self.suggestSum.value
         textField.placeholder = "请输入\(self.suggestSum.explain)"
@@ -315,8 +315,7 @@ class FeedbackTableVC: UITableViewController ,UIAlertViewDelegate,PopoverMenuVie
         progressHud.show(true)
         
         let user_id:NSString = AppDelegate.app().user_id
-        let pro_id = AppDelegate.app().pro_id
-        var submitDic:NSMutableDictionary = NSMutableDictionary()
+        let submitDic:NSMutableDictionary = NSMutableDictionary()
         submitDic.setValue(user_id, forKey: "user_id")
         submitDic.setValue(AppDelegate.app().pro_id, forKey: "pro_id")
         submitDic.setValue(self.suggestSum.value, forKey: "suggest_money")
@@ -350,7 +349,7 @@ class FeedbackTableVC: UITableViewController ,UIAlertViewDelegate,PopoverMenuVie
         return true
     }
     func textFieldDidEndEditing(textField: UITextField) {
-        self.suggestSum.value = textField.text
+        self.suggestSum.value = textField.text!
     }
     
     func textViewDidEndEditing(textView: UITextView) {

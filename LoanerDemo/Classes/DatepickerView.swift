@@ -32,9 +32,9 @@ class DatepickerView: UIView {
     
     func initView(width:CGFloat) {
         let mainwidth = UIScreen.mainScreen().bounds.width
-        var navBar:UINavigationBar = UINavigationBar(frame: CGRectMake(0, 0, mainwidth, 30))
+        let navBar:UINavigationBar = UINavigationBar(frame: CGRectMake(0, 0, mainwidth, 30))
         
-        var navItem:UINavigationItem = UINavigationItem(title: nil)
+        let navItem:UINavigationItem = UINavigationItem()
         let leftItem:UIBarButtonItem = UIBarButtonItem(title: "取消", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("cancel:"))
         let rightItem:UIBarButtonItem = UIBarButtonItem(title: "确定", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("ensure:"))
         navItem.leftBarButtonItem = leftItem
@@ -55,14 +55,14 @@ class DatepickerView: UIView {
     }
     
     func ensure(sender:UIBarButtonItem) {
-        var selectedDate:NSDate = datepicker.date
-        var formatter:NSDateFormatter = NSDateFormatter()
+        let selectedDate:NSDate = datepicker.date
+        let formatter:NSDateFormatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         let dateString:String = formatter.stringFromDate(selectedDate)
         self.dateDelegate.datePickerDidEnsure(dateString)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

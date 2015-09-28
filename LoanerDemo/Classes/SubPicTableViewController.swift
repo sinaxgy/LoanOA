@@ -79,7 +79,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     }
     
     func showActivityIndicatorViewInNavigationItem() {
-        var actView:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        let actView:UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
         self.navigationItem.titleView = actView
         actView.startAnimating()
         self.navigationItem.prompt = "数据加载中..."
@@ -126,10 +126,11 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
         return true
     }
     
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    @available(iOS 8.0, *)
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         self.selectedIndexPath = indexPath
         if let cell = tableView.cellForRowAtIndexPath(indexPath) as? SingleTableViewCell {
-            var deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "删除") { (rowAction, index) -> Void in
+            let deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "删除") { (rowAction, index) -> Void in
                     if cell.isMutable {
                         let alert = UIAlertView(title: "注意", message: "此条目包含多张图片，继续将删除所有条目", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "继续")
                         alert.tintColor = UIColor.redColor()
@@ -141,9 +142,9 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
             }
             deleteRowAction.backgroundColor = UIColor.redColor()
             
-            var replaceRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "替换") { (rowAction, index) -> Void in
-                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? SingleTableViewCell {
-                    var sheetAction:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "从相册中选取","打开照相机")
+            let replaceRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "替换") { (rowAction, index) -> Void in
+                if let _ = tableView.cellForRowAtIndexPath(indexPath) as? SingleTableViewCell {
+                    let sheetAction:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "从相册中选取","打开照相机")
                     sheetAction.showInView(self.view)
                 }
             }
@@ -160,7 +161,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if self.tableArray[indexPath.row].isKindOfClass(PicJsonItemInfo) {
             let item:PicJsonItemInfo = self.tableArray[indexPath.row] as! PicJsonItemInfo
-            if var cell:SingleTableViewCell = tableView.dequeueReusableCellWithIdentifier(kSingleCell, forIndexPath: indexPath) as? SingleTableViewCell {
+            if let cell:SingleTableViewCell = tableView.dequeueReusableCellWithIdentifier(kSingleCell, forIndexPath: indexPath) as? SingleTableViewCell {
                 let url = (item.imageurl.count > 0 ? ("\(AppDelegate.app().ipUrl)" + (item.imageurl.firstObject as! String) + "?\(arc4random() % 1000)") : "")
                 cell.imageV.sd_setImageWithURL(NSURL(string: url), placeholderImage: UIImage(named: placeholderImageName))
                 cell.subTextLabel?.text = item.date
@@ -183,7 +184,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 self.hudProgress.show(true)
                 //self.setupPhotoBrowser()
                 
-                var photoBrowser:ZLPhotoPickerBrowserViewController = ZLPhotoPickerBrowserViewController()
+                let photoBrowser:ZLPhotoPickerBrowserViewController = ZLPhotoPickerBrowserViewController()
                 let nav:UINavigationController = UINavigationController(rootViewController: photoBrowser)
                 photoBrowser.delegate = self
                 photoBrowser.dataSource = self
@@ -194,7 +195,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 self.presentViewController(nav, animated: false, completion: nil)
             }
             if item.imageurl.count == 0 && self.editable {
-                var sheetAction:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "从相册中选取","打开照相机")
+                let sheetAction:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "从相册中选取","打开照相机")
                 //sheetAction.tintColor = UIColor(hex: mainColor)
                 sheetAction.showInView(self.view)
             }
@@ -227,7 +228,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     //MARK:-----Camera function
     func takePhoto(){
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
-            var picker:UIImagePickerController = UIImagePickerController()
+            let picker:UIImagePickerController = UIImagePickerController()
             picker.delegate = self
             //picker.allowsEditing = true
             picker.sourceType = UIImagePickerControllerSourceType.Camera
@@ -240,7 +241,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     }
     
     //UIImagePickerControllerDelegate拍摄完执行
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         self.dismissViewControllerAnimated(true, completion: nil)
 
         var image:UIImage = info[UIImagePickerControllerOriginalImage]! as! UIImage
@@ -256,16 +257,16 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
         
         let currentIndexPath = self.selectedIndexPath
         let cell:UITableViewCell = self.tableView.cellForRowAtIndexPath(currentIndexPath)!
-        var hud:MBProgressHUD = MBProgressHUD(view: cell.contentView)
+        let hud:MBProgressHUD = MBProgressHUD(view: cell.contentView)
         cell.contentView.addSubview(hud)
         hud.show(true)
         
-        if var item:PicJsonItemInfo = self.tableArray[currentIndexPath.row] as? PicJsonItemInfo { var index = 0
+        if let item:PicJsonItemInfo = self.tableArray[currentIndexPath.row] as? PicJsonItemInfo { var index = 0
             if item.multipage == "1" {index = item.imageurl.count + 1}
             let str = "pro_id=\(AppDelegate.app().pro_id)&filename=\(item.tbName)&page=\(index)&nsdata="
-            var uploadData:NSMutableData = NSMutableData()
+            let uploadData:NSMutableData = NSMutableData()
             uploadData.appendString(str)
-            uploadData.appendData(UIImagePNGRepresentation(image))
+            uploadData.appendData(UIImagePNGRepresentation(image)!)
             let url = "\(AppDelegate.app().ipUrl)" + config + uploadUrl
             NetworkRequest.AlamofireUploadImage(url, data: uploadData, progress: {
                 (bytesWritten,totalBytesWritten,totalBytesExpectedToWrite) in
@@ -327,7 +328,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     }
     
     func delete() {
-        if var item = self.tableArray[self.selectedIndexPath.row] as? PicJsonItemInfo {
+        if let item = self.tableArray[self.selectedIndexPath.row] as? PicJsonItemInfo {
             let url = AppDelegate.app().ipUrl + config + "app/delete"
             NetworkRequest.AlamofirePostParameters(url, parameters: ["path":"\(JSON(item.imageurl))"], success: {
                 (data) in
@@ -347,26 +348,26 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     
     //MARK:-----ZLPhotoPickerViewController
     func openZLPhotoSinglePicker() {    //单张的上传与替换
-        var pickerVC:ZLPhotoPickerViewController = ZLPhotoPickerViewController()
+        let pickerVC:ZLPhotoPickerViewController = ZLPhotoPickerViewController()
         pickerVC.status = PickerViewShowStatus.CameraRoll
         pickerVC.minCount = 1
         pickerVC.showPickerVc(self)
         pickerVC.callBack = { (assets) in
             if let array:NSArray = assets as? NSArray {
-                var queue:dispatch_queue_t = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
-                var group:dispatch_group_t = dispatch_group_create()
+                let queue:dispatch_queue_t = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+                let group:dispatch_group_t = dispatch_group_create()
                 let currentIndexPath:NSIndexPath = self.selectedIndexPath
                 let cellView = self.tableView.cellForRowAtIndexPath(currentIndexPath)
-                var hud:MBProgressHUD = MBProgressHUD(view: cellView)
+                let hud:MBProgressHUD = MBProgressHUD(view: cellView)
                 cellView?.addSubview(hud);hud.show(true)
-                if var item:PicJsonItemInfo = self.tableArray[currentIndexPath.row] as? PicJsonItemInfo {
+                if let item:PicJsonItemInfo = self.tableArray[currentIndexPath.row] as? PicJsonItemInfo {
                 if let asset = array.firstObject as? ZLPhotoAssets {
                     let image = asset.originImage()
-                    let imageData:NSData = UIImagePNGRepresentation(image)
+                    let imageData:NSData = UIImagePNGRepresentation(image)!
                     dispatch_group_async(group, queue, {
                         let str = "pro_id=\(AppDelegate.app().pro_id)&filename=\(item.tbName)&page=0&nsdata="
                         let url = "\(AppDelegate.app().ipUrl)" + config + uploadUrl
-                        var uploadData:NSMutableData = NSMutableData()
+                        let uploadData:NSMutableData = NSMutableData()
                         uploadData.appendString(str)
                         uploadData.appendData(imageData)
                         NetworkRequest.AlamofireUploadImage(url, data: uploadData, progress: {(_,written,totalExpectedToWrite) in
@@ -397,33 +398,33 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     }
     
     func openZLPhotoMutablePicker(minCount:NSInteger) {
-        var pickerVC:ZLPhotoPickerViewController = ZLPhotoPickerViewController()
+        let pickerVC:ZLPhotoPickerViewController = ZLPhotoPickerViewController()
         pickerVC.status = PickerViewShowStatus.CameraRoll
         pickerVC.minCount = minCount
         pickerVC.showPickerVc(self)
         pickerVC.callBack = { (assets) in
             if let array:NSArray = assets as? NSArray {
-                var queue:dispatch_queue_t = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
-                var group:dispatch_group_t = dispatch_group_create()
+                let queue:dispatch_queue_t = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+                let group:dispatch_group_t = dispatch_group_create()
                 let serialQueue:dispatch_queue_t = dispatch_queue_create("serial", DISPATCH_QUEUE_SERIAL)
                 let currentIndexPath:NSIndexPath = self.selectedIndexPath
                 var total:Float = 0;var current:Float = 0
                 let cellView = self.tableView.cellForRowAtIndexPath(currentIndexPath)
-                var hud:MBProgressHUD = MBProgressHUD(view: cellView)
+                let hud:MBProgressHUD = MBProgressHUD(view: cellView)
                 cellView?.addSubview(hud)
                 hud.show(true)
-                if var item:PicJsonItemInfo = self.tableArray[currentIndexPath.row] as? PicJsonItemInfo {
+                if let item:PicJsonItemInfo = self.tableArray[currentIndexPath.row] as? PicJsonItemInfo {
                     var currentIndex = item.imageurl.count + 1;
-                    var imageUrlArray:NSMutableArray = [];//NSMutableArray(array: item.imageurl)
+                    let imageUrlArray:NSMutableArray = [];//NSMutableArray(array: item.imageurl)
                 for ass in array {
                     if let asset = ass as? ZLPhotoAssets {
                         let image = asset.originImage()
-                        let imageData:NSData = UIImagePNGRepresentation(image)
+                        let imageData:NSData = UIImagePNGRepresentation(image)!
                         total += Float(imageData.length) * 0.000977
                         dispatch_async(serialQueue, {
                         //dispatch_group_async(group, queue, {
                             let str = "pro_id=\(AppDelegate.app().pro_id)&filename=\(item.tbName)&page=\(currentIndex++)&nsdata="
-                            var uploadData:NSMutableData = NSMutableData()
+                            let uploadData:NSMutableData = NSMutableData()
                             uploadData.appendString(str);uploadData.appendData(imageData)
                             NetworkRequest.AlamofireUploadImage("\(AppDelegate.app().ipUrl)" + config + uploadUrl, data: uploadData, progress: {
                                 (bytesWritten,totalBytesWritten,totalBytesExpectedToWrite) in
@@ -450,7 +451,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                                             }
                                         }
                                         item.imageurl.addObjectsFromArray(array as [AnyObject])
-                                        let nextIndex = NSIndexPath(forRow: currentIndexPath.row, inSection: currentIndexPath.section)
+                                        _ = NSIndexPath(forRow: currentIndexPath.row, inSection: currentIndexPath.section)
                                         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: currentIndexPath.row + 1, inSection: currentIndexPath.section)) as? PopMutableTableViewCell {
                                             cell.imageUrlArray = NSMutableArray(array: item.imageurl)
                                             cell.mutableCollection.reloadData()
@@ -477,7 +478,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     }
     
     func setupPhotoBrowser() {
-        var photoBrowser:ZLPhotoPickerBrowserViewController = ZLPhotoPickerBrowserViewController()
+        let photoBrowser:ZLPhotoPickerBrowserViewController = ZLPhotoPickerBrowserViewController()
         photoBrowser.delegate = self
         photoBrowser.dataSource = self
         photoBrowser.editing = true
@@ -502,8 +503,8 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
         let item = self.tableArray[self.selectedIndexPath.row] as! PicJsonItemInfo
         let str: String = AppDelegate.app().ipUrl + (item.imageurl[indexPath.row] as! String) + "?\(arc4random() % 1000)"
         //let str:String = AppDelegate.app().ipUrl + (LoanerHelper.OriginalImageURLStrWithSmallURLStr(NSString(string: item.imageurl[indexPath.row] as! String)))  + "?\(arc4random() % 1000)"
-        var ar:NSArray = NSArray(array: [NSString(string: str)])
-        var photo:ZLPhotoPickerBrowserPhoto = ZLPhotoPickerBrowserPhoto(anyImageObjWith: str)
+        _ = NSArray(array: [NSString(string: str)])
+        let photo:ZLPhotoPickerBrowserPhoto = ZLPhotoPickerBrowserPhoto(anyImageObjWith: str)
         if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
             photo.toView = cell.imageV
             photo.thumbImage = UIImage(named: placeholderImageName)//cell.imageV.image
@@ -538,14 +539,14 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
     func photoBrowser(photoBrowser: ZLPhotoPickerBrowserViewController!, didUploadImage image: UIImage!, index: Int, progress: ((Float, Float) -> Void)!, success: ((String!, String!) -> Void)!, failed: (() -> Void)!) {
         
         if let cell = self.tableView.cellForRowAtIndexPath(self.selectedIndexPath) as? SingleTableViewCell {
-            if var item:PicJsonItemInfo = self.tableArray[self.selectedIndexPath.row] as? PicJsonItemInfo {
+            if let item:PicJsonItemInfo = self.tableArray[self.selectedIndexPath.row] as? PicJsonItemInfo {
                 let page = (cell.isMutable ? index + 1 : index)
-                var queue:dispatch_queue_t = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
-                var group:dispatch_group_t = dispatch_group_create()
+                let queue:dispatch_queue_t = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+                let group:dispatch_group_t = dispatch_group_create()
                 let str = "pro_id=\(AppDelegate.app().pro_id)&filename=\(item.tbName)&page=\(page)&nsdata="
                 let url = "\(AppDelegate.app().ipUrl)" + config + uploadUrl
-                var uploadData:NSMutableData = NSMutableData()
-                uploadData.appendString(str);uploadData.appendData(UIImagePNGRepresentation(image))
+                let uploadData:NSMutableData = NSMutableData()
+                uploadData.appendString(str);uploadData.appendData(UIImagePNGRepresentation(image)!)
                 dispatch_group_async(group, queue, {
                 NetworkRequest.AlamofireUploadImage(url, data: uploadData, progress: { (_, written, total) -> Void in
                     progress(Float(written) * 0.000977,Float(total) * 0.000977)
@@ -585,7 +586,7 @@ class SubPicTableViewController: UITableViewController ,UIImagePickerControllerD
                 self.delete()
             case replaceTag:
                 self.delete()
-                var sheetAction:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "从相册中选取","打开照相机")
+                let sheetAction:UIActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "从相册中选取","打开照相机")
                 sheetAction.showInView(self.view)
             default:
                 break

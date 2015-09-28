@@ -14,7 +14,7 @@ let recentID = "recentID"
 class UserHelper: NSObject {
     
     static func setValueOfPWIsSaved(isSaved:Bool) {
-        var user:NSUserDefaults? = NSUserDefaults.standardUserDefaults()
+        let user:NSUserDefaults? = NSUserDefaults.standardUserDefaults()
         if (user != nil) {
             user?.setObject(isSaved, forKey: PWIsSaved)
             user?.synchronize()
@@ -22,7 +22,7 @@ class UserHelper: NSObject {
     }
     
     static func setRecentID(recentId:String) {
-        var user:NSUserDefaults? = NSUserDefaults.standardUserDefaults()
+        let user:NSUserDefaults? = NSUserDefaults.standardUserDefaults()
         if (user != nil) {
             user?.setObject(recentId, forKey: recentID)
             user?.synchronize()
@@ -30,7 +30,7 @@ class UserHelper: NSObject {
     }
     
     static func setCurrentUserInfo(dicInfo:NSDictionary,user_id:String) -> Bool {
-        var user:NSUserDefaults? = NSUserDefaults.standardUserDefaults()
+        let user:NSUserDefaults? = NSUserDefaults.standardUserDefaults()
         if (user != nil) {
             user?.setObject(dicInfo, forKey: user_id)
             return user!.synchronize()

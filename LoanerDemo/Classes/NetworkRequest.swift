@@ -11,23 +11,16 @@ import Alamofire
 
 class NetworkRequest: NSObject {
     
-    var request: Alamofire.Request? {
-        didSet {
-            oldValue?.cancel()
-        }
-    }
-    
     static func AlamofireGetString(url:String,success:(AnyObject?)->Void,failed:()->Void,outTime:()->Void) {
         var request: Alamofire.Request!
         request = Alamofire.request(.GET, url)
-        request.responseString() {
-            (_,_,data,error) in
+        request.responseString { (response) -> Void in
             request = nil
-            if error != nil {
+            if response.result.error != nil {
                 failed()
                 return
             }
-            success(data)
+            success(response.result.value)
         }
         let gcdTimer:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(15 * NSEC_PER_SEC))
         dispatch_after(gcdTimer, dispatch_get_main_queue(), {
@@ -40,14 +33,13 @@ class NetworkRequest: NSObject {
     static func AlamofireGetJSON(url:String,success:(AnyObject?)->Void,failed:()->Void,outTime:()->Void) {
         var request: Alamofire.Request!
         request = Alamofire.request(.GET, url)
-        request.responseJSON() {
-            (_,_,data,error) in
+        request.responseJSON { (xResponse) -> Void in
             request = nil
-            if error != nil {
+            if xResponse.result.error != nil {
                 failed()
                 return
             }
-             success(data)
+            success(xResponse.result.value)
         }
         let gcdTimer:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(15 * NSEC_PER_SEC))
         dispatch_after(gcdTimer, dispatch_get_main_queue(), {
@@ -60,14 +52,13 @@ class NetworkRequest: NSObject {
     static func AlamofirePostParametersResponseJSON(url:String,parameters:[String:AnyObject]?,success:(JSON)->Void,failed:()->Void,outTime:()->Void) {
         var request: Alamofire.Request!
         request = Alamofire.request(.POST, url, parameters: parameters,encoding: .URL)
-        request.responseJSON() {
-            (_,_,data,error) in
+        request.responseJSON { (xResponse) -> Void in
             request = nil
-            if (error != nil && data == nil) {
+            if xResponse.result.error != nil || xResponse.result.value == nil {
                 failed()
                 return
             }
-            success(JSON(data!))
+            success(JSON(xResponse.result.value!))
         }
         let gcdTimer:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(15 * NSEC_PER_SEC))
         dispatch_after(gcdTimer, dispatch_get_main_queue(), {
@@ -80,14 +71,13 @@ class NetworkRequest: NSObject {
     static func AlamofirePostParameters(url:String,parameters:[String:AnyObject]?,success:(AnyObject?)->Void,failed:()->Void,outTime:()->Void) {
         var request: Alamofire.Request!
         request = Alamofire.request(.POST, url, parameters: parameters)
-        request.responseString() {
-            (_,_,data,error) in
+        request.responseString { (response) -> Void in
             request = nil
-            if error != nil {
+            if response.result.error != nil {
                 failed()
                 return
             }
-            success(data)
+            success(response.result.value)
         }
         let gcdTimer:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(15 * NSEC_PER_SEC))
         dispatch_after(gcdTimer, dispatch_get_main_queue(), {
@@ -99,19 +89,18 @@ class NetworkRequest: NSObject {
     
     static func AlamofireUploadImage(url:String,data:NSData,progress:(Int64,Int64,Int64)->Void,success:(AnyObject?)->Void,failed:()->Void,outTime:()->Void) {
         var upload:Alamofire.Request!
-        upload = Alamofire.upload(.POST, url, data)
-        upload.progress(closure: {
-            bytesWritten, totalBytesWritten, totalBytesExpectedToWrite in
+        upload = Alamofire.upload(.POST, url, data: data)
+        upload.progress { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
             progress(bytesWritten,totalBytesWritten,totalBytesExpectedToWrite)
-        })
-        upload.responseString() {
-            (_,_,data,error) in
+        }
+        
+        upload.responseString { (response) -> Void in
             upload = nil
-            if error != nil {
+            if response.result.error != nil {
                 failed()
                 return
             }
-            success(data)
+            success(response.result.value)
         }
     }
 }

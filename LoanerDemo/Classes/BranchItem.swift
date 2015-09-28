@@ -11,7 +11,7 @@ import UIKit
 class BranchItem: NSObject {
     
     var editable:String = ""
-    var data:JSON = JSON.nullJSON
+    var data:JSON = JSON.null
     var tag_name:String = ""
     var isComplete:String = ""
     var arraysort:NSArray = []
