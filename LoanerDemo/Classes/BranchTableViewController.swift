@@ -64,8 +64,8 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
                 case ("dataRemark",_):
                     if value != "" && !self.isShowNoti {
                         self.isShowNoti = true
-                        let hud = MBProgressHUD(view: self.navigationController?.view)
-                        self.navigationController?.view.addSubview(hud)
+                        let hud = MBProgressHUD(view: self.view)
+                        self.view.addSubview(hud)
                         hud.mode = MBProgressHUDMode.Text;
                         hud.show(true)
                         hud.detailsLabelFont = UIFont.systemFontOfSize(15)
@@ -255,8 +255,8 @@ class BranchTableViewController: UITableViewController ,UIActionSheetDelegate,UI
             }
             let url = AppDelegate.app().ipUrl + config + "app/" + footer
             
-            let progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
-            self.navigationController?.view.addSubview(progressHud)
+            let progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
+            self.view.addSubview(progressHud)
             progressHud.show(true)
             
             NetworkRequest.AlamofirePostParameters(url, parameters: ["data":"\(JSON(submitDic))"], success: {(data) in

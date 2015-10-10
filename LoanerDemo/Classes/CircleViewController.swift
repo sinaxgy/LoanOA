@@ -67,8 +67,8 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
             return
         }
         
-        let progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
-        self.navigationController?.view.addSubview(progressHud)
+        let progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
+        self.view.addSubview(progressHud)
         progressHud.labelText = "正在提交"
         progressHud.show(true)
         
@@ -184,8 +184,8 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
         default:
             break
         }
-        let progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
-        self.navigationController?.view.addSubview(progressHud)
+        let progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
+        self.view.addSubview(progressHud)
         progressHud.labelText = "正在提交"
         progressHud.show(true)
         
@@ -221,8 +221,8 @@ class CircleViewController: UIViewController ,PopoverMenuViewDelegate,UIAlertVie
             submitDic.setValue(user_id, forKey: "user_id")
             submitDic.setValue(AppDelegate.app().pro_id, forKey: "pro_id")
             self.menuView.dismissMenuPopover()
-            let progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
-            self.navigationController?.view.addSubview(progressHud)
+            let progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
+            self.view.addSubview(progressHud)
             progressHud.labelText = "正在提交"
             progressHud.show(true)
             

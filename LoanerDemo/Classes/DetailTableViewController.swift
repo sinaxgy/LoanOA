@@ -177,8 +177,8 @@ class DetailTableViewController: UITableViewController ,AddTableViewCellTextFiel
     //MARK:--UIAlertViewDelegate
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex == 1 {
-            let progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
-            self.navigationController?.view.addSubview(progressHud)
+            let progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
+            self.view.addSubview(progressHud)
             progressHud.show(true)
             progressHud.labelText = "正在提交表单"
             

@@ -44,8 +44,8 @@ class RequestTableViewController: UITableViewController ,AddTableViewCellTextFie
     }
     
     func reload() {
-        let progressHud:MBProgressHUD = MBProgressHUD(view: self.navigationController!.view)
-        self.navigationController?.view.addSubview(progressHud)
+        let progressHud:MBProgressHUD = MBProgressHUD(view: self.view)
+        self.view.addSubview(progressHud)
         progressHud.show(true)
         
         let url = AppDelegate.app().ipUrl + config + self.tag_Message.suffixURL

@@ -77,7 +77,6 @@
 		C5D7B9181B3909BE00823343 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5D7B9161B3909BE00823343 /* Main.storyboard */; };
 		C5D7B91A1B3909BE00823343 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5D7B9191B3909BE00823343 /* Images.xcassets */; };
 		C5D7B91D1B3909BE00823343 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D7B91B1B3909BE00823343 /* LaunchScreen.xib */; };
-		C5D7B9291B3909BE00823343 /* LoanerDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D7B9281B3909BE00823343 /* LoanerDemoTests.swift */; };
 		C5D7B9751B390AC800823343 /* HistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D7B9741B390AC800823343 /* HistoryTableViewController.swift */; };
 		C5D7B97B1B390C4800823343 /* Info-iOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = C5D7B9771B390C4800823343 /* Info-iOS.plist */; };
 		C5D7B97C1B390C4800823343 /* Info-OSX.plist in Resources */ = {isa = PBXBuildFile; fileRef = C5D7B9781B390C4800823343 /* Info-OSX.plist */; };
@@ -127,13 +126,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C5D7B9231B3909BE00823343 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C5D7B9051B3909BE00823343 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C5D7B90C1B3909BE00823343;
-			remoteInfo = LoanerDemo;
-		};
 		C5EC0DA61BB8EF28008769BF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C5EC0D9E1BB8EF28008769BF /* Alamofire.xcodeproj */;
@@ -327,7 +319,6 @@
 		C5D7B9171B3909BE00823343 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C5D7B9191B3909BE00823343 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C5D7B91C1B3909BE00823343 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		C5D7B9221B3909BE00823343 /* LoanerDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoanerDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5D7B9271B3909BE00823343 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C5D7B9281B3909BE00823343 /* LoanerDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanerDemoTests.swift; sourceTree = "<group>"; };
 		C5D7B9741B390AC800823343 /* HistoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistoryTableViewController.swift; path = Classes/HistoryTableViewController.swift; sourceTree = "<group>"; };
@@ -391,13 +382,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5EC0DC21BB918FE008769BF /* Alamofire.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C5D7B91F1B3909BE00823343 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -721,7 +705,6 @@
 			isa = PBXGroup;
 			children = (
 				C5D7B90D1B3909BE00823343 /* 车融资OA.app */,
-				C5D7B9221B3909BE00823343 /* LoanerDemoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -868,24 +851,6 @@
 			productReference = C5D7B90D1B3909BE00823343 /* 车融资OA.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C5D7B9211B3909BE00823343 /* LoanerDemoTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C5D7B92F1B3909BE00823343 /* Build configuration list for PBXNativeTarget "LoanerDemoTests" */;
-			buildPhases = (
-				C5D7B91E1B3909BE00823343 /* Sources */,
-				C5D7B91F1B3909BE00823343 /* Frameworks */,
-				C5D7B9201B3909BE00823343 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C5D7B9241B3909BE00823343 /* PBXTargetDependency */,
-			);
-			name = LoanerDemoTests;
-			productName = LoanerDemoTests;
-			productReference = C5D7B9221B3909BE00823343 /* LoanerDemoTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -900,10 +865,6 @@
 					C5D7B90C1B3909BE00823343 = {
 						CreatedOnToolsVersion = 6.3;
 						DevelopmentTeam = 37RRWFQN4Y;
-					};
-					C5D7B9211B3909BE00823343 = {
-						CreatedOnToolsVersion = 6.3;
-						TestTargetID = C5D7B90C1B3909BE00823343;
 					};
 				};
 			};
@@ -927,7 +888,6 @@
 			projectRoot = "";
 			targets = (
 				C5D7B90C1B3909BE00823343 /* LoanerDemo */,
-				C5D7B9211B3909BE00823343 /* LoanerDemoTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1002,13 +962,6 @@
 				C5F218E91B4AA8350072D445 /* DefaultLine.png in Resources */,
 				C5374A801B69BFB500A80625 /* ZLPhotoPickerGroupTableViewCell.xib in Resources */,
 				C5DBEC2C1B666676003F5749 /* SingleTableViewCell.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C5D7B9201B3909BE00823343 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1108,22 +1061,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C5D7B91E1B3909BE00823343 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C5D7B9291B3909BE00823343 /* LoanerDemoTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C5D7B9241B3909BE00823343 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C5D7B90C1B3909BE00823343 /* LoanerDemo */;
-			targetProxy = C5D7B9231B3909BE00823343 /* PBXContainerItemProxy */;
-		};
 		C5EC0DB31BB8EF5C008769BF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Alamofire iOS";
@@ -1193,7 +1133,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1231,7 +1171,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1285,42 +1225,6 @@
 			};
 			name = Release;
 		};
-		C5D7B9301B3909BE00823343 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = LoanerDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "Pursue.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LoanerDemo.app/LoanerDemo";
-			};
-			name = Debug;
-		};
-		C5D7B9311B3909BE00823343 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = LoanerDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "Pursue.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LoanerDemo.app/LoanerDemo";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1338,15 +1242,6 @@
 			buildConfigurations = (
 				C5D7B92D1B3909BE00823343 /* Debug */,
 				C5D7B92E1B3909BE00823343 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C5D7B92F1B3909BE00823343 /* Build configuration list for PBXNativeTarget "LoanerDemoTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C5D7B9301B3909BE00823343 /* Debug */,
-				C5D7B9311B3909BE00823343 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
