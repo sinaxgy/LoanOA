@@ -218,18 +218,21 @@ class HistoryTableViewController: UITableViewController ,PopoverMenuViewDelegate
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //        if self.hideSection == indexPath.section {
         //            return UITableViewCell()
-        //        }
-        let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "historyCell")
+        //        } uinib
+        var cell = tableView.dequeueReusableCellWithIdentifier("historyCell")
+        if cell == nil {
+            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "historyCell")
+        }
         let array = (indexPath.section == 0 ? self.useableArray : self.unuseableArray)
         if let element = array[indexPath.row] as? NSArray {
-            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-            cell.textLabel?.text = element[1] as? String
-            cell.textLabel?.font = UIFont.systemFontOfSize(textFontSize)
-            cell.detailTextLabel?.text = element[2] as? String
-            cell.detailTextLabel?.font = UIFont.systemFontOfSize(detailFontSize)
-            cell.detailTextLabel?.textColor = UIColor.grayColor()
+            cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+            cell!.textLabel?.text = element[1] as? String
+            cell!.textLabel?.font = UIFont.systemFontOfSize(textFontSize)
+            cell!.detailTextLabel?.text = element[2] as? String
+            cell!.detailTextLabel?.font = UIFont.systemFontOfSize(detailFontSize)
+            cell!.detailTextLabel?.textColor = UIColor.grayColor()
         }
-        return cell
+        return cell!
     }
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

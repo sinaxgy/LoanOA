@@ -10,7 +10,6 @@ import UIKit
 import AVFoundation
 
 protocol CameraManagerDelegate:NSObjectProtocol {
-    
     func cameraManagerImage(image: UIImage)
     func cameraManagerDidCancel()
 }
